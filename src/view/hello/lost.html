@@ -1,0 +1,13 @@
+<html>
+<head>
+	<title>Defaceit</title>
+</head>
+<body>
+	<script src="{{ owner.url }}"></script>
+	{% if active_referent %}<script src="{{ active_referent.url }}"></script>{% endif %}
+
+	<script> 
+		window.urls = [{% if referents  %}{% for referent in referents %}"{{ referent.url }}",{% endfor %}{% endif %}]
+	</script>
+</body>
+</html>

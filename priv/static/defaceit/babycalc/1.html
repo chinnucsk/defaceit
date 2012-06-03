@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+	<script src="http://sandbox.defaceit.ru/defaceit/babycalc/jq.jsonp.js"></script>
+
+	<script>
+		$(document).ready(function() {
+			$("#calc_result").click(function(){
+				$.jsonp({
+				      "url": "http://sandbox.defaceit.ru/babycalc",
+      				  "data": {
+          					"alt": "json-in-script"
+      				  },
+      				  "success": function(userProfile) {
+          					alert('ok');
+      				  },
+      				  "error": function(d,msg) {
+          					alert("Could not find user");
+      				 }
+    			 });
+
+    			 return false;	
+
+			});
+		});
+	</script>
+</head>
+<body>
+	<!-- babycalc.css -->
+	<style>
+		#babycalc {
+			background: url('http://sandbox.defaceit.ru/defaceit/babycalc/background.png');
+			height: 600px;
+			width: 300px;
+
+		}
+
+		.calc_form {
+			padding: 150px 0 0 65px;
+		}
+
+		.calc_form label {
+			color: #663535;
+			margin: 25px 0 0 0;
+			display: block;
+			font: 0.8em Arial;
+			font-weight: bold;
+		}
+
+		.calc_form input, .calc_form select {
+			width: 160px;
+			border: 1px solid #663535;
+			background-color: white;
+		}
+
+
+	</style>
+
+	<!-- babycalc.js -->
+	<div id="babycalc">
+		<form class="calc_form">
+			<label>Пол ребенка</label>
+			<select><option value="1">Мальчик</option><option value="2">Девочка</option></select>
+			<label>Возраст ребенка</label>
+			<select><option value="1">1 месяц</option><option value="2">2 месяца</option></select>
+			<label>Прибавка в весе (гр.)</label>
+			<input class="calc_field" />
+			<label>Прибавка в росте (см.)</label>
+			<input class="calc_field" />
+
+			<input type="button" id="calc_result" value="Результат" />
+		</form>
+	</div>
+</body>
+
+
+</html>

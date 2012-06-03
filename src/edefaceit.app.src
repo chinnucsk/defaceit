@@ -1,0 +1,8 @@
+{application, edefaceit, [
+        {description, "Defaceit application for chnageable interfaces"},
+        {vsn, "0.0.1"},
+        {modules, []},
+        {registered, []},
+        {applications, [kernel, stdlib, crypto, boss]},
+        {env, []}
+    ]}.
