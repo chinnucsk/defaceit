@@ -1,4 +1,4 @@
-Defaceit.load.css('http://sandbox.defaceit.ru/css/ext-all.css');
+Defaceit.load.css('http://defaceit.ru/css/ext-all.css');
 
 
 
@@ -59,7 +59,7 @@ function create_link_form(hash) {
             name: 'email_link',
             id: 'email_link',
             anchor:'100%',
-            value: '<a href="http://sandbox.defaceit.ru/email/'+hash+'">Обратная связь</a>'
+            value: '<a href="http://defaceit.ru/email/'+hash+'">Обратная связь</a>'
         }]
     });
 
@@ -84,7 +84,7 @@ function create_send_message_form() {
     return new Ext.form.FormPanel({
         baseCls: 'x-plain',
         labelWidth: 85,
-        url:'http://services.sandbox.defaceit.ru/email/send_message',
+        url:'http://services.defaceit.ru/email/send_message',
         defaultType: 'textfield',
         errorReader: {
             read: function(response) {
@@ -150,7 +150,7 @@ function create_email_window(form, send_message_window, send_message_form) {
                    }
                    
                 Snappy.data.JSONP.register('uniqkey', success, this)
-                Snappy.data.JSONP.request("http://services.sandbox.defaceit.ru/email/email_add?key=uniqkey&email=" + form_fields['email'])
+                Snappy.data.JSONP.request("http://services.defaceit.ru/email/email_add?key=uniqkey&email=" + form_fields['email'])
                 /*Ext.Ajax.request({
                     url: '/service/mail/email_add',
                     params: form.getForm().getValues(),
@@ -174,7 +174,7 @@ function create_email_window(form, send_message_window, send_message_form) {
         {
             text: "Получить ссылку на форму обратной связи",
             handler: function() {
-                //sender = new Snappy.data.IFrameProxy("http://services.sandbox.defaceit.ru:3000/email/email_add");
+                //sender = new Snappy.data.IFrameProxy("http://services.defaceit.ru:3000/email/email_add");
                 form_fields = form.getForm().getValues();
                 //for(key in form_fields) {
 //                    sender.add(key, form_fields[key]);
@@ -186,9 +186,9 @@ function create_email_window(form, send_message_window, send_message_form) {
                    }
                    
                 Snappy.data.JSONP.register('uniqkey', success, this)
-                Snappy.data.JSONP.request("http://services.sandbox.defaceit.ru/email/email_add?key=uniqkey&email=" + form_fields['email'])
+                Snappy.data.JSONP.request("http://services.defaceit.ru/email/email_add?key=uniqkey&email=" + form_fields['email'])
                 /*Ext.Ajax.request({
-                    url: 'http://services.sandbox.defaceit.ru/email/email_add?email=sal1982@list.ru',
+                    url: 'http://services.defaceit.ru/email/email_add?email=sal1982@list.ru',
                     params: form.getForm().getValues(),
                     success: function(response){
                         v =/<email-hash>(.*)<\/email-hash>/.exec(response.responseText);
@@ -224,7 +224,7 @@ function create_send_message_window(send_message_form) {
         buttons: [{
             text: 'Отправить',
             handler: function() {
-                sender = new Snappy.data.IFrameProxy("http://services.sandbox.defaceit.ru/email/send_message");
+                sender = new Snappy.data.IFrameProxy("http://services.defaceit.ru/email/send_message");
                 form_fields = send_message_form.getForm().getValues();
                 for(key in form_fields) {
                     sender.add(key, form_fields[key]);

@@ -18,7 +18,7 @@ add(POST, []) ->
 	
 	%Save data to file because used memory DB, when defaceit restarted it shoul be run!
 	Data = [AppName, Referer],
-	file:write_file("/home/sal/log/app_list.sh", io_lib:fwrite("wget -q --post-data 'app=~s&url=~s' http://sandbox.defaceit.ru/app/add -O /dev/null~n", [AppName, Referer]), [append]),
+	file:write_file("/home/sal/log/app_list.sh", io_lib:fwrite("wget -q --post-data 'app=~s&url=~s' http://defaceit.ru/app/add -O /dev/null~n", [AppName, Referer]), [append]),
 
 	{redirect, "/" ++ AppName}.
 
