@@ -12,20 +12,21 @@ if (window.urls.length > 0) {
 }
 
 
-user = new Defaceit.Session('http://services.defaceit.ru/sessions');
+user = new Defaceit.Session('http://services.sandbox.defaceit.ru/sessions');
 user.check_status(function(){
     $('#login_name').html(this.sign_in ? this.data.key.split('/')[3] : "Yandex OpenID");
-    $('#login').html(this.sign_in ?'<a href="http://services.defaceit.ru/sessions/destroy">Выйти</a>':'<a href="http://services.defaceit.ru/sessions/new">Войти</a>');
+    $('#login').html(this.sign_in ?'<a href="http://services.sandbox.defaceit.ru/sessions/destroy">Выйти</a>':'<a href="http://services.sandbox.defaceit.ru/sessions/new">Войти</a>');
 });
 
 
 $( document ).ready( function () {
  
-  var html = "";
+
   $.ajax( {
     url : "https://api.github.com/repos/esergeev/defaceit/issues",
     dataType : "jsonp",
     success : function ( returndata ) {
+      var html = "";
       $.each( returndata.data, function ( i, item ) {
        html += "<h2>" + item.title + "</h2>";
 
@@ -37,4 +38,17 @@ $( document ).ready( function () {
       $("#result").html(html);
     }
   } );
+
+$.ajax( {
+    url : "https://api.github.com/repos/esergeev/defaceit/commits",
+    dataType : "jsonp",
+    success : function ( returndata ) {
+      var html = "<h2>Последние коммиты:</h2>";
+      $.each( returndata.data, function ( i, item ) {
+         html += "<p class=\"alert alert-info\" >" + item.commit.message + "</p>"
+      } );
+      $("#commits").html(html);
+    }
+  } );
+
 } );
