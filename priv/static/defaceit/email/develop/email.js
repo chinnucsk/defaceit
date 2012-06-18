@@ -77,7 +77,7 @@ function create_link_form(hash) {
             name: 'email_link',
             id: 'email_link',
             anchor:'100%',
-            value: '<a href="http://sandbox.defaceit.ru/email/'+hash+'">Обратная связь</a>'
+            value: '<a href="http://defaceit.ru/email/'+hash+'">Обратная связь</a>'
         }]
     });
 
