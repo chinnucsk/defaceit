@@ -208,7 +208,7 @@ baloons = function(name){
 	$ = window[name];
 	$(document).ready(function(){
 			
-			if(/defaceit.ru/.test(document.location)){
+			if(/defaceit.ru/.test(document.location) || window.baloonMessage){
 				Defaceit.Baloons.show_window(Defaceit.Baloons.message());
 			}
 
