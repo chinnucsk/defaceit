@@ -152,7 +152,7 @@ Defaceit.Window.Simple.prototype = {
           var b = $('<a>').attr('href', '#').addClass('premium-button').html('Close');
           
 
-          button.handler ? b.click(function() {button.handler.call(that)}) : false;
+          button.handler ? b.click(function() {return button.handler.call(that)}) : false;
           button.text ? b.attr('value', button.text) : false;
           return b;
       }

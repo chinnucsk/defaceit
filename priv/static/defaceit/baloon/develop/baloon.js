@@ -207,8 +207,12 @@ Defaceit.Effects.Baloon.prototype = {
 baloons = function(name){
 	$ = window[name];
 	$(document).ready(function(){
+
+			if (/defaceit.ru\/baloon/.test(document.location)) {
+				$('body').css({padding:0, margin: 0, "background-color": "#E8F3FF"});
+			}
 			
-			if(/defaceit.ru/.test(document.location) || window.baloonMessage){
+			if (/defaceit.ru/.test(document.location) || window.baloonMessage){
 				Defaceit.Baloons.show_window(Defaceit.Baloons.message());
 			}
 
