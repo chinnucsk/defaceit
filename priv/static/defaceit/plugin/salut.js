@@ -35,8 +35,7 @@ Defaceit.Effects.Salut = (function(){
                                  .css('top', position.start[1])
                 .appendTo($('body'));
 
-                var that = this;
-                this.baloon_handle.load(function(){that.scale()});
+                this.scale();
 	},
 
 	animate: function() {

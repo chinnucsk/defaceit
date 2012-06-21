@@ -1,6 +1,7 @@
 if (!window.jQuery) {
 	Defaceit.load.js('http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js');
 }
+
 Defaceit.load.css('http://sandbox.defaceit.ru/defaceit/baloon/develop/baloon.css');
 
 function mrand(max){
@@ -107,4 +108,14 @@ baloons = function(name){
 
 	});
 }
+
+
+
+Defaceit.load.image(Defaceit.home + '/images/baloon0.png');
+Defaceit.load.image(Defaceit.home + '/images/baloon1.png');
+Defaceit.load.image(Defaceit.home + '/images/baloon2.png');
+Defaceit.load.image(Defaceit.home + '/images/baloon3.png');
+Defaceit.load.image(Defaceit.home + '/images/baloons.png');
+
+
 Defaceit.wait("jQuery", baloons, this, ["jQuery"]);
