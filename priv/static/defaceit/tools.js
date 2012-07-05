@@ -26,6 +26,7 @@ Defaceit.wait = function(object, callback, scope, args) {
 }
 
 Defaceit.load ={
+	wait: [],
 	js: function(url) {
 		var s =document.createElement('script');
   		s.setAttribute('src', url);
