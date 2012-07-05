@@ -9,6 +9,14 @@ Defaceit.wait = function(object, callback, scope, args) {
 	var idi = setInterval(check, 100);
 
 	function check() {
+	
+		if (Defaceit.load.wait.length > 0) {
+		    for( var id = 0; id < Defaceit.load.wait.length; id++){
+    			if (Defaceit.load.wait[id] != 'Ok'){
+			    return;
+			}
+		    }
+		}
 		if (window[object]) {
 			callback.call(scope, args);
 			clearInterval(idi);
@@ -18,6 +26,7 @@ Defaceit.wait = function(object, callback, scope, args) {
 }
 
 Defaceit.load ={
+	wait: [],
 	js: function(url) {
 		var s =document.createElement('script');
   		s.setAttribute('src', url);
@@ -31,6 +40,21 @@ Defaceit.load ={
 		c.type = 'text/css';
 		c.href = url;
 		document.getElementsByTagName('head')[0].appendChild(c);
+	},
+	
+	image: function(url) {
+
+		this.wait = this.wait || [];
+		var id= this.wait.length;
+		
+		var i = document.createElement('img');
+		i.src = url;
+		this.wait[id] = url;
+		document.getElementsByTagName('head')[0].appendChild(i);
+		
+		var that = this;
+		i.onload = function(){that.wait[id] = 'Ok'}
+
 	}
 }
 
