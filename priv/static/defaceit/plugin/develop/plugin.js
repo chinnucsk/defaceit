@@ -12,8 +12,14 @@ loader = {
     }
 }
 
+content = {
+    load: function(content) {
+	return content;
+    }
+}
+
 Defaceit.Page = {
-    brand: "Плагины",
+    brand: [content, "Плагины"],
     menu: [loader, "defaceit.plugin.menu"], // на один и тот же ключ можно повесить несколько значений, частный случай - одно значение в массиве
     content: [Defaceit.loader, "defaceit.plugin.content"] // content - может содержать объект который занимается построением контента или ID объекта из базы контента
     
