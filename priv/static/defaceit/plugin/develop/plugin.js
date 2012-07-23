@@ -24,8 +24,28 @@ Defaceit.Page = {
     content: [Defaceit.loader, "defaceit.plugin.content"] // content - может содержать объект который занимается построением контента или ID объекта из базы контента
     
 }
+/*
+    Реализовать простейшее key=value хранилище, где одному ключу много параметров
+    Реализовать возможность динамически создавать страницу
+    
+*/
+Defaceit.Page.loader("defaceit.page.brand", "body");
+Defaceit.Page.loader("defaceit.plugin.menu", "#brand", function(){alert('1');});
+Defaceit.Page.loader("defaceit.plugin.content", "body");
+Defaceit.Page.loader("defaceit.plugin.articles", "#content");
+Defaceit.Page.loader("defaceit.plugin.rightbar", "body");
 
 
+Defaceit.Page.construct(
+    [loader, "defaceit.page.brand", "body"],
+    [loader, "defaceit.page.menu", "body"],
+    [loader, "defaceit.page.content", "body"],
+    [service_builder, "defaceit.service.list", "#menu"]
+);
+
+
+Defaceit.Page.loader(["defaceit.page.brand", "defaceit.page.content", "defaceit.page.footer"], "body");
+Defaceit.Page.loaded("defaceit.services", "#menu");
 
 
 
