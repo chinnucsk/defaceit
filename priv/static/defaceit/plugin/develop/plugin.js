@@ -3,7 +3,10 @@ if (!window.jQuery) {
 }
 
 loader = {
+
+
     load: function(key) {
+	// Defaceit.Queue.load(key, function(){...});
 	var test = {
 		"defaceit.plugin.menu" : ["это текст №1.1", "это текст №2.1"],
 	        "defaceit.plugin.content": ["Это какой-то контент"]

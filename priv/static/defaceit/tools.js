@@ -308,10 +308,83 @@ Defaceit.Session.prototype = {
   }
 }
 
+/*
+    Defaceit Queue fetature
+*/
+
+Defaceit.Queue = function(queue) {
+    if (this==Defaceit) {
+	queue = queue || '';
+	Defaceit.Queue.list[queue] = Defaceit.Queue.list[queue] || new Defaceit.Queue(queue);
+	return Defaceit.Queue.list[queue];
+    }
+    this.queue = queue;
+    return this;
+}
+
+Defaceit.Queue.prototype = {
+	queue: '',
+    
+	list: function(callback) {
+
+	    callback = callback || this.list_callback;
+	    var call_id = Defaceit.Queue.callbacks.length;
+	    Defaceit.Queue.callbacks[call_id] = callback;
+	    
+	    Defaceit.request('http://sandbox.defaceit.ru:8002/queue/list/' + this.queue + '/' + call_id);
+	    return this;
+	},
+    
+	push: function(message, callback) {
+	    callback = callback || this.push_callback;
+	    var call_id = Defaceit.Queue.callbacks.length;
+	    Defaceit.Queue.callbacks[call_id] = callback;
+
+	    Defaceit.request('http://sandbox.defaceit.ru:8002/queue/push/' + this.queue + '/'  + call_id +'/'+ encodeURIComponent(message));
+	    return this;
+	},
+	
+	top: function(callback) {
+
+	    callback = callback || this.share_callback;
+	    var call_id = Defaceit.Queue.callbacks.length;
+	    Defaceit.Queue.callbacks[call_id] = callback;
+
+	    Defaceit.request('http://sandbox.defaceit.ru:8002/queue/top/' + this.queue + '/'  + call_id);
+	    return this;
+	},
+	
+	push_callback: function(data) {
+	    alert('Specify push callback');
+	},
+	
+	top_callback: function(data) {
+	    alert('Specify top callback');
+	},
+	
+	
+	list_callback: function(data) {
+	    alert('Specify list callback');
+	}
+}
+
+Defaceit.Queue.list = {};
+
+Defaceit.Queue.callbacks = [];
+
+Defaceit.Queue.response =  function(data) { Defaceit.Queue.callbacks[data.call_id].call(Defaceit.Queue.list[data.queue_name],data); }
+
+/*End queue*/
+
+Defaceit.request = function(url){
+    (function(){var s =document.createElement('script');
+    s.setAttribute('src', url);
+    document.getElementsByTagName('head')[0].appendChild(s);})();
+
+}
 
 callbacks = [];
-function request(url, callback, scope) {
-  callbacks.push([callback, scope]);
+function request(url) {
   (function(){var s =document.createElement('script');
   s.setAttribute('src', url);
     document.getElementsByTagName('head')[0].appendChild(s);})();
