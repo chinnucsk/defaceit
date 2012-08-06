@@ -148,6 +148,7 @@ Defaceit.Window.Simple.prototype = {
 
 	this.wnd_handler.css({left:this.config.pX, top: this.config.pY});
     },
+    
     create_window: function() {
         var wnd = this.wnd_handler = $("<div>");
         wnd.addClass('dtWindow').appendTo('body');
@@ -310,7 +311,7 @@ Defaceit.Session.prototype = {
 
 /*
     Defaceit Queue fetature
-*/
+*/      	
 
 Defaceit.Queue = function(queue) {
     if (this==Defaceit) {
@@ -324,47 +325,69 @@ Defaceit.Queue = function(queue) {
 
 Defaceit.Queue.prototype = {
 	queue: '',
-    
-	list: function(callback) {
-
-	    callback = callback || this.list_callback;
-	    var call_id = Defaceit.Queue.callbacks.length;
-	    Defaceit.Queue.callbacks[call_id] = callback;
-	    
-	    Defaceit.request('http://sandbox.defaceit.ru:8002/queue/list/' + this.queue + '/' + call_id);
+        clients: [],
+	call_id: 1,
+	
+	
+	next_call_id: function() {
+	    return this.call_id++;
+	},
+	
+	list: function() {
+	    Defaceit.request('http://sandbox.defaceit.ru:8002/queue/list/' + this.queue + '/' + this.next_call_id());
 	    return this;
 	},
     
 	push: function(message, callback) {
-	    callback = callback || this.push_callback;
-	    var call_id = Defaceit.Queue.callbacks.length;
-	    Defaceit.Queue.callbacks[call_id] = callback;
-
-	    Defaceit.request('http://sandbox.defaceit.ru:8002/queue/push/' + this.queue + '/'  + call_id +'/'+ encodeURIComponent(message));
+	    var cid = this.next_call_id();
+	    
+	    Defaceit.request('http://sandbox.defaceit.ru:8002/queue/push/' + this.queue + '/'  + cid +'/'+ encodeURIComponent(message));
+	    return cid;
+	},
+	
+	top: function() {
+	    Defaceit.request('http://sandbox.defaceit.ru:8002/queue/top/' + this.queue + '/'  + this.next_call_id());
 	    return this;
 	},
 	
-	top: function(callback) {
+	client: function(client) {
+	    this.clients = this.clients || [];
+	    this.clients.push(client);
+	},
+	
+	client_callback: function(data) {
 
-	    callback = callback || this.share_callback;
-	    var call_id = Defaceit.Queue.callbacks.length;
-	    Defaceit.Queue.callbacks[call_id] = callback;
+	    switch(data.type) {
+	    
+		case 'messages':
+		    for(var i = 0; i < data.data.length; i++) this.send_message(data.data[i].message_text, data.data[i]);
+		break;
+		
+		case 'message':
+		    this.send_message(data.data.message_text, data.data);
+		break;
+		
+		case 'status': 
+		    this.send_status_message(data);
+		break;
+	    }
+	},
+	
+	send_status_message: function(status) {
+	    for(var i = 0; i < this.clients.length; i++) {
+		    var client = this.clients[i];
+		    client.queue_status && client.queue_status(status);
+	    }
+	},
+	
+	send_message: function(message, full_message) {
+	
+		message = decodeURIComponent(message);
+		for(var i = 0; i < this.clients.length; i++) {
+		    var client = this.clients[i];
+		    client.queue_message && client.queue_message(message, full_message);
+		}
 
-	    Defaceit.request('http://sandbox.defaceit.ru:8002/queue/top/' + this.queue + '/'  + call_id);
-	    return this;
-	},
-	
-	push_callback: function(data) {
-	    alert('Specify push callback');
-	},
-	
-	top_callback: function(data) {
-	    alert('Specify top callback');
-	},
-	
-	
-	list_callback: function(data) {
-	    alert('Specify list callback');
 	}
 }
 
@@ -372,7 +395,7 @@ Defaceit.Queue.list = {};
 
 Defaceit.Queue.callbacks = [];
 
-Defaceit.Queue.response =  function(data) { Defaceit.Queue.callbacks[data.call_id].call(Defaceit.Queue.list[data.queue_name],data); }
+Defaceit.Queue.response =  function(data) { Defaceit.Queue.list[data.queue_name].client_callback(data); }
 
 /*End queue*/
 

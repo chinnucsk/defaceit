@@ -39,6 +39,10 @@ Defaceit.Baloons = {
 				message = "Empty message";
 			}
 			return message;
+	},
+	
+	queue_message:function(message, full) {
+	    this.show_window(message);
 	}
 
 }
