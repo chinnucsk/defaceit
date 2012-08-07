@@ -3,7 +3,10 @@ if (!window.jQuery) {
 }
 
 loader = {
+
+
     load: function(key) {
+	// Defaceit.Queue.load(key, function(){...});
 	var test = {
 		"defaceit.plugin.menu" : ["это текст №1.1", "это текст №2.1"],
 	        "defaceit.plugin.content": ["Это какой-то контент"]
@@ -24,8 +27,28 @@ Defaceit.Page = {
     content: [Defaceit.loader, "defaceit.plugin.content"] // content - может содержать объект который занимается построением контента или ID объекта из базы контента
     
 }
+/*
+    Реализовать простейшее key=value хранилище, где одному ключу много параметров
+    Реализовать возможность динамически создавать страницу
+    
+*/
+Defaceit.Page.loader("defaceit.page.brand", "body");
+Defaceit.Page.loader("defaceit.plugin.menu", "#brand", function(){alert('1');});
+Defaceit.Page.loader("defaceit.plugin.content", "body");
+Defaceit.Page.loader("defaceit.plugin.articles", "#content");
+Defaceit.Page.loader("defaceit.plugin.rightbar", "body");
 
 
+Defaceit.Page.construct(
+    [loader, "defaceit.page.brand", "body"],
+    [loader, "defaceit.page.menu", "body"],
+    [loader, "defaceit.page.content", "body"],
+    [service_builder, "defaceit.service.list", "#menu"]
+);
+
+
+Defaceit.Page.loader(["defaceit.page.brand", "defaceit.page.content", "defaceit.page.footer"], "body");
+Defaceit.Page.loaded("defaceit.services", "#menu");
 
 
 
