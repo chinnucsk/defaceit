@@ -82,18 +82,15 @@ Defaceit.Window.Baloons = Defaceit.extend(Defaceit.Window.Simple, {
 	},
 
 	show: function() {
-		this.baloon_image && this.baloon_image.show();
-		this.parent.show.call(this);
-		this.animate();
+		this.baloon_image && this.baloon_image.hide() && this.baloon_image.fadeIn('slow');
+		this.wnd_handler.hide() && this.wnd_handler.fadeIn('slow');
 	},
 	
 	center: function() {
 		this.parent.center.call(this);
 		this.baloon_image.css({ position:"absolute", left:this.config.pX-100, top:this.config.pY-100})
-	},
-
-	animate: function() {
 	}
+	
 });
 
 

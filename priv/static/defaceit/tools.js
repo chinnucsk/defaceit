@@ -1,4 +1,3 @@
-
 Defaceit = window.Defaceit || {}
 
 
@@ -90,6 +89,9 @@ Defaceit.Screen = {
 
 	width: function() {
 		return $(window).width();
+	},
+	scroll_top: function() {
+		return $(window).scrollTop();
 	}
 }
 
@@ -214,7 +216,7 @@ Defaceit.Window.Simple.prototype = {
 
     center: function() {
     	this.config.pX = Math.floor(Defaceit.Display.width() / 2 - this.wnd_handler.width() / 2);
-    	this.config.pY = Math.floor(Defaceit.Display.height() / 2 - this.wnd_handler.height() / 2);
+    	this.config.pY = Math.floor(Defaceit.Display.height() / 2 - this.wnd_handler.height() / 2) + Defaceit.Screen.scroll_top();
 	this.position();
     },
 

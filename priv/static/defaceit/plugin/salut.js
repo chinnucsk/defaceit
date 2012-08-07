@@ -19,10 +19,18 @@ Defaceit.Effects.Salut = (function(){
 		this.config = config;
 		this.config.duration = this.config.duration || 1000;
 		this.config.scale = this.config.scale || 1;
-		this.config.position = this.config.position || {start:[0,0], end:[0,0]};
+		this.config.position = this.config.position || this.calculate_position();
 		this.config.modif = this.config.modif || {};
 	},
 
+
+	calculate_position: function() {
+	    var x = mrand(Defaceit.Screen.width()-100),
+		y = Defaceit.Screen.height()-170;
+
+	    return {start:[x, y  + Defaceit.Screen.scroll_top()], end: [x, '-='+y]};
+	},
+	
 	create_baloon: function() {	
                 var position = this.config.position;
 
@@ -50,6 +58,7 @@ Defaceit.Effects.Salut = (function(){
 
 	repeat: function() {
 		if(this.config.repeat) {
+			this.config.position = this.calculate_position();
 			this.baloon_handle.css({left: this.config.position.start[0], top: this.config.position.start[1]});
 			this.animate();
 		}
@@ -105,12 +114,12 @@ Defaceit.Effects.Salut = (function(){
         	        that.elements = [];
                 	var baloons_create = function(num, scale, duration) {
                         	for(var i = 0; i<num; i++){
-	                            var x = mrand(Defaceit.Screen.width()-100),
-        	                        y = Defaceit.Screen.height()-170;
+//	                            var x = mrand(Defaceit.Screen.width()-100),
+//        	                        y = Defaceit.Screen.height()-170;
 
                 	                var b = Element.create({
                 	            			url: config.elements[mrand(config.elements.length-1)], //Defaceit.home + '/images/baloon'+mrand(3)+'.png',
-                        	                        position: {start:[x, y], end: [x, '-='+y]},
+//                        	                        position: {start:[x, y  + Defaceit.Screen.scroll_top()], end: [x, '-='+y]},
                                 	                scale: scale,
                                         	        duration: duration,
                                                 	repeat: true,
