@@ -313,7 +313,7 @@ Defaceit.Session.prototype = {
 
 /*
     Defaceit Queue fetature
-*/      	
+*/
 
 Defaceit.Queue = function(queue) {
     if (this==Defaceit) {
