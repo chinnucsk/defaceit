@@ -1,4 +1,6 @@
 Defaceit.Screen = {
+	border: 10,
+	
 	height: function() {
 		return $(window).height();
 	},

@@ -11,18 +11,18 @@ Defaceit.Window.Simple.create = function(config) {
 
 Defaceit.Window.Simple.prototype = {
     wnd_handler: null,
+    wnd_container: null,
     content_handler: null,
-    config: {width: '400px'},
+    config: {},
 
     init: function(config) {
 	this.configure(config);
 
         this.create_window();
-
         this.apply_content(config.content);
         this.apply_buttons(config.buttons);
 
-	this.modify(config.geometry);
+	this.modify(config.geometry); // TODO: может быть лучше wishes?
   		//wnd.click(function(){that.state.call(that)});
     },
     configure: function(config) {
@@ -50,13 +50,16 @@ Defaceit.Window.Simple.prototype = {
     position: function(pX, pY) {
         this.config.pX = pX || this.config.pX;
 	this.config.pY = pY || this.config.pY;
-
 	this.wnd_handler.css({left:this.config.pX, top: this.config.pY});
     },
     
     create_window: function() {
         var wnd = this.wnd_handler = $("<div>");
         wnd.addClass('dtWindow').appendTo('body');
+        
+	var container = this.wnd_container = $("<div>");
+    	container.addClass("dtWindowContainer").appendTo(this.wnd_handler);
+
     },
 
     apply_content: function(content) {
@@ -66,7 +69,7 @@ Defaceit.Window.Simple.prototype = {
 
       this.content = content;
       return (this.content_handler && this.content_handler.html(this.content)) 
-             || (this.content_handler = $("<div>").addClass('dtWindowContent').html(content).appendTo(this.wnd_handler));
+             || (this.content_handler = $("<div>").addClass('dtWindowContent').html(content).appendTo(this.wnd_container));
     },
 
     apply_buttons: function(buttons) {
@@ -79,7 +82,7 @@ Defaceit.Window.Simple.prototype = {
       var that = this;
 
       function create_button(button) {
-          var b = $('<a>').attr('href', '#').addClass('premium-button').html('Close');
+          var b = $('<a>').attr('href', '#').addClass('premium-button').html(button.text);
           
 
           button.handler ? b.click(function() {return button.handler.call(that)}) : false;
@@ -91,7 +94,7 @@ Defaceit.Window.Simple.prototype = {
         bh.append(create_button(buttons[i]));
       }
       
-      bh.appendTo(this.wnd_handler);
+      bh.appendTo(this.wnd_container);
     },
 
     hide: function() {
@@ -103,23 +106,33 @@ Defaceit.Window.Simple.prototype = {
 
     set_width: function() {
     	if (this.config.width) {
-    		this.wnd_handler.css({width: this.config.width});
+    		this.wnd_container.css({width: this.config.width});
     	}
     },
 
     set_height: function() {
 		if (this.config.height) {
-    		this.wnd_handler.css({width: this.config.height});
+    		this.wnd_container.css({width: this.config.height});
     	}
     },
 
     size: function() {
-    	this.wnd_handler.css({width:this.width, height: this.height});
+    	this.wnd_container.css({width:this.width, height: this.height});
     },
 
     center: function() {
-    	this.config.pX = Math.floor(Defaceit.Display.width() / 2 - this.wnd_handler.width() / 2);
-    	this.config.pY = Math.floor(Defaceit.Display.height() / 2 - this.wnd_handler.height() / 2) + Defaceit.Screen.scroll_top();
+    	this.config.pX = Math.floor(Defaceit.Screen.width() / 2 - this.wnd_handler.width() / 2);
+    	this.config.pY = Math.floor(Defaceit.Screen.height() / 2 - this.wnd_handler.height() / 2) + Defaceit.Screen.scroll_top();
+	this.position();
+    },
+    
+    top: function() {
+	this.config.pY = Defaceit.Screen.border + Defaceit.Screen.scroll_top();
+	this.position();
+    },
+    
+    right: function() {
+	this.config.pX = Defaceit.Screen.width() - this.wnd_handler.width() - Defaceit.Screen.border;
 	this.position();
     },
 

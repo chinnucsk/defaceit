@@ -1,3 +1,4 @@
+
 Defaceit = window.Defaceit || {}
 
 
@@ -81,5 +82,20 @@ Defaceit.extend = function(mammy, o) {
 Defaceit.merge = function(a, b) {
 	return jQuery.merge(a, b);
 }
+Defaceit.request = function(url){
+    (function(){var s =document.createElement('script');
+    s.setAttribute('src', url);
+    document.getElementsByTagName('head')[0].appendChild(s);})();
 
+}
 
+callbacks = [];
+function request(url) {
+  (function(){var s =document.createElement('script');
+  s.setAttribute('src', url);
+    document.getElementsByTagName('head')[0].appendChild(s);})();
+}
+function defaceit(response) {
+  callback = callbacks[0];
+  callback[0].call(callback[1], response);
+}
