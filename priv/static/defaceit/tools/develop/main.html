@@ -19,12 +19,13 @@
 
 	Defaceit.wait("jQuery", 
 	    function(){
-		Defaceit.Window.Manager.create('Simple', 
+	    
+		Defaceit.Window.Manager.create('InputBox', 
 		    {
-			content: "Получено сообщение. Прочитать?",
-			buttons: [{text:'Да', handler: function(){}}, {text:'Нет', handler: function(){}}],
-			geometry: ['top', 'right', 'show']});
+			handler: function(){alert(this.message()); this.hide();},
+			geometry: ['width:400', 'center', 'right', 'show']});
 	    }, this, ['jQuery']);
     </script>
 </body>
+
 </html>

@@ -20,12 +20,16 @@
 
 .dtWindowContainer {
 	padding: 20px;
-/*	width: 400px;*/
 } 
 .dtWindowButtons {
 	float:right;
 /*	position:absolute;
 	margin-left: 200px;*/
+}
+
+.dtWindowInputBoxTextarea {
+    width: 100%;
+    height: 200px;
 }
 
 a.premium-button {
