@@ -53,7 +53,7 @@ Defaceit.Window.Baloons = Defaceit.extend(Defaceit.Window.Simple, {
 		
 		config.buttons = Defaceit.merge([{text:'Close', handler: function(){this.hide();return false;}}], config.buttons);
 
-		config.geometry = Defaceit.merge(['center'], config.geometry);
+		config.geometry = Defaceit.merge(['width:400', 'center'], config.geometry);
  	},
 
 	create_window: function() {

@@ -16,7 +16,7 @@ Defaceit.Window.Simple.prototype = {
     config: {},
 
     init: function(config) {
-	this.configure(config);
+	config = this.configure(config);
 
         this.create_window();
         this.apply_content(config.content);
@@ -39,9 +39,13 @@ Defaceit.Window.Simple.prototype = {
 
       for(var i = 0; i < builders.length; i++) {
           var builder = builders[i];
-
+          
+          var params = builder.split(':');
+          builder = params[0];
+          params = params.length > 1 ? params.slice(1) : [];
+          
           (jQuery.isFunction(builder) && builder.call(this)) ||
-          (this[builder] && this[builder].call(this));
+          (this[builder] && this[builder].apply(this, params));
 
         }
     },
@@ -104,15 +108,17 @@ Defaceit.Window.Simple.prototype = {
 	this.wnd_handler.show();
     },
 
-    set_width: function() {
+    width: function(width) {
+	this.config.width = parseInt(width || this.config.width);
     	if (this.config.width) {
     		this.wnd_container.css({width: this.config.width});
     	}
     },
 
-    set_height: function() {
-		if (this.config.height) {
-    		this.wnd_container.css({width: this.config.height});
+    height: function(height) {
+	this.config.height = parseInt(height || this.config.height);
+	if (this.config.height) {
+    		this.wnd_container.css({height: this.config.height});
     	}
     },
 
@@ -123,6 +129,16 @@ Defaceit.Window.Simple.prototype = {
     center: function() {
     	this.config.pX = Math.floor(Defaceit.Screen.width() / 2 - this.wnd_handler.width() / 2);
     	this.config.pY = Math.floor(Defaceit.Screen.height() / 2 - this.wnd_handler.height() / 2) + Defaceit.Screen.scroll_top();
+	this.position();
+    },
+    
+    deltaXY: function(x, y) {
+	x = parseInt(x || 0);
+	y = parseInt(y || 0);
+
+    	this.config.pX = this.config.pX + x;
+
+    	this.config.pY = this.config.pY + y;
 	this.position();
     },
     
@@ -162,6 +178,24 @@ Defaceit.Window.Simple.prototype = {
     }
 }
 
+
+Defaceit.Window.InputBox = Defaceit.extend(Defaceit.Window.Simple, {
+
+    configure: function(config) {
+	config.handler = config.handler || function(){alert('Обработчик сообщения не задан')};
+
+	this.textarea = $("<TEXTAREA>").addClass("dtWindowInputBoxTextarea");
+	config.content = this.textarea;
+	
+	config.buttons = [{text: "Отправить", handler: config.handler}];
+	return this.parent.configure(config);
+    },
+    
+    message: function() {
+	return this.textarea.text();
+    }
+
+});
 
 Defaceit.Window.Manager = {
   collection: [],
