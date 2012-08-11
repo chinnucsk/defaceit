@@ -20,25 +20,19 @@
 
 .dtWindowContainer {
 	padding: 20px;
-<<<<<<< HEAD
-/*	width: 400px;*/
-=======
->>>>>>> e7e241457587e43a15375798c5304893fe952771
 } 
+
 .dtWindowButtons {
 	float:right;
 /*	position:absolute;
 	margin-left: 200px;*/
 }
 
-<<<<<<< HEAD
-=======
 .dtWindowInputBoxTextarea {
     width: 100%;
     height: 200px;
 }
 
->>>>>>> e7e241457587e43a15375798c5304893fe952771
 a.premium-button {
     background-color: #FEDA71;
     background-image: -moz-linear-gradient(center top , #FEDA71, #FEBB49);

@@ -192,7 +192,7 @@ Defaceit.Window.InputBox = Defaceit.extend(Defaceit.Window.Simple, {
     },
     
     message: function() {
-	return this.textarea.text();
+	return this.textarea.val();
     }
 
 });
