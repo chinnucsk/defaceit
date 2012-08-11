@@ -19,11 +19,13 @@
 
 	Defaceit.wait("jQuery", 
 	    function(){
-	    
-		Defaceit.Window.Manager.create('InputBox', 
-		    {
-			handler: function(){alert(this.message()); this.hide();},
-			geometry: ['width:400', 'center', 'right', 'show']});
+		Defaceit.Window.Manager.create('Simple', {
+		    content: 'У нас тут есть какая-то большая текстовая строка. И в ней все описано!',
+		    title: 'Вот и название',
+		    geometry: ['width:500', 'center', 'show'],
+		    buttons: [{text:'123'}]
+		});
+	
 	    }, this, ['jQuery']);
     </script>
 </body>

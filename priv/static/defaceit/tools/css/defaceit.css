@@ -6,14 +6,35 @@
 .dtWindowContent {
     font: 24px/32px Georgia,Tahoma !important;
  }
+ 
+.dtWindowTitle{
+    margin: -32px 0 0 0;
+    float: right;
+    
+    border: 1px solid #b6722f;
+    background-color: #a67545;/*8f5d2d; #FEDA71;*/
+/*    background-image: -moz-linear-gradient(center top , #FEDA71, #FEBB49);*/
+    border-radius: 48px 48px 48px 48px;
+/*    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), 0 1px 0 #FFE4B3 inset;*/
+    color: #fff4ba;/*#623F1D;*/
+    display: block;
+    font-family: Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 5px;
+    padding: 7px 28px;
+    text-decoration: none;
+/*    text-shadow: 0 1px 0 #333;*/
+}
 
 .dtWindow {
+	border: 1px solid #b6722f;
 	font:24px/32px Georgia,Tahoma !important;
 	border-radius: 10px; -moz-border-radius: 10px; -webkit-border-radius: 10px;
 	box-shadow: 0 0 19px -7px #000;  -moz-box-shadow: 0 0 19px -7px #000; -webkit-box-shadow:0 0 19px -7px #000;
-	opacity: 0.8;
+	opacity: 0.95;
 	position: absolute;
-	background:#fff url(http://sandbox.defaceit.ru/defaceit/baloon/develop/images/bg.png);
+	background:#fff url(http://sandbox.defaceit.ru/defaceit/baloon/develop/images/bg4.png);
 	z-index: 1000;
 	color: #623F1D;
 }
@@ -24,6 +45,7 @@
 
 .dtWindowButtons {
 	float:right;
+	padding-bottom: 10px;
 /*	position:absolute;
 	margin-left: 200px;*/
 }

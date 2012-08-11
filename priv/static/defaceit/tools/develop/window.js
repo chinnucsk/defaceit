@@ -19,6 +19,7 @@ Defaceit.Window.Simple.prototype = {
 	config = this.configure(config);
 
         this.create_window();
+        this.apply_title(config.title);
         this.apply_content(config.content);
         this.apply_buttons(config.buttons);
 
@@ -66,6 +67,16 @@ Defaceit.Window.Simple.prototype = {
 
     },
 
+    apply_title: function(title) {
+	if (!title) {
+	    return false;
+	}
+	
+	this.title = title;
+	var title = $('<div>').html(title).addClass('dtWindowTitle');
+	title.appendTo(this.wnd_container);
+    },
+    
     apply_content: function(content) {
       if (!content) {
         return false;
