@@ -14,9 +14,10 @@ Defaceit.home = 'http://sandbox.defaceit.ru/defaceit/baloon/develop';
 Defaceit.Baloons = {
 
 
-	show_window: function (message) {
+	show_window: function (message, title) {
 		var w = Defaceit.Window.Manager.create('Baloons', {
 				content: message,
+				title: title,
 				geometry: ['show']
 			});
 	},
@@ -54,6 +55,7 @@ Defaceit.Window.Baloons = Defaceit.extend(Defaceit.Window.Simple, {
 		config.buttons = Defaceit.merge([{text:'Close', handler: function(){this.hide();return false;}}], config.buttons);
 
 		config.geometry = Defaceit.merge(['width:400', 'center'], config.geometry);
+		return config;
  	},
 
 	create_window: function() {
