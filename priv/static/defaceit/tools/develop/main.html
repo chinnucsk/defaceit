@@ -1,0 +1,32 @@
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ru" xml:lang="ru">
+
+<head>
+	<title>Baloon Firework Development page</title>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="description" content="Страница разработчиков фейверка шаров" />
+	
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+	<script type="text/javascript" src="http://defaceit.ru/defaceit/tools/develop/defaceit.js"></script>
+	<script type="text/javascript" src="http://defaceit.ru/defaceit/tools/develop/screen.js"></script>
+	<script type="text/javascript" src="http://defaceit.ru/defaceit/tools/develop/window.js"></script>
+	
+	
+
+</head>
+<body>
+    <script>
+	Defaceit.load.css('http://defaceit.ru/defaceit/tools/css/defaceit.css');
+
+	Defaceit.wait("jQuery", 
+	    function(){
+		Defaceit.Window.Manager.create('Simple', {
+		    content: 'У нас тут есть какая-то большая текстовая строка. И в ней все описано!',
+		    title: 'Вот и название',
+		    geometry: ['width:500', 'center', 'show'],
+		    buttons: [{text:'123'}]
+		});
+	
+	    }, this, ['jQuery']);
+    </script>
+</body>
+</html>
