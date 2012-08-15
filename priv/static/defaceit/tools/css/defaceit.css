@@ -34,7 +34,7 @@
 	box-shadow: 0 0 19px -7px #000;  -moz-box-shadow: 0 0 19px -7px #000; -webkit-box-shadow:0 0 19px -7px #000;
 	opacity: 0.95;
 	position: fixed;
-	background:#fff url(http://sandbox.defaceit.ru/defaceit/baloon/develop/images/bg4.png);
+	background:#fff url(http://defaceit.ru/defaceit/baloon/develop/images/bg4.png);
 	z-index: 1000;
 	color: #623F1D;
 }
