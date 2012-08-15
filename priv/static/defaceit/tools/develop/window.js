@@ -97,7 +97,7 @@ Defaceit.Window.Simple.prototype = {
       var that = this;
 
       function create_button(button) {
-          var b = $('<a>').attr('href', '#').addClass('premium-button').html(button.text);
+          var b = $('<a>').attr('href', '#').addClass('dtWindowButton').html(button.text);
           
 
           button.handler ? b.click(function() {return button.handler.call(that)}) : false;
@@ -139,7 +139,7 @@ Defaceit.Window.Simple.prototype = {
 
     center: function() {
     	this.config.pX = Math.floor(Defaceit.Screen.width() / 2 - this.wnd_handler.width() / 2);
-    	this.config.pY = Math.floor(Defaceit.Screen.height() / 2 - this.wnd_handler.height() / 2) + Defaceit.Screen.scroll_top();
+    	this.config.pY = Math.floor(Defaceit.Screen.height() / 2 - this.wnd_handler.height() / 2);// + Defaceit.Screen.scroll_top();
 	this.position();
     },
     
@@ -154,7 +154,7 @@ Defaceit.Window.Simple.prototype = {
     },
     
     top: function() {
-	this.config.pY = Defaceit.Screen.border + Defaceit.Screen.scroll_top();
+	this.config.pY = Defaceit.Screen.border;// + Defaceit.Screen.scroll_top();
 	this.position();
     },
     

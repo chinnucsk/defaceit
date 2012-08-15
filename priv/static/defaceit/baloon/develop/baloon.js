@@ -52,7 +52,7 @@ Defaceit.Window.Baloons = Defaceit.extend(Defaceit.Window.Simple, {
 	configure: function(config) {
 		var config = this.parent.configure.call(this, config);
 		
-		config.buttons = Defaceit.merge([{text:'Close', handler: function(){this.hide();return false;}}], config.buttons);
+		config.buttons = Defaceit.merge([{text:'Закрыть', handler: function(){this.hide();return false;}}], config.buttons);
 
 		config.geometry = Defaceit.merge(['width:400', 'center'], config.geometry);
 		return config;
@@ -90,7 +90,7 @@ Defaceit.Window.Baloons = Defaceit.extend(Defaceit.Window.Simple, {
 	
 	center: function() {
 		this.parent.center.call(this);
-		this.baloon_image.css({ position:"absolute", left:this.config.pX-100, top:this.config.pY-100})
+		this.baloon_image.css({ position:"fixed", left:this.config.pX-100, top:this.config.pY-100})
 	}
 	
 });
