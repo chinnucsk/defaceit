@@ -2,21 +2,22 @@ if (!window.jQuery) {
 	Defaceit.load.js('http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js');
 }
 
-Defaceit.load.css('http://defaceit.ru/defaceit/baloon/develop/baloon.css');
+Defaceit.load.css('http://sandbox.defaceit.ru/defaceit/tools/css/defaceit.css');
 
 function mrand(max){
 	return Math.floor(Math.random()*10000%(max+1));
 }
 
-Defaceit.home = 'http://defaceit.ru/defaceit/baloon/develop';
+Defaceit.home = 'http://sandbox.defaceit.ru/defaceit/baloon/develop';
 
 
 Defaceit.Baloons = {
 
 
-	show_window: function (message) {
+	show_window: function (message, title) {
 		var w = Defaceit.Window.Manager.create('Baloons', {
 				content: message,
+				title: title,
 				geometry: ['show']
 			});
 	},
@@ -25,7 +26,7 @@ Defaceit.Baloons = {
 		Defaceit.Baloons.show_window(decodeURIComponent(json.message_text));
 	},
 	add_message: function(message){
-		var url = 'http://defaceit.ru:8001/message/add/'+encodeURIComponent(message);
+		var url = 'http://sandbox.defaceit.ru:8001/message/add/'+encodeURIComponent(message);
 		Defaceit.load.js(url);
 	},
 
@@ -33,12 +34,16 @@ Defaceit.Baloons = {
 			var message = '';
 			if (window["baloonMessage"]) {
 				message = window["baloonMessage"];
-			}else if (message = /defaceit.ru\/baloon\/([^\/]*)$/.exec(document.location)){
+			}else if (message = /sandbox.defaceit.ru\/baloon\/([^\/]*)$/.exec(document.location)){
 				message = decodeURIComponent(message[1]);
 			}else{
 				message = "Empty message";
 			}
 			return message;
+	},
+	
+	queue_message:function(message, full) {
+	    this.show_window(message);
 	}
 
 }
@@ -47,14 +52,15 @@ Defaceit.Window.Baloons = Defaceit.extend(Defaceit.Window.Simple, {
 	configure: function(config) {
 		var config = this.parent.configure.call(this, config);
 		
-		config.buttons = Defaceit.merge([{text:'Close', handler: function(){this.hide();return false;}}], config.buttons);
+		config.buttons = Defaceit.merge([{text:'Закрыть', handler: function(){this.hide();return false;}}], config.buttons);
 
-		config.geometry = Defaceit.merge(['center'], config.geometry);
+		config.geometry = Defaceit.merge(['width:400', 'center'], config.geometry);
+		return config;
  	},
 
 	create_window: function() {
 		this.baloon_image = $('<img>')
-			.attr('src',  'http://defaceit.ru/defaceit/baloon/develop/images/baloons.png')
+			.attr('src',  'http://sandbox.defaceit.ru/defaceit/baloon/develop/images/baloons.png')
 			.css('z-index', 900)
 			.appendTo($("body"));
 		this.create_baloons();
@@ -78,18 +84,15 @@ Defaceit.Window.Baloons = Defaceit.extend(Defaceit.Window.Simple, {
 	},
 
 	show: function() {
-		this.baloon_image && this.baloon_image.show();
-		this.parent.show.call(this);
-		this.animate();
+		this.baloon_image && this.baloon_image.hide() && this.baloon_image.fadeIn('slow');
+		this.wnd_handler.hide() && this.wnd_handler.fadeIn('slow');
 	},
 	
 	center: function() {
 		this.parent.center.call(this);
-		this.baloon_image.css({ position:"absolute", left:this.config.pX-100, top:this.config.pY-100})
-	},
-
-	animate: function() {
+		this.baloon_image.css({ position:"fixed", left:this.config.pX-100, top:this.config.pY-100})
 	}
+	
 });
 
 
@@ -98,11 +101,11 @@ baloons = function(name){
 	$ = window[name];
 	$(document).ready(function(){
 
-			if (/defaceit.ru\/baloon/.test(document.location)) {
+			if (/sandbox.defaceit.ru\/baloon/.test(document.location)) {
 				$('body').css({padding:0, margin: 0, "background-color": "#E8F3FF"});
 			}
 			
-			if (/defaceit.ru/.test(document.location) || window.baloonMessage){
+			if (/sandbox.defaceit.ru/.test(document.location) || window.baloonMessage){
 				Defaceit.Baloons.show_window(Defaceit.Baloons.message());
 			}
 
