@@ -6,9 +6,9 @@ test = {
 
 
 
-Defaceit.load.css("http://defaceit.ru/js/bootstrap/css/bootstrap.css");
-Defaceit.load.css("http://defaceit.ru/js/bootstrap/css/bootstrap-responsive.css");
-Defaceit.load.js("http://defaceit.ru/js/bootstrap/js/bootstrap.js");
+Defaceit.load.css("http://sandbox.defaceit.ru/js/bootstrap/css/bootstrap.css");
+Defaceit.load.css("http://sandbox.defaceit.ru/js/bootstrap/css/bootstrap-responsive.css");
+Defaceit.load.js("http://sandbox.defaceit.ru/js/bootstrap/js/bootstrap.js");
 
 Defaceit.Page = Defaceit.Page || {};
 
