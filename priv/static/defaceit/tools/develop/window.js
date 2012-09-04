@@ -1,6 +1,5 @@
 Defaceit.Window = {}
 
-
 Defaceit.Window.Simple = function(config) {
   this.init(config);
 }
@@ -122,15 +121,27 @@ Defaceit.Window.Simple.prototype = {
     width: function(width) {
 	this.config.width = parseInt(width || this.config.width);
     	if (this.config.width) {
-    		this.wnd_container.css({width: this.config.width});
+    		this.wnd_handler.css({width: this.config.width});
     	}
     },
 
     height: function(height) {
 	this.config.height = parseInt(height || this.config.height);
 	if (this.config.height) {
-    		this.wnd_container.css({height: this.config.height});
+    		this.wnd_handler.css({height: this.config.height});
     	}
+    },
+    
+    fit_to_screen: function(border) {
+	this.height(Defaceit.Screen.height() - (Defaceit.Screen.border * 2));
+	this.width(Defaceit.Screen.width() - (Defaceit.Screen.border * 2));
+
+	this.wnd_container.css({height: this.wnd_handler.height() - 40, padding: 20});
+	
+	var buttons_height = this.button_handler ? this.button_handler.height() : 0;
+	
+	this.content_handler.css({height: this.wnd_container.height() - buttons_height});
+
     },
 
     size: function() {
@@ -162,6 +173,14 @@ Defaceit.Window.Simple.prototype = {
 	this.config.pX = Defaceit.Screen.width() - this.wnd_handler.width() - Defaceit.Screen.border;
 	this.position();
     },
+    
+    left: function() {
+	this.config.pX = Defaceit.Screen.border;
+	this.position();
+    },
+    
+    
+    
 
     activate: function() {
   		Defaceit.Window.Manager.get_active_window().deactivate();

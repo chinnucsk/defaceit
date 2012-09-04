@@ -1,3 +1,12 @@
+.box {
+    background-color: black;
+    border: 1px solid black;
+    width: 100px;
+    height; 100px;
+}
+
+
+
 #baloon-message{
 	padding:0;
 	margin: 0;
@@ -5,6 +14,7 @@
 
 .dtWindowContent {
     font: 24px/32px Georgia,Tahoma !important;
+    overflow: auto;
  }
  
 .dtWindowTitle{
