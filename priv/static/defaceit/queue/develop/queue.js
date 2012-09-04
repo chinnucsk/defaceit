@@ -13,7 +13,7 @@ queue = function() {
                 $("#messages").append($("<p>").html(message));
             },
             queue_status: function(message) {
-                Defaceit.Queue('babywonder.ru').top();
+                Defaceit.Queue(queueName).top();
             }
         });
         Defaceit.Queue(queueName).list();
