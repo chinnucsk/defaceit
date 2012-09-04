@@ -1,6 +1,5 @@
 Defaceit.Window = {}
 
-
 Defaceit.Window.Simple = function(config) {
   this.init(config);
 }

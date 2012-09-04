@@ -5,39 +5,9 @@
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<meta name="description" content="Страница разработчиков фейверка шаров" />
 	
-	<script type="text/javascript" src='http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js'></script>
-	<script type="text/javascript" src="http://sandbox.defaceit.ru/defaceit/tools.js"></script>
+	<script type="text/javascript" src="http://defaceit.ru/defaceit/tools.js"></script>
+	<script type="text/javascript" src="http://defaceit.ru/defaceit/queue/develop/queue.js"></script>
 </head>
 <body>
-
-
-    <script>
-	var messages = "";
-	Defaceit.Queue("babywonder.ru").client({
-	    queue_message: function(message){
-		$("#messages").append($("<p>").html(message));
-	    },
-	    queue_status: function(message) {
-		Defaceit.Queue('babywonder.ru').top();
-	    }
-	});
-	Defaceit.Queue("babywonder.ru").list();
-	
-	Defaceit.load.css('http://sandbox.defaceit.ru/defaceit/tools/css/defaceit.css');
-	
-	Defaceit.Window.Manager.create('Simple', {
-	    content: $("<div>").attr('id', 'messages'),
-	    title: "список сообщений",
-	    geometry: ['fit_to_screen', 'top', 'left','show'],
-	    buttons: [{text:'Добавить', handler: function() {
-		    Defaceit.Window.Manager.create('InputBox', { 
-			geometry: ['width:400', 'center', 'show'],
-			handler: function() {Defaceit.Queue('babywonder.ru').push(this.message()); this.hide();}
-		    });
-		
-		}}]
-	    });
-	
-    </script>
 </body>
 </html>

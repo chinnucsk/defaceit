@@ -19,19 +19,19 @@ Defaceit.Queue.prototype = {
 	},
 	
 	list: function() {
-	    Defaceit.request('http://eservices.sandbox.defaceit.ru/queue/list/' + this.queue + '/' + this.next_call_id());
+	    Defaceit.request('http://eservices.defaceit.ru/queue/list/' + this.queue + '/' + this.next_call_id());
 	    return this;
 	},
     
 	push: function(message, callback) {
 	    var cid = this.next_call_id();
 	    
-	    Defaceit.request('http://eservices.sandbox.defaceit.ru/queue/push/' + this.queue + '/'  + cid +'/'+ encodeURIComponent(message));
+	    Defaceit.request('http://eservices.defaceit.ru/queue/push/' + this.queue + '/'  + cid +'/'+ encodeURIComponent(message));
 	    return cid;
 	},
 	
 	top: function() {
-	    Defaceit.request('http://eservices.sandbox.defaceit.ru/queue/top/' + this.queue + '/'  + this.next_call_id());
+	    Defaceit.request('http://eservices.defaceit.ru/queue/top/' + this.queue + '/'  + this.next_call_id());
 	    return this;
 	},
 	
