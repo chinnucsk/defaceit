@@ -1,3 +1,12 @@
+.box {
+    background-color: black;
+    border: 1px solid black;
+    width: 100px;
+    height; 100px;
+}
+
+
+
 #baloon-message{
 	padding:0;
 	margin: 0;
@@ -5,6 +14,7 @@
 
 .dtWindowContent {
     font: 24px/32px Georgia,Tahoma !important;
+    overflow: auto;
  }
  
 .dtWindowTitle{
@@ -33,8 +43,8 @@
 	border-radius: 10px; -moz-border-radius: 10px; -webkit-border-radius: 10px;
 	box-shadow: 0 0 19px -7px #000;  -moz-box-shadow: 0 0 19px -7px #000; -webkit-box-shadow:0 0 19px -7px #000;
 	opacity: 0.95;
-	position: absolute;
-	background:#fff url(http://sandbox.defaceit.ru/defaceit/baloon/develop/images/bg4.png);
+	position: fixed;
+	background:#fff url(http://defaceit.ru/defaceit/baloon/develop/images/bg4.png);
 	z-index: 1000;
 	color: #623F1D;
 }
@@ -50,12 +60,7 @@
 	margin-left: 200px;*/
 }
 
-.dtWindowInputBoxTextarea {
-    width: 100%;
-    height: 200px;
-}
-
-a.premium-button {
+a.dtWindowButton {
     background-color: #FEDA71;
     background-image: -moz-linear-gradient(center top , #FEDA71, #FEBB49);
     border-radius: 48px 48px 48px 48px;
@@ -70,5 +75,13 @@ a.premium-button {
     padding: 10px 28px;
     text-decoration: none;
     text-shadow: 0 1px 0 #FEDE9D;
+    margin-left: 5px;
 }
+
+
+.dtWindowInputBoxTextarea {
+    width: 100%;
+    height: 200px;
+}
+
 
