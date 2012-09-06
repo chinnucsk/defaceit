@@ -59,10 +59,10 @@ Defaceit.Window.Baloons = Defaceit.extend(Defaceit.Window.Simple, {
  	},
 
 	create_window: function() {
-		this.baloon_image = $('<img>')
+		this.baloon_image = jQuery('<img>')
 			.attr('src',  'http://defaceit.ru/defaceit/baloon/develop/images/baloons.png')
 			.css('z-index', 900)
-			.appendTo($("body"));
+			.appendTo(jQuery("body"));
 		this.create_baloons();
 		this.parent.create_window.call(this);
 	},
