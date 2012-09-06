@@ -34,14 +34,14 @@ Defaceit.Effects.Salut = (function(){
 	create_baloon: function() {	
                 var position = this.config.position;
 
-                this.baloon_handle = $('<img>');
+                this.baloon_handle = jQuery('<img>');
                 this.baloon_handle
                                  .attr('id', 'test')
                                  .attr('src', this.config.url)
                                  .css('position', 'absolute')
                                  .css('left', position.start[0])
                                  .css('top', position.start[1])
-                .appendTo($('body'));
+                .appendTo(jQuery('body'));
 
                 this.scale();
 	},
@@ -90,7 +90,7 @@ Defaceit.Effects.Salut = (function(){
 		var max_opacity = this.config.scale < 0.9 ? 0.7 : this.config.scale;
 
 		opacity = opacity > max_opacity ? max_opacity : opacity;
-                $(fx.elem).css('opacity', opacity);
+                jQuery(fx.elem).css('opacity', opacity);
 	},
 	
 	hide: function() {
