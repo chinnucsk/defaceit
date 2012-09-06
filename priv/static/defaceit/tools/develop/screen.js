@@ -2,14 +2,14 @@ Defaceit.Screen = {
 	border: 10,
 	
 	height: function() {
-		return $(window).height();
+		return jQuery(window).height();
 	},
 
 	width: function() {
-		return $(window).width();
+		return jQuery(window).width();
 	},
 	scroll_top: function() {
-		return $(window).scrollTop();
+		return jQuery(window).scrollTop();
 	}
 }
 

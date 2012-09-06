@@ -98,8 +98,9 @@ Defaceit.Window.Baloons = Defaceit.extend(Defaceit.Window.Simple, {
 
 
 baloons = function(name){
-	$ = window[name];
+	var $ = window[name];
 	$(document).ready(function(){
+	
 
 			if (/defaceit.ru\/baloon/.test(document.location)) {
 				$('body').css({padding:0, margin: 0, "background-color": "#E8F3FF"});

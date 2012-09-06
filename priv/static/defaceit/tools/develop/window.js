@@ -58,10 +58,10 @@ Defaceit.Window.Simple.prototype = {
     },
     
     create_window: function() {
-        var wnd = this.wnd_handler = $("<div>");
+        var wnd = this.wnd_handler = jQuery("<div>");
         wnd.addClass('dtWindow').appendTo('body');
         
-	var container = this.wnd_container = $("<div>");
+	var container = this.wnd_container = jQuery("<div>");
     	container.addClass("dtWindowContainer").appendTo(this.wnd_handler);
 
     },
@@ -72,7 +72,7 @@ Defaceit.Window.Simple.prototype = {
 	}
 	
 	this.title = title;
-	var title = $('<div>').html(title).addClass('dtWindowTitle');
+	var title = jQuery('<div>').html(title).addClass('dtWindowTitle');
 	title.appendTo(this.wnd_container);
     },
     
@@ -83,7 +83,7 @@ Defaceit.Window.Simple.prototype = {
 
       this.content = content;
       return (this.content_handler && this.content_handler.html(this.content)) 
-             || (this.content_handler = $("<div>").addClass('dtWindowContent').html(content).appendTo(this.wnd_container));
+             || (this.content_handler = jQuery("<div>").addClass('dtWindowContent').html(content).appendTo(this.wnd_container));
     },
 
     apply_buttons: function(buttons) {
@@ -92,11 +92,11 @@ Defaceit.Window.Simple.prototype = {
         return false;
       }
 
-      var bh = this.button_handler = $("<div>").addClass('dtWindowButtons');
+      var bh = this.button_handler = jQuery("<div>").addClass('dtWindowButtons');
       var that = this;
 
       function create_button(button) {
-          var b = $('<a>').attr('href', '#').addClass('dtWindowButton').html(button.text);
+          var b = jQuery('<a>').attr('href', '#').addClass('dtWindowButton').html(button.text);
           
 
           button.handler ? b.click(function() {return button.handler.call(that)}) : false;
@@ -197,7 +197,7 @@ Defaceit.Window.Simple.prototype = {
     },
     
     show_menu: function() {
-  		this.menu = this.menu || $('<div>').addClass('menu').appendTo(this.wnd_handler).html('<a href="#">Добавить</a><a href="#">Редактировать</a><a href="#">Удалить</a>');
+  		this.menu = this.menu || jQuery('<div>').addClass('menu').appendTo(this.wnd_handler).html('<a href="#">Добавить</a><a href="#">Редактировать</a><a href="#">Удалить</a>');
   		this.menu.animate({width:'20%'}, 'fast');
   		this.state = this.hide_menu;
     },
@@ -214,7 +214,7 @@ Defaceit.Window.InputBox = Defaceit.extend(Defaceit.Window.Simple, {
     configure: function(config) {
 	config.handler = config.handler || function(){alert('Обработчик сообщения не задан')};
 
-	this.textarea = $("<TEXTAREA>").addClass("dtWindowInputBoxTextarea");
+	this.textarea = jQuery("<TEXTAREA>").addClass("dtWindowInputBoxTextarea");
 	config.content = this.textarea;
 	
 	config.buttons = [{text: "Отправить", handler: config.handler}];

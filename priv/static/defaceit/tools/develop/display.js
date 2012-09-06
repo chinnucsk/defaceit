@@ -1,10 +1,10 @@
 
 Defaceit.Display = {
    width: function() {
-     return $(window).width();
+     return jQuery(window).width();
    },
    height: function() {
-     return $(window).height();
+     return jQuery(window).height();
    }
 }
 
