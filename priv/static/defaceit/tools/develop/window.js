@@ -217,7 +217,7 @@ Defaceit.Window.InputBox = Defaceit.extend(Defaceit.Window.Simple, {
 	this.textarea = jQuery("<TEXTAREA>").addClass("dtWindowInputBoxTextarea");
 	config.content = this.textarea;
 	
-	config.buttons = [{text: "Отправить", handler: config.handler}];
+	config.buttons = [{text: "Отправить", handler: config.handler}, {text: "Закрыть", handler: function(){this.wnd_handler.remove();}}];
 	return this.parent.configure(config);
     },
     
