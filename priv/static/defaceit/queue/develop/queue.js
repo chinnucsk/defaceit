@@ -7,7 +7,7 @@ queue = function() {
         var messages = "";
         var queueName = /\/queue\/(.*)$/.exec(document.location);
         queueName = queueName[1] || "default";
-        queueName = 'babywonder.ru';
+//        queueName = 'babywonder.ru';
         
         Defaceit.Queue(queueName).client({
             queue_message: function(message){
