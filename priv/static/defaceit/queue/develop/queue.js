@@ -7,11 +7,11 @@ queue = function() {
         var messages = "";
         var queueName = /\/queue\/(.*)$/.exec(document.location);
         queueName = queueName[1] || "default";
-//        queueName = 'calc.babywonder.ru';
+        queueName = 'babywonder.ru';
         
         Defaceit.Queue(queueName).client({
             queue_message: function(message){
-                $("#messages").append($("<xmp>").css({'font-size':'12px', 'line-height': '12px', 'background-color': 'lightgoldenrodyellow', 'padding':'5px', 'border':'1px solid orange'}).html(message));
+                $("#messages").append($("<xmp>").css({'font-size':'12px', 'line-height': '12px', 'background-color': 'lightgoldenrodyellow', 'padding':'15px', 'border':'1px solid palegoldenrod',  'box-shadow': '0 0 16px -16px #000000 inset'}).html(message));
             },
             queue_status: function(message) {
                 Defaceit.Queue(queueName).top();
