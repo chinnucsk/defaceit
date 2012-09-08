@@ -10,7 +10,7 @@ Defaceit.Queue = function(queue) {
 
 Defaceit.Queue.prototype = {
 	queue: '',
-        clients: [],
+//        clients: [],
 	call_id: 1,
 	
 	
