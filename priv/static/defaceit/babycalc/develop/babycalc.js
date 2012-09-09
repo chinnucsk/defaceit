@@ -86,6 +86,8 @@ Defaceit.Queue('calc.babywonder.ru').client({queue_message:
 
 /**main function */
 babycalc = function() {
+    if (!!jQuery('#calc').length) {return false;}
+    
     Defaceit.Queue('calc.babywonder.ru').list();
 }
 
