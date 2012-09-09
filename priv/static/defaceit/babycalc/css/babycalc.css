@@ -1,0 +1,63 @@
+#babycalc {     background: url('http://www.babywonder.ru/uploads/images/background.png');      height: 600px;  width: 300px; }
+.calc_form label {  margin: 15px 0 0 0; display: block; }
+.calc_form input, .calc_form select { width: 160px; border: 1px solid #663535; background-color: white;  border-radius: 7px; -moz-border-radius: 7px; -webkit-border-radius: 7px, -moz-box-shadow:inset 0 0 10px #ccc;  -webkit-box-shadow:inset 0 0 10px #ccc; box-shadow:inset 0 0 10px #ccc;}
+
+.result {color: #663535;  font: 1.1em Arial; padding: 160px 0 0 70px; text-align: justify; width: 160px; }
+.mini {width: 40px !important; text-align:center;}
+#babycalc h3 {color: #663535;}
+
+.button{
+            float:left;
+            cursor: pointer;
+            font-family: Arial !important;
+}
+
+.large_radio_group .button{
+        background: url('http://babywonder.ru/templates/skin/diggstreet/images/radio_button.png') no-repeat;
+        font-size: 28px;
+        height: 33px;
+        letter-spacing: 1px;
+        line-height: 26px;
+        margin-left: 20px;
+        padding-left: 45px;
+}
+
+.large_radio_group .active{
+        background-position: 0 -34px;
+}
+
+.small_radio_group .button {
+        background: url('http://babywonder.ru/templates/skin/diggstreet/images/small_radio_button.png') no-repeat;
+        padding-left: 25px;
+        margin-left: 20px;
+        height: 17px;
+        line-height:16px;
+        font-size:16px;
+        width:95px;
+}
+
+.small_radio_group .active {
+        background-position: 0 -16px;
+}
+
+
+.calc_line{
+        overflow:hidden;
+        margin: 20px 0 10px 248px;
+}
+
+.calc_line p{
+        text-shadow: 1px 1px 3px #FFFFFF;
+}
+
+.calc_label{
+        font-size: 0.6em;
+        padding-left: 20px;
+        text-align: center;
+}
+
+#calc {
+        background: url('http://babywonder.ru/templates/skin/diggstreet/images/calc_bg.png');
+        box-shadow: 0 0 16px -6px #000000 inset;
+        padding-top:10px;
+}

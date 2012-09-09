@@ -7,7 +7,6 @@ queue = function() {
         var messages = "";
         var queueName = /\/queue\/(.*)$/.exec(document.location);
         queueName = queueName[1] || "default";
-//        queueName = 'babywonder.ru';
         
         Defaceit.Queue(queueName).client({
             queue_message: function(message){
@@ -19,7 +18,7 @@ queue = function() {
         });
         Defaceit.Queue(queueName).list();
         
-        Defaceit.load.css('http://defaceit.ru/defaceit/tools/css/defaceit.css');
+        Defaceit.load.css('http://sandbox.defaceit.ru/defaceit/tools/css/defaceit.css');
         
         Defaceit.Window.Manager.create('Simple', {
             content: $("<div>").attr('id', 'messages'),

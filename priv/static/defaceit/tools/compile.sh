@@ -7,6 +7,7 @@ java -jar /home/sal/app/closure/compiler.jar --js \
 $JS_DEF_PROJECT_DIR/lib/underscore-min.js \
 $JS_DEF_PROJECT_DIR/lib/backbone-min.js \
 $JS_DEF_PROJECT_DIR/develop/defaceit.js \
+$JS_DEF_PROJECT_DIR/develop/request.js \
 $JS_DEF_PROJECT_DIR/develop/screen.js \
 $JS_DEF_PROJECT_DIR/develop/session.js \
 $JS_DEF_PROJECT_DIR/develop/display.js \
