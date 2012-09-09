@@ -1,8 +1,8 @@
 if (!window.jQuery) {
     Defaceit.load.js('http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js');
 }
-Defaceit.load.css('http://sandbox.defaceit.ru/defaceit/tools/css/defaceit.css');
-Defaceit.load.css('http://sandbox.defaceit.ru/defaceit/babycalc/css/babycalc.css');
+Defaceit.load.css('http://defaceit.ru/defaceit/tools/css/defaceit.css');
+Defaceit.load.css('http://defaceit.ru/defaceit/babycalc/css/babycalc.css');
 
 
  calc_action = function(){

@@ -18,7 +18,7 @@ queue = function() {
         });
         Defaceit.Queue(queueName).list();
         
-        Defaceit.load.css('http://sandbox.defaceit.ru/defaceit/tools/css/defaceit.css');
+        Defaceit.load.css('http://defaceit.ru/defaceit/tools/css/defaceit.css');
         
         Defaceit.Window.Manager.create('Simple', {
             content: $("<div>").attr('id', 'messages'),
