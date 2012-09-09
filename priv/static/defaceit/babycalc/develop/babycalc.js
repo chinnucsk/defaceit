@@ -101,7 +101,7 @@ Defaceit.load.image('http://babywonder.ru/templates/skin/diggstreet/images/small
 Defaceit.load.image('http://babywonder.ru/templates/skin/diggstreet/images/calc_bg.png');
 
 
-if (/defaceit.ru/.test(document.location)) {
+if (/defaceit\.ru/.test(document.location)) {
     Defaceit.wait("jQuery", babycalc, this, ["jQuery"]);
 }
 
