@@ -6,7 +6,7 @@ Defaceit.load.css('http://defaceit.ru/defaceit/babycalc/css/babycalc.css');
 
 
  calc_action = function(){
-
+		var $ = jQuery;
 
                 location.hash='#none';
 
@@ -62,7 +62,7 @@ Defaceit.load.css('http://defaceit.ru/defaceit/babycalc/css/babycalc.css');
 
 /**main function */
 babycalc = function() {
-
+var $ = jQuery;
 
 /**load template*/
 Defaceit.Queue('calc.babywonder.ru').client({queue_message: 
@@ -99,4 +99,9 @@ Defaceit.load.image('http://babywonder.ru/templates/skin/diggstreet/images/small
 Defaceit.load.image('http://babywonder.ru/templates/skin/diggstreet/images/calc_bg.png');
 
 
-Defaceit.wait("jQuery", babycalc, this, ["jQuery"]);
+if (/defaceit.ru/.test(document.location)) {
+    Defaceit.wait("jQuery", babycalc, this, ["jQuery"]);
+}
+
+
+
