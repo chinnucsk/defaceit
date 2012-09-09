@@ -80,13 +80,16 @@ Defaceit.Queue('calc.babywonder.ru').client({queue_message:
 	    });
 	}
 	activate('.large_radio_group');
-	activate('.small_radio_group');    
+	activate('.small_radio_group');
+	babycalcLoading = false;
     }
 });
 
 /**main function */
 babycalc = function() {
-    if (!!jQuery('#calc').length) {return false;}
+    if (!!jQuery('#calc').length || babycalcLoading) {return false;}
+    
+    babycalcLoading = true;
     
     Defaceit.Queue('calc.babywonder.ru').list();
 }
