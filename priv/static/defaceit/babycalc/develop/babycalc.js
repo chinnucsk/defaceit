@@ -67,9 +67,8 @@ var $ = jQuery;
 /**load template*/
 Defaceit.Queue('calc.babywonder.ru').client({queue_message: 
     function(message) {
-	    $('<script>').attr('id',"queueTmpl").attr('type', "text/x-jquery-tmpl").html(message).appendTo($('body'));
 	    Defaceit.Window.Manager.create('Simple', {
-		content: jQuery('#queueTmpl').html(),
+		content: message,
 		buttons: [{text: "Расчитать", handler: calc_action}, {text: "Закрыть", handler: function(){this.wnd_handler.remove();}}],
 		geometry:['width:750', 'center', 'show']
 	    });
