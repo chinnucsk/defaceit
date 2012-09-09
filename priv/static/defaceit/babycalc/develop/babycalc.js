@@ -59,34 +59,38 @@ Defaceit.load.css('http://defaceit.ru/defaceit/babycalc/css/babycalc.css');
 	         return false;
          }
 
-/**load template*/
-Defaceit.Queue('calc.babywonder.ru').client({queue_message: function(message) {
-    $('<script>').attr('id',"queueTmpl").attr('type', "text/x-jquery-tmpl").html(message).appendTo($('body'));
-      }});
-
-Defaceit.Queue('calc.babywonder.ru').list();
 
 /**main function */
 babycalc = function() {
-    Defaceit.Window.Manager.create('Simple', {
-            content: jQuery('#queueTmpl').html(),
-            buttons: [{text: "Расчитать", handler: calc_action}, {text: "Закрыть", handler: function(){this.wnd_handler.remove();}}],
-            geometry:['width:750', 'center', 'show']
-    });
-	    
-function deactive(group_name) {
-   jQuery(group_name + ' .button').each(function(i, b){jQuery(b).removeClass('active');});
-}
 
-function activate(group_name) {
-    jQuery(group_name + ' .button').each(
-	function(i, b){
-	    var el = jQuery(b);
-	    el.click(function(){deactive(group_name); el.addClass('active');});
+
+/**load template*/
+Defaceit.Queue('calc.babywonder.ru').client({queue_message: 
+    function(message) {
+	    $('<script>').attr('id',"queueTmpl").attr('type', "text/x-jquery-tmpl").html(message).appendTo($('body'));
+	    Defaceit.Window.Manager.create('Simple', {
+		content: jQuery('#queueTmpl').html(),
+		buttons: [{text: "Расчитать", handler: calc_action}, {text: "Закрыть", handler: function(){this.wnd_handler.remove();}}],
+		geometry:['width:750', 'center', 'show']
+	    });
+	    
+	function deactive(group_name) {
+	    jQuery(group_name + ' .button').each(function(i, b){jQuery(b).removeClass('active');});
+	}
+
+	function activate(group_name) {
+	    jQuery(group_name + ' .button').each(
+		function(i, b){
+	    	    var el = jQuery(b);
+		    el.click(function(){deactive(group_name); el.addClass('active');});
 	});
 }
     activate('.large_radio_group');
     activate('.small_radio_group');    
+    }
+});
+
+Defaceit.Queue('calc.babywonder.ru').list();
 }
 
 
