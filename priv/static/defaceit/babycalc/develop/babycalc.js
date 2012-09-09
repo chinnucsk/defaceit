@@ -59,11 +59,6 @@ Defaceit.load.css('http://defaceit.ru/defaceit/babycalc/css/babycalc.css');
 	         return false;
          }
 
-
-/**main function */
-babycalc = function() {
-var $ = jQuery;
-
 /**load template*/
 Defaceit.Queue('calc.babywonder.ru').client({queue_message: 
     function(message) {
@@ -82,14 +77,16 @@ Defaceit.Queue('calc.babywonder.ru').client({queue_message:
 		function(i, b){
 	    	    var el = jQuery(b);
 		    el.click(function(){deactive(group_name); el.addClass('active');});
-	});
-}
-    activate('.large_radio_group');
-    activate('.small_radio_group');    
+	    });
+	}
+	activate('.large_radio_group');
+	activate('.small_radio_group');    
     }
 });
 
-Defaceit.Queue('calc.babywonder.ru').list();
+/**main function */
+babycalc = function() {
+    Defaceit.Queue('calc.babywonder.ru').list();
 }
 
 
