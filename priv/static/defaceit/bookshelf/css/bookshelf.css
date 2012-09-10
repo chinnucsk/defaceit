@@ -1,0 +1,31 @@
+#bookshelf{
+        background: url('http://defaceit.ru/defaceit/bookshelf/images/bookshelf_bg.png');
+        box-shadow: 0 0 16px -6px #000000 inset;
+        padding-top:10px;
+        height: 440px;
+}
+
+#bookshelf .title {
+    margin-top:0; 
+    maring-bottom:0;
+    padding:0;
+    height:90px !important;
+}
+
+#bookshelf .line{
+        overflow:hidden;
+        margin: 20px 30px;
+        height: 130px;
+        text-align: center;
+}
+
+#bookshelf .line p{
+        text-shadow: 1px 1px 3px #FFFFFF;
+}
+
+#bookshelf .line img {
+	box-shadow: 0 0 5px 0px #000;  -moz-box-shadow: 0 0 5px 0 #000; -webkit-box-shadow:0 0 5px 0 #000;
+	margin: 0 20px;
+}
+
+
