@@ -132,9 +132,9 @@ Defaceit.Effects.Salut = (function(){
         	               }
                 	}
 
-	                baloons_create(10, 0.6, 5000);
-        	        baloons_create(10, 0.8, 3500);
-	                baloons_create(8, 1, 2000);
+	                baloons_create(7, 0.6, 5000);
+        	        baloons_create(7, 0.8, 3500);
+	                baloons_create(5, 1, 2000);
 		},
 		
 		hide: function() {
