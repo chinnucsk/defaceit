@@ -1,3 +1,5 @@
+
+if (!Defaceit.Queue) {
 Defaceit.Queue = function(queue) {
     if (this==Defaceit) {
 	queue = queue || '';
@@ -82,4 +84,5 @@ Defaceit.Queue.list = Defaceit.Queue.list || {};
 Defaceit.Queue.callbacks = Defaceit.Queue.callbacks || [];
 
 Defaceit.Queue.response =  function(data) { Defaceit.Queue.list[data.queue_name].client_callback(data); }
+}
 

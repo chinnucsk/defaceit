@@ -1,3 +1,4 @@
+if (!Defaceit.Window) {
 Defaceit.Window = {}
 
 Defaceit.Window.Simple = function(config) {
@@ -250,5 +251,4 @@ Defaceit.Window.Manager = {
       return {deactivate: function(){}};
   }
 }
-
-
+}
