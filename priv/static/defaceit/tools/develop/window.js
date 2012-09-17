@@ -99,7 +99,7 @@ Defaceit.Window.Simple.prototype = {
           var b = jQuery('<a>').attr('href', '#').addClass('dtWindowButton').html(button.text);
           
 
-          button.handler ? b.click(function() {return button.handler.call(that)}) : false;
+          button.handler ? b.click(function() {button.handler.call(that); return false;}) : false;
           button.text ? b.attr('value', button.text) : false;
           return b;
       }
