@@ -76,9 +76,10 @@ Defaceit.Queue.prototype = {
 	}
 }
 
-Defaceit.Queue.list = {};
 
-Defaceit.Queue.callbacks = [];
+Defaceit.Queue.list = Defaceit.Queue.list || {};
+
+Defaceit.Queue.callbacks = Defaceit.Queue.callbacks || [];
 
 Defaceit.Queue.response =  function(data) { Defaceit.Queue.list[data.queue_name].client_callback(data); }
 
