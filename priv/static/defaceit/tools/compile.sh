@@ -3,7 +3,7 @@
 JS_DEF_DIR=/home/sal/development/edefaceit/priv/static/defaceit
 JS_DEF_PROJECT_DIR=$JS_DEF_DIR/tools
 
-java -jar /home/sal/app/closure/compiler.jar --output_wrapper "Defaceit = (function() {%output%})();" --js \
+java -jar /home/sal/app/closure/compiler.jar --js \
 $JS_DEF_PROJECT_DIR/lib/underscore-min.js \
 $JS_DEF_PROJECT_DIR/lib/backbone-min.js \
 $JS_DEF_PROJECT_DIR/develop/defaceit.js \
