@@ -3,17 +3,19 @@
     <head>
     <title>Defaceit - для тех кто видит веб иначе</title>
     <!-- Bootstrap -->
-    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<!--    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">-->
+    <link href="/bootstrap/css/my.css" rel="stylesheet">
     <link href="/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
     
     <link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300&subset=cyrillic-ext' rel='stylesheet' type='text/css'>
+    <script src="http://defaceit.ru/js/bootstrap/js/bootstrap.js"></script>
     <script src="http://defaceit.ru/defaceit/tools.js"></script>
     
     
     <style>
 	body{
 	    padding-top:60px;
-	    color: #766345;
+/*	    color: #766345;*/
 	
 	}
 	
@@ -34,13 +36,29 @@
             <span class="icon-bar"></span>
           </a>
           <a class="brand" href="#">Defaceit</a>
-          <div class="nav-collapse collapse">
-            <ul class="nav">
-              <li class="active"><a href="#">Home</a></li>
-              <li><a href="#about">About</a></li>
-              <li><a href="#contact">Contact</a></li>
-            </ul>
+
+            <div class="nav-collapse">
+                <ul class="nav nav-pills">
+
+                    <li class="active"><a href="#">Содержание</a></li>
+                    <li class="dropdown" id="services">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#services">Виджеты<b class="caret"></b></a>
+                        <ul  class="dropdown-menu">
+                            <li><a href="/email">Форма обратной связи</a></li>
+                            <li><a href="/baloon/При формаировании адреса страницы укажите текст поздравления">Страница поздравлений</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" id="defaces-list">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#defces">Дефейсы<b class="caret"></b></a>
+                        <ul class="dropdown-menu" id="defaces">
+
+                            <li class="divider"></li>
+                            <li><a href="/app/edit/main">Добавить</a></li>
+                        </ul>
+                    </li>
+                </ul>
           </div><!--/.nav-collapse -->
+
         </div>
       </div>
     </div>
@@ -49,7 +67,7 @@
     <div class="container" >
 
 <div class="row">    
-<div class="hero-unit" style=" background: url(http://widgets.babywonder.ru/bg.png) repeat scroll 0 0 #FFFFFF !important;">
+<div class="hero-unit" style=" background: url(http://widgets.babywonder.ru/bg.png) repeat scroll 0 0 #FFFFFF !important; border: 1px solid #FFFFFF; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);">
 
     	<div class="row">
     	    	<h1 style="font-family: 'Open Sans Condensed', sans-serif; font-weight:normal;">Сегодня мы создаем виджеты для того<br>чтобы завтра они сделаи ваши сайты удобными.</h1><br><br>
