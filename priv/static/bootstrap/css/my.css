@@ -1,3 +1,20 @@
+h1.main-title {
+  text-align:center;
+  margin: 2em 0 1em; 
+  color:green;
+  text-shadow:1px 1px #fbf4d9;
+}
+.box-content {
+  padding-left: 58px;
+  text-shadow:1px 1px #fbf4d9;
+}
+
+.box-content img {
+  float:left;
+  margin:0px 10px 0 -58px;
+}
+
+
 article,
 aside,
 details,
@@ -129,7 +146,8 @@ body {
   font-size: 14px;
   line-height: 20px;
   color: #7c5326;
-  background-color: #e1b688;
+  padding-top:60px;
+  background: url(http://defaceit.ru/images/bg2.png) repeat scroll 0 0 #F1DBAA;
 }
 a {
   color: #6e6352;
@@ -2168,9 +2186,11 @@ table .span24 {
   padding: 5px 0;
   margin: 2px 0 0;
   list-style: none;
-  background-color: #7c5326;
+  background-color: #DDAC78;
+  background-image: -moz-linear-gradient(50% 0%, #E1B688, #D79D5F);
   border: 1px solid #ccc;
   border: 1px solid rgba(0, 0, 0, 0.2);
+  border-color: rgba(0, 0, 0, 0.15) rgba(0, 0, 0, 0.15) rgba(0, 0, 0, 0.25);
   *border-right-width: 2px;
   *border-bottom-width: 2px;
   -webkit-border-radius: 6px;
@@ -2178,7 +2198,8 @@ table .span24 {
   border-radius: 6px;
   -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+/*  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);*/
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
   -webkit-background-clip: padding-box;
   -moz-background-clip: padding;
   background-clip: padding-box;
@@ -2202,23 +2223,15 @@ table .span24 {
   clear: both;
   font-weight: normal;
   line-height: 20px;
-  color: #7c5326;
+  color: #7C5326;
   white-space: nowrap;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75)
 }
 .dropdown-menu li > a:hover,
 .dropdown-menu li > a:focus,
 .dropdown-submenu:hover > a {
   text-decoration: none;
-  color: #e1b688;
-  background-color: #6e6352;
-  background-color: #685e4e;
-  background-image: -moz-linear-gradient(top, #6e6352, #5f5647);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#6e6352), to(#5f5647));
-  background-image: -webkit-linear-gradient(top, #6e6352, #5f5647);
-  background-image: -o-linear-gradient(top, #6e6352, #5f5647);
-  background-image: linear-gradient(to bottom, #6e6352, #5f5647);
-  background-repeat: repeat-x;
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff6e6352', endColorstr='#ff5f5647', GradientType=0);
+  background-color: #F1DBAA;
 }
 .dropdown-menu .active > a,
 .dropdown-menu .active > a:hover {
@@ -3348,7 +3361,8 @@ input[type="submit"].btn.btn-mini {
 .navbar {
   overflow: visible;
   margin-bottom: 20px;
-  color: #8a7056;
+/*  color: #8a7056;*/
+  color: moccasin !important;
   *position: relative;
   *z-index: 2;
 }
@@ -3357,11 +3371,7 @@ input[type="submit"].btn.btn-mini {
   padding-left: 20px;
   padding-right: 20px;
   background-color: #744e24;
-  background-image: -moz-linear-gradient(top, #7c5326, #684620);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#7c5326), to(#684620));
-  background-image: -webkit-linear-gradient(top, #7c5326, #684620);
-  background-image: -o-linear-gradient(top, #7c5326, #684620);
-  background-image: linear-gradient(to bottom, #7c5326, #684620);
+  background-image: url("http://defaceit.ru/images/lever.png");
   background-repeat: repeat-x;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff7c5326', endColorstr='#ff684620', GradientType=0);
   border: 1px solid #3a2712;
@@ -3385,7 +3395,7 @@ input[type="submit"].btn.btn-mini {
   margin-left: -20px;
   font-size: 20px;
   font-weight: 200;
-  color: #8a7056;
+  color: moccasin;
   text-shadow: 0 1px 0 #7c5326;
 }
 .navbar .brand:hover {
@@ -3696,18 +3706,14 @@ input[type="submit"].btn.btn-mini {
 }
 .navbar-inverse .navbar-inner {
   background-color: #1b1b1b;
-  background-image: -moz-linear-gradient(top, #222222, #111111);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#222222), to(#111111));
-  background-image: -webkit-linear-gradient(top, #222222, #111111);
-  background-image: -o-linear-gradient(top, #222222, #111111);
-  background-image: linear-gradient(to bottom, #222222, #111111);
+  background-image: url("http://defaceit.ru/images/lever.png");
   background-repeat: repeat-x;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff222222', endColorstr='#ff111111', GradientType=0);
   border-color: #252525;
 }
 .navbar-inverse .brand,
 .navbar-inverse .nav > li > a {
-  color: #4d4137;
+  color: moccasin;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
 }
 .navbar-inverse .brand:hover,
@@ -4707,6 +4713,7 @@ a.badge:hover {
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
   border-radius: 6px;
+  background: url(http://defaceit.ru/images/bg.png) repeat scroll 0 0 #FFFFFF !important; border: 1px solid #FFFFFF; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 .hero-unit h1 {
   margin-bottom: 0;
