@@ -4,6 +4,9 @@ if (!window.jQuery) {
 Defaceit.load.css('http://defaceit.ru/defaceit/tools/css/defaceit.css');
 Defaceit.load.css('http://defaceit.ru/defaceit/babycalc/css/babycalc.css');
 
+if (DefaceitHome) {
+    Defaceit.load.css('http://defaceit.ru/defaceit/tools/css/home.css');
+}
 
  calc_action = function(){
 		var $ = jQuery;
