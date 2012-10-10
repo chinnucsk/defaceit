@@ -5,7 +5,7 @@ Defaceit.load.css('http://defaceit.ru/defaceit/tools/css/defaceit.css');
 Defaceit.load.css('http://defaceit.ru/defaceit/bookshelf/css/bookshelf.css');
 
 if (DefaceitHome) {
-    Defaceit.load.css('http://sandbox.defaceit.ru/defaceit/tools/css/home.css');
+    Defaceit.load.css('http://defaceit.ru/defaceit/tools/css/home.css');
 }
 
 
