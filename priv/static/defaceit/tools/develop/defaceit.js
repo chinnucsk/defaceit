@@ -1,3 +1,4 @@
+DefaceitHome = DefaceitHome || false;
 
 Defaceit = window.Defaceit || {}
 
