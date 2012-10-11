@@ -1,16 +1,12 @@
-if (!window.jQuery) {
-    Defaceit.load.js('http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js');
-}
-Defaceit.load.css('http://defaceit.ru/defaceit/tools/css/defaceit.css');
-Defaceit.load.css('http://defaceit.ru/defaceit/bookshelf/css/bookshelf.css');
+Defaceit.load.css('http://sandbox.defaceit.ru/defaceit/bookshelf/css/bookshelf.css');
 
 if (DefaceitHome) {
-    Defaceit.load.css('http://defaceit.ru/defaceit/tools/css/home.css');
+    Defaceit.load.css('http://sandbox.defaceit.ru/defaceit/tools/css/home.css');
 }
 
 
 /**load template*/
-Defaceit.Queue('template.bookshelf.defaceit.ru').client({queue_message: 
+Defaceit.Queue('template.bookshelf.sandbox.defaceit.ru').client({queue_message: 
     function(message) {
 	    Defaceit.Window.Manager.create('Simple', {
 		content: message,
@@ -18,12 +14,12 @@ Defaceit.Queue('template.bookshelf.defaceit.ru').client({queue_message:
 		geometry:['width:800', 'center', 'show']
 	    });
       
-      Defaceit.Queue('items.bookshelf.defaceit.ru').list();
+      Defaceit.Queue('items.bookshelf.sandbox.defaceit.ru').list();
       bookshelfLoading = false;
     }
 });
 
-Defaceit.Queue('items.bookshelf.defaceit.ru')
+Defaceit.Queue('items.bookshelf.sandbox.defaceit.ru')
     .client({
 		queue_message: function(message) {
 		
@@ -62,8 +58,8 @@ bookshelf = function() {
     if (!!jQuery('#bookshelf').length || bookshelfLoading) {return false;}
     
     bookshelfLoading = true;
-    Defaceit.Queue('template.bookshelf.defaceit.ru').list();
-//      Defaceit.Queue('items.bookshelf.defaceit.ru').list();
+    Defaceit.Queue('template.bookshelf.sandbox.defaceit.ru').list();
+//      Defaceit.Queue('items.bookshelf.sandbox.defaceit.ru').list();
 }
 
 

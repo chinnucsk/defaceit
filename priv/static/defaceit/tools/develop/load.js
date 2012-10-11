@@ -1,0 +1,5 @@
+if (!window.jQuery) {
+    Defaceit.load.js('http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js');
+        }
+Defaceit.load.css('http://sandbox.defaceit.ru/defaceit/tools/css/defaceit.css');
+        

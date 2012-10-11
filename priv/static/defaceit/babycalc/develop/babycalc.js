@@ -1,11 +1,7 @@
-if (!window.jQuery) {
-    Defaceit.load.js('http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js');
-}
-Defaceit.load.css('http://defaceit.ru/defaceit/tools/css/defaceit.css');
-Defaceit.load.css('http://defaceit.ru/defaceit/babycalc/css/babycalc.css');
+Defaceit.load.css('http://sandbox.defaceit.ru/defaceit/babycalc/css/babycalc.css');
 
 if (DefaceitHome) {
-    Defaceit.load.css('http://defaceit.ru/defaceit/tools/css/home.css');
+    Defaceit.load.css('http://sandbox.defaceit.ru/defaceit/tools/css/home.css');
 }
 
  calc_action = function(){
@@ -22,7 +18,7 @@ if (DefaceitHome) {
                 $('#calc').html(text);
 
 
-                var request = new Defaceit.CrossDomainRequest("http://services.defaceit.ru/babies");
+                var request = new Defaceit.CrossDomainRequest("http://services.sandbox.defaceit.ru/babies");
                 request.add("baby[sex]", sex);
                 request.add("baby[age]", age);
                 request.add("baby[weight_delta]", weight);

@@ -12,10 +12,10 @@ if (window.urls.length > 0) {
 }
 
 
-user = new Defaceit.Session('http://services.defaceit.ru/sessions');
+user = new Defaceit.Session('http://services.sandbox.defaceit.ru/sessions');
 user.check_status(function(){
     $('#login_name').html(this.sign_in ? this.data.key.split('/')[3] : "Yandex OpenID");
-    $('#login').html(this.sign_in ?'<a href="http://services.defaceit.ru/sessions/destroy">Выйти</a>':'<a href="http://services.defaceit.ru/sessions/new">Войти</a>');
+    $('#login').html(this.sign_in ?'<a href="http://services.sandbox.defaceit.ru/sessions/destroy">Выйти</a>':'<a href="http://services.sandbox.defaceit.ru/sessions/new">Войти</a>');
 });
 
 

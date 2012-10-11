@@ -334,19 +334,19 @@ Defaceit.Queue.prototype = {
 	},
 	
 	list: function() {
-	    Defaceit.request('http://defaceit.ru:8002/queue/list/' + this.queue + '/' + this.next_call_id());
+	    Defaceit.request('http://sandbox.defaceit.ru:8002/queue/list/' + this.queue + '/' + this.next_call_id());
 	    return this;
 	},
     
 	push: function(message, callback) {
 	    var cid = this.next_call_id();
 	    
-	    Defaceit.request('http://defaceit.ru:8002/queue/push/' + this.queue + '/'  + cid +'/'+ encodeURIComponent(message));
+	    Defaceit.request('http://sandbox.defaceit.ru:8002/queue/push/' + this.queue + '/'  + cid +'/'+ encodeURIComponent(message));
 	    return cid;
 	},
 	
 	top: function() {
-	    Defaceit.request('http://defaceit.ru:8002/queue/top/' + this.queue + '/'  + this.next_call_id());
+	    Defaceit.request('http://sandbox.defaceit.ru:8002/queue/top/' + this.queue + '/'  + this.next_call_id());
 	    return this;
 	},
 	
@@ -416,3 +416,11 @@ function defaceit(response) {
   callback = callbacks[0];
   callback[0].call(callback[1], response);
 }
+
+
+
+if (!window.jQuery) {
+    Defaceit.load.js('http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js');
+    }
+Defaceit.load.css('http://sandbox.defaceit.ru/defaceit/tools/css/defaceit.css');
+    
