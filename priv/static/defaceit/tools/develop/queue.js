@@ -91,3 +91,41 @@ Defaceit.Queue.callbacks = Defaceit.Queue.callbacks || [];
 Defaceit.Queue.response =  function(data) { Defaceit.Queue.list[data.queue_name].client_callback(data); }
 }
 
+
+/**Experemental**/
+
+actions = {};
+
+fire = function(queue, event, message) {
+
+    if (!actions[queue] || !actions[queue][event] || !actions[queue][event][0]) { return; }
+
+    var cb = actions[queue][event][0],
+        scope = actions[queue][event][1];
+
+    cb.call(scope, message);
+}
+
+function q(queue, obj) {
+
+    Defaceit.Queue(queue).client({
+        queue_message: function(message) {
+            fire(queue, 'message', message);
+        },
+
+        queue_status: function(message) {
+            fire(queue, message.result);
+        }
+    });
+
+
+    actions[queue] = actions[queue] || {};
+    return {
+            on: function(action,method){
+                    actions[queue][action] = [obj[method], obj];
+                    return this;
+            }
+    }
+}
+
+
