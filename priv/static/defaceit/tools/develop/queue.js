@@ -96,25 +96,25 @@ Defaceit.Queue.response =  function(data) { Defaceit.Queue.list[data.queue_name]
 
 actions = {};
 
-fire = function(queue, event, message) {
+fire = function(queue, event, message, o) {
 
     if (!actions[queue] || !actions[queue][event] || !actions[queue][event][0]) { return; }
 
     var cb = actions[queue][event][0],
         scope = actions[queue][event][1];
 
-    cb.call(scope, message);
+    cb.call(scope, message, o);
 }
 
 function q(queue, obj) {
 
     Defaceit.Queue(queue).client({
-        queue_message: function(message) {
-            fire(queue, 'message', message);
+        queue_message: function(message, o) {
+            fire(queue, 'message', message, o);
         },
 
         queue_status: function(message) {
-            fire(queue, message.result);
+            fire(queue, message.result, message, message);
         }
     });
 

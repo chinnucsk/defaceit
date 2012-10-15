@@ -1,3 +1,8 @@
+h1.hero-title{
+    font-family: "Open Sans Condensed", sans-serif; 
+    font-weight:normal;
+}
+
 h1.main-title {
   text-align:center;
   margin: 2em 0 1em; 
