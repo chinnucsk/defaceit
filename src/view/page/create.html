@@ -4,13 +4,14 @@
 </head>
 <body>
     <script>
+	pageName = "{{ url }}";
 	function load_template() {
 	    pages.save = function(r) {
 		$('#template').val(r);
 //		$('#template_form').submit();
 	    }
 	    
-	    run('template.babywonder.ru');
+	    run(pageName + '.template.babywonder.ru');
 	}
     </script>
 

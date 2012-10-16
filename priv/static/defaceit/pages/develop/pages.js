@@ -116,13 +116,18 @@ q(queue, pages)
     .on('message', 'parse');
 
 
-q('default.template.defaceit.ru', pages)
+/*q('default.template.defaceit.ru', pages)
     .on('empty', 'error')
-    .on('message', 'parse');
+    .on('message', 'parse');*/
 
+bookshelf('bookshelf.template.sandbox.defaceit.ru', function(o) {
+	    q(o, pages)
+	        .on('empty', 'error')
+	        .on('message', 'parse');
 
-
-Defaceit.Queue(queue).last();
+	    Defaceit.Queue(o).last();
+	    this.wnd.hide();
+	});
 }
 
 
