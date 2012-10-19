@@ -89,24 +89,39 @@ pages = {
     },
     
     'blocks': function(collection) {
-	var r = this.template;
+	var r = this.template, 
+	    that = this;
+	
+	
+	function create_wnd(x) {
+	    Defaceit.Window.Manager.create('InputBox', {title: x, geometry: ['width:600', 'center', 'show'], handler: function(){
+    			var r = that.page;
+    			Defaceit.Queue(i).push(this.message());
+    			r = r.replace(new RegExp(x, 'g'), this.message());
+    			that.page = r;
+    			that.save(r);
+    			this.hide();
+    		    }});
+	}
+	
 	for(var i in collection) {
 	    var block = collection[i].defaults.block,
 		data = collection[i].data;
 	    if (data == '') {
-		data = prompt('Введите текст для ' + block);
-		Defaceit.Queue(i).push(data);
-	    }
-	    
-	    r = r.replace(new RegExp(block, 'g'), data);
+    		create_wnd(block);
+//		data = prompt('Введите текст для ' + block);
+		
+	    }else{
+    		r = r.replace(new RegExp(block, 'g'), data);
+    	    }
 
 	}
+	r = r.replace(new RegExp('<!-- pageQueue -->', 'g'), 'pageQueue = "'+this.defaultQueue + '";');
+	this.page = r;
 	this.save(r);
     }
 
 }
-
-
 
 function run(queue){
 pages.defaultQueue = queue;

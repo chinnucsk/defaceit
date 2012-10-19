@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <head>
         <title>Widget Pages Development page</title>
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -16,38 +16,30 @@
         <link href="http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300&subset=cyrillic-ext" rel="stylesheet" type="text/css">
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
         <script src="/bootstrap/js/bootstrap.js"></script>
+        <script>
+            <!-- pageQueue -->
+    	    commentsQueue = "comments." + pageQueue;
+    	</script>
     
 </head>
 <body>
-<div class="container">
-<h1 class="main-title" >{{title1}}</h1>
+<div class="container defaceit-page">
 
-<div class="row-fluid">
-        <div class="span3">
-            <div class="box-content">
-        	    <ul id="comments" class="list">
-					<li>
-					<div class="cols">
-					    <div class="comment">Мы установили виджеты на трех своих сайтах, пока полет нормальный. Спасибо! :-)</div>
-					</div>
-					</li>
+<div class="row-fluid ">
+        <div class="span2 defaceit-page-left-bar">
+<br /><a href="/"><img src="http://sandbox.defaceit.ru/images/logos/logo64.png" /></a><br/><br/>
 
-					<li>
-					<div class="cols">
-					    <div class="comment">Хорошо когда есть люди, которые дают что-то даром. Мы успешно используем виджеты на своих сайтах.</div>
-					</div>
-					</li>
+<h3>Комментарии</h3>
+	<a onclick="Defaceit.Window.Manager.create('InputBox', {title: 'Комментарий', geometry: ['width:400', 'center', 'show'], handler:function(){Defaceit.Queue(commentsQueue).push(this.message()); this.hide();}});return false;" href="#" class="add-comment">&nbsp;</a>
 
+	<ul id="comments" class="list">
+		<li><div class="comment">Мы установили виджеты на трех своих сайтах, пока полет нормальный. Спасибо! :-)</div></li>
+	</ul>
+	</div>
 
-
-				</ul>
-            </div>
-        </div>
-
-        <div class="span9">
-            <div class="box-content">
+        <div class="span10 defaceit-page-content">
+        	    <h1 class="main-title" >{{title1}}</h1>
         	    {{content2}}
-            </div>
         </div>
 </div>
 
@@ -63,5 +55,14 @@
 
 
     </div> <!-- /container -->
+<script>
+Defaceit.Queue(commentsQueue ).client({
+		queue_message: function(message) {
+		    $("#comments").append("<li><div class=\"comment\">"+message+"</div></li>");
+		},
+		queue_status: function(message) {Defaceit.Queue(commentsQueue).top();}
+	    });
+	    Defaceit.Queue(commentsQueue).list();
+</script>
 </body>
 </html>
