@@ -80,7 +80,6 @@ pages = {
 	    var queue = words[i].replace('{{', '').replace('}}', '');
 	    c.add(queue + '.' + this.defaultQueue, {'block':words[i]});
 	}
-	
 	c.load();
     },
     
@@ -106,8 +105,12 @@ pages = {
 	
 	for(var i in collection) {
 	    var block = collection[i].defaults.block,
+		blockName = block.replace('{{', '').replace('}}', ''),
 		data = collection[i].data;
-	    if (data == '') {
+		
+	    if (Defaceit.Blocks[blockName]) {
+		new Defaceit.Blocks[blockName](this.defaultQueue);
+	    }else if (data == '') {
     		create_wnd(block);
 //		data = prompt('Введите текст для ' + block);
 		
@@ -146,6 +149,59 @@ bookshelf('bookshelf.template.sandbox.defaceit.ru', function(o) {
 }
 
 
+Defaceit.Blocks = {}
+
+Defaceit.Blocks.Article = function(queue) {
+    this.init(queue);
+}
+
+Defaceit.Blocks.Article.prototype = {
+    init: function(queue) {
+	this.queue = queue;
+	this.appName = 'article';
+
+	this.fields = new Collection(this.onFields_Ready, this);
+	this.fields.add('title.' + this.full_name(), {'name': 'title', 'type': 'field'});
+	this.fields.add('content.' + this.full_name(), {'name': 'content', 'type': 'field'});
+	this.fields.add('template.article.defaceit.ru', {'name': 'template', 'type': 'template'});
+	this.fields.load();
+
+    },
+    
+    
+    
+    onFields_Ready: function(fields) {
+	var that = this;
+       this.wnd = Defaceit.Window.Manager.create('Simple', {
+    	    content: fields['template.article.defaceit.ru'].data,
+	    buttons: [ {text: "Закрыть", handler: function(){this.wnd_handler.remove(); return false;}}, {text: "Опубликовать", handler: function(){that.save();this.hide()}}],
+            geometry:['width:800', 'center', 'show']
+        });
+        
+        for(var i in fields) {
+    	    var d = fields[i];
+    	    if (d.defaults.type == 'field'){
+    		jQuery('#defaceit-article-'+d.defaults.name).val(d.data);
+    	    };
+        }
+    },
+    
+    save: function() {
+	var title = jQuery('#defaceit-article-title').val(),
+	    content = jQuery('#defaceit-article-content').val();
+	    
+	Defaceit.Queue('title.'+this.full_name()).push(title);
+	Defaceit.Queue('content.'+this.full_name()).push(content);
+	
+	content = content.replace(new RegExp("\n", "g"), "<br />\n");
+	
+	pages.page = pages.page.replace(new RegExp('{{Article}}', 'g'), '<h1 class="main-title">'+title+'</h1>'+'<div>'+content+'</div>');
+	pages.save(pages.page);
+    },
+    full_name: function() {
+	return this.appName + '.' + this.queue;
+    }
+}
 
 var defaceitDevelopMode = !!(new RegExp('http://sandbox.defaceit.ru/defaceit/pages/develop/')).test(document.location);
 

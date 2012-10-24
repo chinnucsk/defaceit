@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <head>
-        <title>Widget Pages Development page</title>
+        <title>{{Title}}</title>
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <meta name="description" content="Страница разработчиков фейверка шаров" />
         
@@ -38,8 +38,7 @@
 	</div>
 
         <div class="span10 defaceit-page-content">
-        	    <h1 class="main-title" >{{title1}}</h1>
-        	    {{content2}}
+    		{{Article}}
         </div>
 </div>
 
