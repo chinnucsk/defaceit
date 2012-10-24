@@ -1,5 +1,5 @@
-Defaceit.load.css('http://sandbox.defaceit.ru/defaceit/babycalc/css/babycalc.css');
-Defaceit.load.css('http://sandbox.defaceit.ru/defaceit/tools/css/home.css');
+Defaceit.load.css('http://defaceit.ru/defaceit/babycalc/css/babycalc.css');
+Defaceit.load.css('http://defaceit.ru/defaceit/tools/css/home.css');
 
 
 Collection = function(callback, scope) {
@@ -138,7 +138,7 @@ q(queue, pages)
     .on('empty', 'error')
     .on('message', 'parse');*/
 
-bookshelf('bookshelf.template.sandbox.defaceit.ru', function(o) {
+bookshelf('bookshelf.template.defaceit.ru', function(o) {
 	    q(o, pages)
 	        .on('empty', 'error')
 	        .on('message', 'parse');
@@ -203,7 +203,7 @@ Defaceit.Blocks.Article.prototype = {
     }
 }
 
-var defaceitDevelopMode = !!(new RegExp('http://sandbox.defaceit.ru/defaceit/pages/develop/')).test(document.location);
+var defaceitDevelopMode = !!(new RegExp('http://defaceit.ru/defaceit/pages/develop/')).test(document.location);
 
 if (defaceitDevelopMode) {
     run('template.babywonder.ru');
