@@ -1,0 +1,24 @@
+<html>
+<head>
+    <script src="http://defaceit.ru/defaceit/pages/pages.js"></script>
+</head>
+<body>
+    <script>
+	pageName = "{{ url }}";
+	function load_template() {
+	    pages.save = function(r) {
+		$('#template').val(r);
+//		$('#template_form').submit();
+	    }
+	    
+	    run(pageName + '.template.babywonder.ru');
+	}
+    </script>
+
+    <form id="template_form" action="/page/save" method="post">
+	<input type="hidden" name="url" value="{{ url }}"/>
+	<textarea id="template" name="content"></textarea>
+	<input type="submit" value="save" name="save"/>
+	<input type="button" onclick="load_template();" value="Load template"/>
+    </form>
+</body>

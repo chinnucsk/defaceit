@@ -1,8 +1,3 @@
-if (!window.jQuery) {
-	Defaceit.load.js('http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js');
-}
-
-Defaceit.load.css('http://defaceit.ru/defaceit/tools/css/defaceit.css');
 
 function mrand(max){
 	return Math.floor(Math.random()*10000%(max+1));

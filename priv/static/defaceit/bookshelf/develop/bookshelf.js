@@ -1,7 +1,3 @@
-if (!window.jQuery) {
-    Defaceit.load.js('http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js');
-}
-Defaceit.load.css('http://defaceit.ru/defaceit/tools/css/defaceit.css');
 Defaceit.load.css('http://defaceit.ru/defaceit/bookshelf/css/bookshelf.css');
 
 if (DefaceitHome) {
@@ -9,24 +5,32 @@ if (DefaceitHome) {
 }
 
 
-/**load template*/
-Defaceit.Queue('template.bookshelf.defaceit.ru').client({queue_message: 
-    function(message) {
-	    Defaceit.Window.Manager.create('Simple', {
+Defaceit.Bookshelf = function(queue, cb, scope) {
+    this.init(queue, cb, scope);
+}
+
+Defaceit.Bookshelf.prototype = {
+    init: function(queue, cb, scope) {
+	this.cb = cb;
+	this.scope = scope || this;
+	this.itemCount = 0;
+	this.queue = queue;
+	this.wnd = null;
+    },
+    
+    
+    render_template: function(message) {
+	    this.wnd = Defaceit.Window.Manager.create('Simple', {
 		content: message,
 		buttons: [ {text: "Закрыть", handler: function(){this.wnd_handler.remove(); return false;}}],
 		geometry:['width:800', 'center', 'show']
 	    });
       
-      Defaceit.Queue('items.bookshelf.defaceit.ru').list();
+      Defaceit.Queue('items.' + this.queue).list();
       bookshelfLoading = false;
-    }
-});
-
-Defaceit.Queue('items.bookshelf.defaceit.ru')
-    .client({
-		queue_message: function(message) {
-		
+    },
+    
+    render_items: function(message) {
 			if (this.itemCount%3 == 0) {
 			    this.div = jQuery('<div>').addClass('line').appendTo(jQuery('#bookshelf .page'));
 			}
@@ -41,34 +45,53 @@ Defaceit.Queue('items.bookshelf.defaceit.ru')
 			}else{
 			    src = message;
 			}
+			var that = this;
 			this.div.append(jQuery('<img>').attr('src', src).click(function(){
-				    Defaceit.Window.Manager.create('Simple', {
-					content: obj,
-					buttons: [ {text: "Закрыть", handler: function(){this.wnd_handler.remove(); return false;}}],
-			    		geometry:['center', 'show']
-					});
+				    that.cb.call(that.scope, obj);
 				    return false;
 			    }));
 //			bookshelfLoading = false;
 		},
-		
-		itemCount: 0
-    }
-);
+	error: function() {alert('Очередь пуста');}
+}
 
-/**main function */
-bookshelfLoading = false;
-bookshelf = function() {
-    if (!!jQuery('#bookshelf').length || bookshelfLoading) {return false;}
+bookshelf = function(queue, cb, scope) {
+
+    var b = new Defaceit.Bookshelf(queue, cb, scope),
+	templateQueue = 'default.bookshelf.template.defaceit.ru';
     
-    bookshelfLoading = true;
-    Defaceit.Queue('template.bookshelf.defaceit.ru').list();
-//      Defaceit.Queue('items.bookshelf.defaceit.ru').list();
+ 
+    q(templateQueue, b)
+	.on('empty', 'error')
+	.on('message', 'render_template');
+    
+    q('items.' + queue, b)
+	.on('empty', 'error')
+	.on('message', 'render_items');
+    
+
+    Defaceit.Queue(templateQueue).list();
 }
 
 
-if (/defaceit\.ru/.test(document.location)) {
-    Defaceit.wait("jQuery", bookshelf, this, ["jQuery"]);
+/**main function */
+bookshelfLoading = false;
+function start(){
+   if (!!jQuery('#bookshelf').length || bookshelfLoading) {return false;}
+   bookshelfLoading = true;
+   
+   var cb = function(obj) {
+	Defaceit.Window.Manager.create('Simple', {
+	    content: obj,
+	    buttons: [ {text: "Закрыть", handler: function(){this.wnd_handler.remove(); return false;}}],
+	    geometry:['center', 'show']
+	});
+   }
+   bookshelf('bookshelf.defaceit.ru', cb);
+}
+
+if (/http:\/\/.defaceit\.ru\/defaceit\/bookshelf\/develop/.test(document.location)) {
+    Defaceit.wait("jQuery", start, this, ["jQuery"]);
 }
 
 

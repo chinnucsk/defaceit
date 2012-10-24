@@ -416,3 +416,11 @@ function defaceit(response) {
   callback = callbacks[0];
   callback[0].call(callback[1], response);
 }
+
+
+
+if (!window.jQuery) {
+    Defaceit.load.js('http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js');
+    }
+Defaceit.load.css('http://defaceit.ru/defaceit/tools/css/defaceit.css');
+    
