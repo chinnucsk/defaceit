@@ -33,7 +33,6 @@
 	<a onclick="Defaceit.Window.Manager.create('InputBox', {title: 'Комментарий', geometry: ['width:400', 'center', 'show'], handler:function(){Defaceit.Queue(commentsQueue).push(this.message()); this.hide();}});return false;" href="#" class="add-comment">&nbsp;</a>
 
 	<ul id="comments" class="list">
-		<li><div class="comment">Мы установили виджеты на трех своих сайтах, пока полет нормальный. Спасибо! :-)</div></li>
 	</ul>
 	</div>
 
