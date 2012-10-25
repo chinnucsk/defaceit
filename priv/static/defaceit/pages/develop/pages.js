@@ -69,7 +69,7 @@ Block.prototype = {
 
 pages = {
     'error': function(){alert('Мы не смогли загрузить дефолтный шаблон');},
-    'load_default_template': function(){ Defaceit.Queue('default.template.defaceit.ru').last();},
+    'load_default_template': function(){ Defaceit.Queue('default.template.sandbox.defaceit.ru').last();},
     'parse': function(template){
 	this.template = template;
 	var words=template.match(/\{\{([^}]*)\}\}/g);
@@ -134,7 +134,7 @@ q(queue, pages)
     .on('message', 'parse');
 
 
-/*q('default.template.defaceit.ru', pages)
+/*q('default.template.sandbox.defaceit.ru', pages)
     .on('empty', 'error')
     .on('message', 'parse');*/
 
@@ -163,7 +163,7 @@ Defaceit.Blocks.Article.prototype = {
 	this.fields = new Collection(this.onFields_Ready, this);
 	this.fields.add('title.' + this.full_name(), {'name': 'title', 'type': 'field'});
 	this.fields.add('content.' + this.full_name(), {'name': 'content', 'type': 'field'});
-	this.fields.add('template.article.defaceit.ru', {'name': 'template', 'type': 'template'});
+	this.fields.add('template.article.sandbox.defaceit.ru', {'name': 'template', 'type': 'template'});
 	this.fields.load();
 
     },
@@ -173,7 +173,7 @@ Defaceit.Blocks.Article.prototype = {
     onFields_Ready: function(fields) {
 	var that = this;
        this.wnd = Defaceit.Window.Manager.create('Simple', {
-    	    content: fields['template.article.defaceit.ru'].data,
+    	    content: fields['template.article.sandbox.defaceit.ru'].data,
 	    buttons: [ {text: "Закрыть", handler: function(){this.wnd_handler.remove(); return false;}}, {text: "Опубликовать", handler: function(){that.save();this.hide()}}],
             geometry:['width:800', 'center', 'show']
         });
