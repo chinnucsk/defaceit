@@ -4,8 +4,8 @@
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <meta name="description" content="Страница разработчиков фейверка шаров" />
         
-        <script type="text/javascript" src="http://defaceit.ru/defaceit/tools.js"></script>
-        <script type="text/javascript" src="http://defaceit.ru/defaceit/pages/develop/pages.js"></script>
+        <script type="text/javascript" src="http://sandbox.defaceit.ru/defaceit/tools.js"></script>
+        <script type="text/javascript" src="http://sandbox.defaceit.ru/defaceit/pages/develop/pages.js"></script>
         <script>window.DefaceitDevelopMode = true;</script>
         
         

@@ -55,7 +55,7 @@ Defaceit.Page.loaded("defaceit.services", "#menu");
 
 
 
-Defaceit.load.js('http://defaceit.ru/defaceit/plugin/page.js');*/
+Defaceit.load.js('http://sandbox.defaceit.ru/defaceit/plugin/page.js');*/
 
 
 

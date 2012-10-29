@@ -1,5 +1,5 @@
-Defaceit.load.css('http://defaceit.ru/defaceit/babycalc/css/babycalc.css');
-Defaceit.load.css('http://defaceit.ru/defaceit/tools/css/home.css');
+Defaceit.load.css('http://sandbox.defaceit.ru/defaceit/babycalc/css/babycalc.css');
+Defaceit.load.css('http://sandbox.defaceit.ru/defaceit/tools/css/home.css');
 
 
 Collection = function(callback, scope) {
@@ -69,18 +69,19 @@ Block.prototype = {
 
 pages = {
     'error': function(){alert('Мы не смогли загрузить дефолтный шаблон');},
-    'load_default_template': function(){ Defaceit.Queue('default.template.defaceit.ru').last();},
+    'load_default_template': function(){ Defaceit.Queue('default.template.sandbox.defaceit.ru').last();},
     'parse': function(template){
 	this.template = template;
 	var words=template.match(/\{\{([^}]*)\}\}/g);
+	this.blocks(words);
 	
-	var c = new Collection(this.blocks, this);
+/*	var c = new Collection(this.blocks, this);
 	
 	for(var i=0, r=template; i < words.length; i++){
 	    var queue = words[i].replace('{{', '').replace('}}', '');
 	    c.add(queue + '.' + this.defaultQueue, {'block':words[i]});
 	}
-	c.load();
+	c.load();*/
     },
     
     'save': function(r) {
@@ -92,28 +93,15 @@ pages = {
 	    that = this;
 	
 	
-	function create_wnd(x) {
-	    Defaceit.Window.Manager.create('InputBox', {title: x, geometry: ['width:600', 'center', 'show'], handler: function(){
-    			var r = that.page;
-    			Defaceit.Queue(i).push(this.message());
-    			r = r.replace(new RegExp(x, 'g'), this.message());
-    			that.page = r;
-    			that.save(r);
-    			this.hide();
-    		    }});
-	}
-	
-	for(var i in collection) {
-	    var block = collection[i].defaults.block,
+	for(var i=0; i < collection.length; i++) {
+	    var block = collection[i],
 		blockName = block.replace('{{', '').replace('}}', ''),
-		data = collection[i].data;
+		data = '';
 		
 	    if (Defaceit.Blocks[blockName]) {
 		new Defaceit.Blocks[blockName](this.defaultQueue);
 	    }else if (data == '') {
-    		create_wnd(block);
-//		data = prompt('Введите текст для ' + block);
-		
+    		new Defaceit.Blocks['OneField'](blockName +'.'+this.defaultQueue, blockName);
 	    }else{
     		r = r.replace(new RegExp(block, 'g'), data);
     	    }
@@ -134,11 +122,11 @@ q(queue, pages)
     .on('message', 'parse');
 
 
-/*q('default.template.defaceit.ru', pages)
+/*q('default.template.sandbox.defaceit.ru', pages)
     .on('empty', 'error')
     .on('message', 'parse');*/
 
-bookshelf('bookshelf.template.defaceit.ru', function(o) {
+bookshelf('bookshelf.template.sandbox.defaceit.ru', function(o) {
 	    q(o, pages)
 	        .on('empty', 'error')
 	        .on('message', 'parse');
@@ -150,6 +138,44 @@ bookshelf('bookshelf.template.defaceit.ru', function(o) {
 
 
 Defaceit.Blocks = {}
+
+
+
+Defaceit.Blocks.OneField = function(queue, blockName) {
+    this.init(queue, blockName);
+}
+
+Defaceit.Blocks.OneField.prototype = {
+
+    init: function(queue, blockName) {
+	this.blockName = blockName;
+	this.queue = queue;
+	this.appName = '';
+	
+	this.fields = new Collection(this.onField_Ready, this);
+	this.fields.add(this.full_name(), {'name': 'field', 'type': 'field'});
+	this.fields.load();
+	
+    },
+    
+    onField_Ready: function(fields) {
+	that = this;
+	var w = Defaceit.Window.Manager.create('InputBox', {title: this.blockName, geometry: ['width:600', 'center', 'show'], handler: function(){
+    			Defaceit.Queue(that.full_name()).push(this.message());
+    			pages.page = pages.page.replace(new RegExp('{{'+that.blockName+'}}', 'g'), this.message());
+    			pages.save(pages.page);
+    			this.hide();
+    		    }});
+    		    
+    	w.textarea.val(fields[this.full_name()].data);
+    },
+    
+    full_name: function() {
+	return this.queue;
+    }
+}
+
+
 
 Defaceit.Blocks.Article = function(queue) {
     this.init(queue);
@@ -163,7 +189,7 @@ Defaceit.Blocks.Article.prototype = {
 	this.fields = new Collection(this.onFields_Ready, this);
 	this.fields.add('title.' + this.full_name(), {'name': 'title', 'type': 'field'});
 	this.fields.add('content.' + this.full_name(), {'name': 'content', 'type': 'field'});
-	this.fields.add('template.article.defaceit.ru', {'name': 'template', 'type': 'template'});
+	this.fields.add('template.article.sandbox.defaceit.ru', {'name': 'template', 'type': 'template'});
 	this.fields.load();
 
     },
@@ -173,7 +199,7 @@ Defaceit.Blocks.Article.prototype = {
     onFields_Ready: function(fields) {
 	var that = this;
        this.wnd = Defaceit.Window.Manager.create('Simple', {
-    	    content: fields['template.article.defaceit.ru'].data,
+    	    content: fields['template.article.sandbox.defaceit.ru'].data,
 	    buttons: [ {text: "Закрыть", handler: function(){this.wnd_handler.remove(); return false;}}, {text: "Опубликовать", handler: function(){that.save();this.hide()}}],
             geometry:['width:800', 'center', 'show']
         });
@@ -203,7 +229,7 @@ Defaceit.Blocks.Article.prototype = {
     }
 }
 
-var defaceitDevelopMode = !!(new RegExp('http://defaceit.ru/defaceit/pages/develop/')).test(document.location);
+var defaceitDevelopMode = !!(new RegExp('http://sandbox.defaceit.ru/defaceit/pages/develop/')).test(document.location);
 
 if (defaceitDevelopMode) {
     run('template.babywonder.ru');
