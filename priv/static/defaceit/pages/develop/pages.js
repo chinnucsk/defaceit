@@ -1,5 +1,5 @@
-Defaceit.load.css('http://sandbox.defaceit.ru/defaceit/babycalc/css/babycalc.css');
-Defaceit.load.css('http://sandbox.defaceit.ru/defaceit/tools/css/home.css');
+Defaceit.load.css('http://defaceit.ru/defaceit/babycalc/css/babycalc.css');
+Defaceit.load.css('http://defaceit.ru/defaceit/tools/css/home.css');
 
 
 Collection = function(callback, scope) {
@@ -69,7 +69,7 @@ Block.prototype = {
 
 pages = {
     'error': function(){alert('Мы не смогли загрузить дефолтный шаблон');},
-    'load_default_template': function(){ Defaceit.Queue('default.template.sandbox.defaceit.ru').last();},
+    'load_default_template': function(){ Defaceit.Queue('default.template.defaceit.ru').last();},
     'parse': function(template){
 	this.template = template;
 	var words=template.match(/\{\{([^}]*)\}\}/g);
@@ -122,11 +122,11 @@ q(queue, pages)
     .on('message', 'parse');
 
 
-/*q('default.template.sandbox.defaceit.ru', pages)
+/*q('default.template.defaceit.ru', pages)
     .on('empty', 'error')
     .on('message', 'parse');*/
 
-bookshelf('bookshelf.template.sandbox.defaceit.ru', function(o) {
+bookshelf('bookshelf.template.defaceit.ru', function(o) {
 	    q(o, pages)
 	        .on('empty', 'error')
 	        .on('message', 'parse');
@@ -189,7 +189,7 @@ Defaceit.Blocks.Article.prototype = {
 	this.fields = new Collection(this.onFields_Ready, this);
 	this.fields.add('title.' + this.full_name(), {'name': 'title', 'type': 'field'});
 	this.fields.add('content.' + this.full_name(), {'name': 'content', 'type': 'field'});
-	this.fields.add('template.article.sandbox.defaceit.ru', {'name': 'template', 'type': 'template'});
+	this.fields.add('template.article.defaceit.ru', {'name': 'template', 'type': 'template'});
 	this.fields.load();
 
     },
@@ -199,7 +199,7 @@ Defaceit.Blocks.Article.prototype = {
     onFields_Ready: function(fields) {
 	var that = this;
        this.wnd = Defaceit.Window.Manager.create('Simple', {
-    	    content: fields['template.article.sandbox.defaceit.ru'].data,
+    	    content: fields['template.article.defaceit.ru'].data,
 	    buttons: [ {text: "Закрыть", handler: function(){this.wnd_handler.remove(); return false;}}, {text: "Опубликовать", handler: function(){that.save();this.hide()}}],
             geometry:['width:800', 'center', 'show']
         });
@@ -229,7 +229,7 @@ Defaceit.Blocks.Article.prototype = {
     }
 }
 
-var defaceitDevelopMode = !!(new RegExp('http://sandbox.defaceit.ru/defaceit/pages/develop/')).test(document.location);
+var defaceitDevelopMode = !!(new RegExp('http://defaceit.ru/defaceit/pages/develop/')).test(document.location);
 
 if (defaceitDevelopMode) {
     run('template.babywonder.ru');
