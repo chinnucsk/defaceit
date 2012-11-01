@@ -1,12 +1,14 @@
 
 if (!Defaceit.Queue) {
 Defaceit.Queue = function(queue) {
+
     if (this==Defaceit) {
 	queue = queue || '';
 	Defaceit.Queue.list[queue] = Defaceit.Queue.list[queue] || new Defaceit.Queue(queue);
 	return Defaceit.Queue.list[queue];
     }
-    this.queue = queue;
+    
+    this.init(queue);
     return this;
 }
 
@@ -14,32 +16,44 @@ Defaceit.Queue.prototype = {
 	queue: '',
 //        clients: [],
 	call_id: 1,
-	
-	
+	init: function(queue) {
+	    this.queue = queue;
+	},
 	next_call_id: function() {
 	    return this.call_id++;
 	},
 	
 	list: function() {
-	    Defaceit.request('http://eservices.defaceit.ru/queue/list/' + this.queue + '/' + this.next_call_id());
+	    this.request('list');
 	    return this;
 	},
     
 	push: function(message, callback) {
-	    var cid = this.next_call_id();
-	    
-	    Defaceit.request('http://eservices.defaceit.ru/queue/push/' + this.queue + '/'  + cid +'/'+ encodeURIComponent(message));
-	    return cid;
+	    return this.request('push', encodeURIComponent(message));
 	},
 	
 	top: function() {
-	    Defaceit.request('http://eservices.defaceit.ru/queue/top/' + this.queue + '/'  + this.next_call_id());
+	    this.request('top');
 	    return this;
 	},
 	
 	last: function() {
-	    Defaceit.request('http://eservices.defaceit.ru/queue/last/' + this.queue + '/'  + this.next_call_id());
+	    this.request('last');
 	    return this;
+	},
+	
+	
+	request: function(action, message) {
+		message = message || '';
+		var cid = this.next_call_id();
+		
+		if (message.length > 1024) {
+		    cors_post('http://eservices.defaceit.ru/queue/'+action+'/'+this.queue+'/'+cid, 'message_text='+message);
+		}else{
+		    Defaceit.request('http://eservices.defaceit.ru/queue/'+action+'/' + this.queue + '/'  + cid + '/' + message);
+		}
+		
+		return cid;
 	},
 	
 	client: function(client) {
@@ -128,4 +142,45 @@ function q(queue, obj) {
     }
 }
 
+
+function cors_post(url, params) {
+	function createCORSRequest(method, url) {
+	  var xhr = new XMLHttpRequest();
+	    if ("withCredentials" in xhr) {
+	        // Check if the XMLHttpRequest object has a "withCredentials" property.
+	        // "withCredentials" only exists on XMLHTTPRequest2 objects.
+	        xhr.open(method, url, true);
+	     } else if (typeof XDomainRequest != "undefined") {
+	        // Otherwise, check if XDomainRequest.
+	        // XDomainRequest only exists in IE, and is IE's way of making CORS requests.
+	         xhr = new XDomainRequest();
+	         xhr.open(method, url);
+	     } else {
+	        // Otherwise, CORS is not supported by the browser.
+	        xhr = null;
+	     }
+	    return xhr;
+	}
+	
+	var xhr = createCORSRequest('POST', url);
+	if (!xhr) {
+	     throw new Error('CORS not supported');
+	     return;
+	}
+
+	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	xhr.setRequestHeader("Content-length", params.length);
+	xhr.setRequestHeader("Connection", "close");
+                                                      
+	xhr.onload = function() {
+        	var responseText = xhr.responseText;
+        	eval(responseText);
+	};
+                                                         
+	xhr.onerror = function() {
+      		console.log('There was an error!');
+	};
+                                                           
+	xhr.send(params);
+}
 

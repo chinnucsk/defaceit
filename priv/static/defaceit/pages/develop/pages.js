@@ -73,14 +73,15 @@ pages = {
     'parse': function(template){
 	this.template = template;
 	var words=template.match(/\{\{([^}]*)\}\}/g);
+	this.blocks(words);
 	
-	var c = new Collection(this.blocks, this);
+/*	var c = new Collection(this.blocks, this);
 	
 	for(var i=0, r=template; i < words.length; i++){
 	    var queue = words[i].replace('{{', '').replace('}}', '');
 	    c.add(queue + '.' + this.defaultQueue, {'block':words[i]});
 	}
-	c.load();
+	c.load();*/
     },
     
     'save': function(r) {
@@ -92,28 +93,15 @@ pages = {
 	    that = this;
 	
 	
-	function create_wnd(x) {
-	    Defaceit.Window.Manager.create('InputBox', {title: x, geometry: ['width:600', 'center', 'show'], handler: function(){
-    			var r = that.page;
-    			Defaceit.Queue(i).push(this.message());
-    			r = r.replace(new RegExp(x, 'g'), this.message());
-    			that.page = r;
-    			that.save(r);
-    			this.hide();
-    		    }});
-	}
-	
-	for(var i in collection) {
-	    var block = collection[i].defaults.block,
+	for(var i=0; i < collection.length; i++) {
+	    var block = collection[i],
 		blockName = block.replace('{{', '').replace('}}', ''),
-		data = collection[i].data;
+		data = '';
 		
 	    if (Defaceit.Blocks[blockName]) {
 		new Defaceit.Blocks[blockName](this.defaultQueue);
 	    }else if (data == '') {
-    		create_wnd(block);
-//		data = prompt('Введите текст для ' + block);
-		
+    		new Defaceit.Blocks['OneField'](blockName +'.'+this.defaultQueue, blockName);
 	    }else{
     		r = r.replace(new RegExp(block, 'g'), data);
     	    }
@@ -150,6 +138,44 @@ bookshelf('bookshelf.template.defaceit.ru', function(o) {
 
 
 Defaceit.Blocks = {}
+
+
+
+Defaceit.Blocks.OneField = function(queue, blockName) {
+    this.init(queue, blockName);
+}
+
+Defaceit.Blocks.OneField.prototype = {
+
+    init: function(queue, blockName) {
+	this.blockName = blockName;
+	this.queue = queue;
+	this.appName = '';
+	
+	this.fields = new Collection(this.onField_Ready, this);
+	this.fields.add(this.full_name(), {'name': 'field', 'type': 'field'});
+	this.fields.load();
+	
+    },
+    
+    onField_Ready: function(fields) {
+	that = this;
+	var w = Defaceit.Window.Manager.create('InputBox', {title: this.blockName, geometry: ['width:600', 'center', 'show'], handler: function(){
+    			Defaceit.Queue(that.full_name()).push(this.message());
+    			pages.page = pages.page.replace(new RegExp('{{'+that.blockName+'}}', 'g'), this.message());
+    			pages.save(pages.page);
+    			this.hide();
+    		    }});
+    		    
+    	w.textarea.val(fields[this.full_name()].data);
+    },
+    
+    full_name: function() {
+	return this.queue;
+    }
+}
+
+
 
 Defaceit.Blocks.Article = function(queue) {
     this.init(queue);

@@ -1,8 +1,38 @@
 <html>
 <head>
     <script src="http://defaceit.ru/defaceit/pages/pages.js"></script>
+
+<style>
+#centerLayer {
+/*    background: none repeat scroll 0 0 #FFFFFF;*/
+/*    border: 1px solid #C8D6E4;*/
+    border-radius: 10px 10px 10px 10px;
+    height: 256px;
+    left: 50%;
+    margin-left: -128px;
+    margin-top: -128px;
+    overflow: auto;
+    padding: 10px;
+    position: absolute;
+    top: 50%;
+    width: 256px;
+}
+</style>
 </head>
-<body>
+<body style="background: url('/images/buttons/bg.png') #efddb2;">
+<img src="http://defaceit.ru/images/logos/logo64.png">
+<div id="centerLayer"><img style="cursor:pointer;" src="/images/buttons/create.png" onclick="load_template();"/></div>
+<div style="text-shadow: 1px 1px #FBF4D9;position:absolute;top:50px;width:300px;left: 100%; margin-left:-450px;">
+    <h2>Начинаем строить замок из песка</h2>
+	<p>Когда-то очень давно я написал историю, которая называлась "<a href="http://www.codeart.ru/2007/6/26/skazka-o-tom-kak-ya-stroil-zamok-iz-peska/">Сказка о том, как я строил замок из песка</a>". В каком-то смысле эта история оказалась пророческой.</p>
+	<p>С момента написания рассказа прошло пять лет. А я так и не нашел время на реализацию своих идей. Потратив кучу времени на поиски себя, я окончательно запутался. Но с сегодняшнего дня я начинаю строить свой первый песочный замок - defaceit.ru.</p>
+</div>
+<div style="text-shadow: 1px 1px #FBF4D9;position:absolute;top:100%;width:300px;left: 100px; margin-top:-450px;"><h2>Каждая новая страница - киприч в бесконечной стройке</h2>
+<p>У нас не бывает несуществующих страниц. Найдя незанятый url, Вы можете смело занять его и создать свою страницу.</p>
+<p>Чтобы начать просто щелкните по большой кнопке по центру. Но помни, что однажды начав созидать, ты, возможно, уже никогда не сможешь остановиться.</p>
+</div>
+
+
     <script>
 	pageName = "{{ url }}";
 	function load_template() {
@@ -15,10 +45,11 @@
 	}
     </script>
 
-    <form id="template_form" action="/page/save" method="post">
+    <div style="background: url(http://defaceit.ru/images/bg.png) repeat scroll 0 0 #FFFFFF !important; width:400px;border: 1px solid #FFFFFF;border-radius: 6px 6px 6px 6px;box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);margin-bottom: 30px;">Небольшая технологическая формочка, от которой я скоро избавлюсь
+-    <form id="template_form" action="/page/save" method="post">
 	<input type="hidden" name="url" value="{{ url }}"/>
 	<textarea id="template" name="content"></textarea>
 	<input type="submit" value="save" name="save"/>
-	<input type="button" onclick="load_template();" value="Load template"/>
-    </form>
+	
+    </form></div>
 </body>
