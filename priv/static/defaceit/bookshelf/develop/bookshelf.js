@@ -20,6 +20,7 @@ Defaceit.Bookshelf.prototype = {
     
     
     render_template: function(message) {
+	this.itemCount = 0;
 	    this.wnd = Defaceit.Window.Manager.create('Simple', {
 		content: message,
 		buttons: [ {text: "Закрыть", handler: function(){this.wnd_handler.remove(); return false;}}],
@@ -56,18 +57,20 @@ Defaceit.Bookshelf.prototype = {
 }
 
 bookshelf = function(queue, cb, scope) {
+    var templateQueue = 'default.bookshelf.template.defaceit.ru';
 
-    var b = new Defaceit.Bookshelf(queue, cb, scope),
-	templateQueue = 'default.bookshelf.template.defaceit.ru';
+    if (!Defaceit.bookshelfInstance) {
+	var b = Defaceit.bookshelfInstance = new Defaceit.Bookshelf(queue, cb, scope);
     
  
-    q(templateQueue, b)
-	.on('empty', 'error')
-	.on('message', 'render_template');
+	q(templateQueue, b)
+	    .on('empty', 'error')
+	    .on('message', 'render_template');
     
-    q('items.' + queue, b)
-	.on('empty', 'error')
-	.on('message', 'render_items');
+	q('items.' + queue, b)
+	    .on('empty', 'error')                                                            
+	    .on('message', 'render_items');
+    }
     
 
     Defaceit.Queue(templateQueue).list();

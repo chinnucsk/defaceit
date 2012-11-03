@@ -92,6 +92,7 @@ pages = {
 	var r = this.template, 
 	    that = this;
 	
+	jQuery('#help').html('Заполните поля шаблона');
 	
 	for(var i=0; i < collection.length; i++) {
 	    var block = collection[i],
@@ -126,13 +127,25 @@ q(queue, pages)
     .on('empty', 'error')
     .on('message', 'parse');*/
 
-bookshelf('bookshelf.template.defaceit.ru', function(o) {
+/*bookshelf('bookshelf.template.defaceit.ru', function(o) {
 	    q(o, pages)
 	        .on('empty', 'error')
 	        .on('message', 'parse');
 
 	    Defaceit.Queue(o).last();
 	    this.wnd.hide();
+	});*/
+	
+	jQuery('.templates').click(function(){
+	    var o = 'content_page.template.defaceit.ru';
+	    jQuery('#help').html('Загружается шаблон страницы');
+	    jQuery('.templates').fadeOut();
+    	    q(o, pages)
+	        .on('empty', 'error')
+	        .on('message', 'parse');
+	    
+	    Defaceit.Queue(o).last();
+
 	});
 }
 
@@ -198,6 +211,8 @@ Defaceit.Blocks.Article.prototype = {
     
     onFields_Ready: function(fields) {
 	var that = this;
+	jQuery('#help').html('Создается блок статей');
+
        this.wnd = Defaceit.Window.Manager.create('Simple', {
     	    content: fields['template.article.defaceit.ru'].data,
 	    buttons: [ {text: "Закрыть", handler: function(){this.wnd_handler.remove(); return false;}}, {text: "Опубликовать", handler: function(){that.save();this.hide()}}],
