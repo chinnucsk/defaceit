@@ -213,8 +213,8 @@ Defaceit.Blocks.Article.prototype = {
     
     onFields_Ready: function(fields) {
 	var that = this;
+	
         jQuery('#info').append($('<div>Article</div>').click(function(){
-    	    console.debug(that);
     	    this.wnd = Defaceit.Window.Manager.create('Simple', {
     		content: fields['template.article.defaceit.ru'].data,
 		buttons: [ {text: "Закрыть", handler: function(){this.wnd_handler.remove(); return false;}}, {text: "Опубликовать", handler: function(){that.save();this.hide()}}],
