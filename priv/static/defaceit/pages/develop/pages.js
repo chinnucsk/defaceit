@@ -92,16 +92,17 @@ pages = {
 	var r = this.template, 
 	    that = this;
 	
-	jQuery('#help').html('Заполните поля шаблона');
+	jQuery('#help').html('Выберите в левой части блок и заполните его поля');
 	
 	for(var i=0; i < collection.length; i++) {
 	    var block = collection[i],
 		blockName = block.replace('{{', '').replace('}}', ''),
 		data = '';
-		
+
 	    if (Defaceit.Blocks[blockName]) {
 		new Defaceit.Blocks[blockName](this.defaultQueue);
 	    }else if (data == '') {
+	    
     		new Defaceit.Blocks['OneField'](blockName +'.'+this.defaultQueue, blockName);
 	    }else{
     		r = r.replace(new RegExp(block, 'g'), data);
@@ -173,14 +174,15 @@ Defaceit.Blocks.OneField.prototype = {
     
     onField_Ready: function(fields) {
 	that = this;
-	var w = Defaceit.Window.Manager.create('InputBox', {title: this.blockName, geometry: ['width:600', 'center', 'show'], handler: function(){
+	jQuery('#info').append($('<div>OneField</div>').click(function(){
+	    var w = Defaceit.Window.Manager.create('InputBox', {title: this.blockName, geometry: ['width:600', 'center', 'show'], handler: function(){
     			Defaceit.Queue(that.full_name()).push(this.message());
     			pages.page = pages.page.replace(new RegExp('{{'+that.blockName+'}}', 'g'), this.message());
     			pages.save(pages.page);
     			this.hide();
-    		    }});
-    		    
-    	w.textarea.val(fields[this.full_name()].data);
+    		    }})
+    	    w.textarea.val(fields[this.full_name()].data);
+    	}));
     },
     
     full_name: function() {
@@ -211,20 +213,23 @@ Defaceit.Blocks.Article.prototype = {
     
     onFields_Ready: function(fields) {
 	var that = this;
-	jQuery('#help').html('Создается блок статей');
-
-       this.wnd = Defaceit.Window.Manager.create('Simple', {
-    	    content: fields['template.article.defaceit.ru'].data,
-	    buttons: [ {text: "Закрыть", handler: function(){this.wnd_handler.remove(); return false;}}, {text: "Опубликовать", handler: function(){that.save();this.hide()}}],
-            geometry:['width:800', 'center', 'show']
-        });
-        
-        for(var i in fields) {
+        jQuery('#info').append($('<div>Article</div>').click(function(){
+    	    console.debug(that);
+    	    this.wnd = Defaceit.Window.Manager.create('Simple', {
+    		content: fields['template.article.defaceit.ru'].data,
+		buttons: [ {text: "Закрыть", handler: function(){this.wnd_handler.remove(); return false;}}, {text: "Опубликовать", handler: function(){that.save();this.hide()}}],
+        	geometry:['width:800', 'center', 'show']
+    	    });
+    	    
+    	            for(var i in fields) {
     	    var d = fields[i];
     	    if (d.defaults.type == 'field'){
     		jQuery('#defaceit-article-'+d.defaults.name).val(d.data);
     	    };
         }
+
+    	}));
+        
     },
     
     save: function() {
