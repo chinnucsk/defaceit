@@ -48,9 +48,9 @@ Defaceit.Queue.prototype = {
 		var cid = this.next_call_id();
 		
 		if (message.length > 1024) {
-		    cors_post('http://eservices.defaceit.ru/queue/'+action+'/'+this.queue+'/'+cid, 'message_text='+message);
+		    cors_post('http://eservices.sandbox.defaceit.ru/queue/'+action+'/'+this.queue+'/'+cid, 'message_text='+message);
 		}else{
-		    Defaceit.request('http://eservices.defaceit.ru/queue/'+action+'/' + this.queue + '/'  + cid + '/' + message);
+		    Defaceit.request('http://eservices.sandbox.defaceit.ru/queue/'+action+'/' + this.queue + '/'  + cid + '/' + message);
 		}
 		
 		return cid;

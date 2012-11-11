@@ -1,5 +1,5 @@
-Defaceit.load.css('http://defaceit.ru/defaceit/babycalc/css/babycalc.css');
-Defaceit.load.css('http://defaceit.ru/defaceit/tools/css/home.css');
+Defaceit.load.css('http://sandbox.defaceit.ru/defaceit/babycalc/css/babycalc.css');
+Defaceit.load.css('http://sandbox.defaceit.ru/defaceit/tools/css/home.css');
 
 
 Collection = function(callback, scope) {
@@ -69,7 +69,7 @@ Block.prototype = {
 
 pages = {
     'error': function(){alert('Мы не смогли загрузить дефолтный шаблон');},
-    'load_default_template': function(){ Defaceit.Queue('default.template.defaceit.ru').last();},
+    'load_default_template': function(){ Defaceit.Queue('default.template.sandbox.defaceit.ru').last();},
     'parse': function(template){
 	this.template = template;
 	var words=template.match(/\{\{([^}]*)\}\}/g);
@@ -124,11 +124,11 @@ q(queue, pages)
     .on('message', 'parse');
 
 
-/*q('default.template.defaceit.ru', pages)
+/*q('default.template.sandbox.defaceit.ru', pages)
     .on('empty', 'error')
     .on('message', 'parse');*/
 
-/*bookshelf('bookshelf.template.defaceit.ru', function(o) {
+/*bookshelf('bookshelf.template.sandbox.defaceit.ru', function(o) {
 	    q(o, pages)
 	        .on('empty', 'error')
 	        .on('message', 'parse');
@@ -138,7 +138,7 @@ q(queue, pages)
 	});*/
 	
 	jQuery('.templates').click(function(){
-	    var o = 'content_page.template.defaceit.ru';
+	    var o = 'content_page.template.sandbox.defaceit.ru';
 	    jQuery('#help').html('Загружается шаблон страницы');
 	    jQuery('.templates').fadeOut();
     	    q(o, pages)
@@ -204,7 +204,7 @@ Defaceit.Blocks.Article.prototype = {
 	this.fields = new Collection(this.onFields_Ready, this);
 	this.fields.add('title.' + this.full_name(), {'name': 'title', 'type': 'field'});
 	this.fields.add('content.' + this.full_name(), {'name': 'content', 'type': 'field'});
-	this.fields.add('template.article.defaceit.ru', {'name': 'template', 'type': 'template'});
+	this.fields.add('template.article.sandbox.defaceit.ru', {'name': 'template', 'type': 'template'});
 	this.fields.load();
 
     },
@@ -216,7 +216,7 @@ Defaceit.Blocks.Article.prototype = {
 	
         jQuery('#info').append($('<div>Article</div>').click(function(){
     	    this.wnd = Defaceit.Window.Manager.create('Simple', {
-    		content: fields['template.article.defaceit.ru'].data,
+    		content: fields['template.article.sandbox.defaceit.ru'].data,
 		buttons: [ {text: "Закрыть", handler: function(){this.wnd_handler.remove(); return false;}}, {text: "Опубликовать", handler: function(){that.save();this.hide()}}],
         	geometry:['width:800', 'center', 'show']
     	    });
@@ -249,8 +249,232 @@ Defaceit.Blocks.Article.prototype = {
     }
 }
 
-var defaceitDevelopMode = !!(new RegExp('http://defaceit.ru/defaceit/pages/develop/')).test(document.location);
+var defaceitDevelopMode = !!(new RegExp('http://sandbox.defaceit.ru/defaceit/pages/develop/')).test(document.location);
 
 if (defaceitDevelopMode) {
-    run('template.babywonder.ru');
+//    run('template.babywonder.ru');
 }
+
+
+/**
+ * Base Object class
+ */
+Defaceit.Base = Defaceit.extend({},{
+
+	init: function(config) {
+		this.config = config;
+	},
+
+
+	status: function() {
+		return this.status;
+	},
+
+	load: function() {
+		this.store.load();
+	},
+
+	save: function() {
+
+	}
+});
+
+/**
+ * Events class
+ */
+
+Defaceit.Events = function(config) {
+    this.init(config);
+}
+
+Defaceit.Events.prototype = {
+    create: function() {
+	return this;
+    },
+    
+    init: function() {
+	this.events = {};
+    },
+    
+    fire: function(event, args) {
+	if (this.events[event]) {
+	    var cb = this.events[event][0],
+		scope = this.events[event][1] || this;
+	    cb.call(scope, args);
+	}
+    },
+    
+    on: function(event, cb, scope) {
+	this.events[event] = [cb, scope];
+	return this;
+    }
+}
+
+
+/**
+ *  Block.js
+ */ 
+
+Defaceit.Block = function(block) {
+		var block_name = function(blockName) {
+			r = blockName.replace('{{', '').replace('}}', '').split('.');
+			return r[0] ? r[0] : blockName;
+		},
+		name = block_name(block);
+
+
+		if (Defaceit.Block[name]) {
+			return Defaceit.Block.List[name] = Defaceit.Block.List[name] || new Defaceit.Block[name]({blockName: block});
+		}
+
+		return new Defaceit.Block.Instance({blockName: block});
+}
+
+Defaceit.Block.List = {};
+
+Defaceit.Block.Instance = Defaceit.extend(Defaceit.Events, {
+	init: function(config) {
+		Defaceit.Events.prototype.init.call(this, config);
+		this.config = config;
+		this.fields = {};
+	},
+
+	block_keyword: function(block) {
+		var blockName = block || this.config.blockName,
+			r = blockName.replace('{{', '').replace('}}', '').split('.');
+		return r[1] ? r[1] : 'default';
+	},
+	
+	block_name: function(block) {
+		var blockName = block || this.config.blockName,
+			r = blockName.replace('{{', '').replace('}}', '').split('.');
+		return r[0] ? r[0] : blockName;
+	},
+
+	full_name: function() {
+		return this.config.blockName;
+	},
+
+	field: function(block) {
+		var fieldName = this.block_keyword(block);
+		return this.fields[fieldName];
+	}
+
+
+});
+
+Defaceit.Block.Article = Defaceit.extend(Defaceit.Block.Instance, {
+	init: function(config) {
+		Defaceit.Block.Instance.prototype.init.call(this, config);
+		this.fields['content'] = 'Тестовый контент';
+		this.fields['title'] = 'Тестовый заголовок';
+	}
+});
+
+/**
+ *	Template Class
+ */
+
+ 
+
+Defaceit.Template = function(tName) {
+    return Defaceit.Template.Singleton[tName] = Defaceit.Template.Singleton[tName] || new Defaceit.Template.Instance({templateName: tName});
+}
+
+Defaceit.Template.Singleton = {};
+
+Defaceit.Template.Instance = Defaceit.extend(Defaceit.Events, {
+	    init: function(config){
+		this.parent.init.call(this, config);
+
+		this.templateName = config.templateName;
+		this.blocks = [];
+		this.result = '';
+		
+		q(this.templateName, this)
+		    .on('message', 'onTemplate_load')
+		    .on('empty', 'onTemplate_error');
+    },
+    
+    load: function() {
+		Defaceit.Queue(this.templateName).last();
+    },
+    
+    onTemplate_load: function(template) {
+		this.template = template;
+		this.fire('loaded');
+    },
+    
+    onTemplate_error: function() {
+		alert('Произошла ошибка при загрузке шаблона ' + this.templateName);
+    },
+    
+    parse: function() {
+    	var words = this.template.match(/\{\{([^}]*)\}\}/g);
+    	this.blocks = words;
+		this.fire('parsed');
+    },
+
+	render: function() {
+		this.result = this.template;
+
+		_.each(this.blocks, function(b){
+			var block = Defaceit.Block(b);
+		    this.result = this.result.replace(new RegExp(b, 'g'), block.field(b));
+		}, this);
+		
+		this.result = this.result.replace(new RegExp('<!-- pageQueue -->', 'g'), 'pageQueue = "";');
+		this.fire('rendered');
+    }
+    
+});
+
+Defaceit.Template.Page = function(pageName) {
+    var t = new Defaceit.Template.Instance({templateName:pageName + '_page.template.sandbox.defaceit.ru'});
+	t.on('loaded', t.parse)
+	 .on('parsed', t.render)
+	 .on('rendered', function(){alert('Вам необходимо задать событие для события rendered');})
+	 .load();
+    return t;
+}
+
+
+
+/**
+ *  Pages.js
+ */
+
+ Defaceit.Pages = function(){
+ 		return new Defaceit.Pages.Instance({});
+ }
+
+ Defaceit.Pages.Instance = Defaceit.extend({}, {
+ 	init: function(config) {
+ 		this.config = config;
+ 		this.default_page();
+ 	},
+
+ 	default_page: function() {
+ 		this.defaultPage = Defaceit.Template.Page('create')
+				.on('parsed', this.fill_blocks)
+				.on('rendered', function(){jQuery('body').html(this.result);});
+ 	},
+
+ 	fill_blocks: function() {
+ 		_.each(this.blocks, function(b){
+			Defaceit.Block(b);
+		});
+
+ 		console.debug(Defaceit.Block.List);
+ 	}
+ });
+
+ //Defaceit.Pages(); 
+
+
+var object = {}
+ _.extend(object, Backbone.Events);
+
+ object.on('test', function(){alert('test');}, object);
+
+ object.trigger('test');
