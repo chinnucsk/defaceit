@@ -38,8 +38,7 @@ Defaceit.Queue.prototype = {
 	},
 	
 	last: function() {
-	    this.request('last');
-	    return this;
+	    return this.request('last');
 	},
 	
 	
@@ -62,7 +61,7 @@ Defaceit.Queue.prototype = {
 	},
 	
 	client_callback: function(data) {
-
+		data.call_id = parseInt(data.call_id);
 	    switch(data.type) {
 	    
 		case 'messages':
@@ -70,7 +69,7 @@ Defaceit.Queue.prototype = {
 		break;
 		
 		case 'message':
-		    this.send_message(data.data.message_text, data.data);
+		    this.send_message(data.data.message_text, data.data, data);
 		break;
 		
 		case 'status': 
@@ -86,12 +85,11 @@ Defaceit.Queue.prototype = {
 	    }
 	},
 	
-	send_message: function(message, full_message) {
-	
+	send_message: function(message, full_message, raw) {
 		message = decodeURIComponent(message);
 		for(var i = 0; i < this.clients.length; i++) {
 		    var client = this.clients[i];
-		    client.queue_message && client.queue_message(message, full_message);
+		    client.queue_message && client.queue_message(message, full_message, raw);
 		}
 
 	}
@@ -165,7 +163,6 @@ function cors_post(url, params) {
 	var xhr = createCORSRequest('POST', url);
 	if (!xhr) {
 	     throw new Error('CORS not supported');
-	     return;
 	}
 
 	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");

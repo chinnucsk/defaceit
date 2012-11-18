@@ -78,7 +78,7 @@ Defaceit.extend = function(mammy, o) {
 		child.prototype[i] = o[i];
 	}
 	return child;*/
-	var child = function(config){this.init(config);};
+	var child = function(){this.initialize.apply(this, arguments);};
 	
 	child.prototype = _.extend({}, mammy.prototype, o);
 	child.prototype.parent = mammy.prototype;

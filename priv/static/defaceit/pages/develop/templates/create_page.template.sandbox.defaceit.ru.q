@@ -1,10 +1,17 @@
-<p>Создаем страницу</p>
-<p>Немного модифицируем темплейт</p>
-Меня зовут женя
-<h1>{{Article.title}}</h1>
+<a href="/">
+<img src="http://sandbox.defaceit.ru/images/logos/logo64.png">
+</a>
+<div class="container">
+	<div class="row">
+		<div class="span12 menu"></div>
+	</div>
 
-<p>{{Article.content}}</p>
 
-<p>{{Title}}</p>
+    <div class="row">
+    	<div class="span2 left">...</div>
+    	<div class="span8 center">...</div>
+    	<div class="span2 right">...</div>
+    </div>
 
-<h2>{{Article.title}}</h2>
+
+</div>

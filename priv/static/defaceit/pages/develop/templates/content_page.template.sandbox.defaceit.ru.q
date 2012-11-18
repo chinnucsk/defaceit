@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <head>
-        <title>{{Title}}</title>
+        <title>{{Article.title}}</title>
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <meta name="description" content="Страница разработчиков фейверка шаров" />
         
@@ -17,6 +17,8 @@
         <script src="/bootstrap/js/bootstrap.js"></script>
         <script>
             <!-- pageQueue -->
+            <!-- pageQueue = "rashirat_vozmojnosty_gotovih_vidgetov.template.babywonder.ru"; -->
+            url = "{{PageUrl}}";
     	    commentsQueue = "comments." + pageQueue;
     	</script>
     
@@ -36,7 +38,8 @@
 	</div>
 
         <div class="span10 defaceit-page-content">
-    		{{Article}}
+            <h1>{{Article.title}}</h1>
+    		<div>{{Article.content}}</div>
         </div>
 </div>
 
