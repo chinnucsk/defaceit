@@ -60,7 +60,7 @@ Defaceit.load ={
 }
 
 Defaceit.extend = function(mammy, o) {
-	o = o || {};
+	/*o = o || {};
 	mammy = mammy || function() {};
 	child = function(){mammy.apply(this, arguments);}
 	
@@ -70,13 +70,18 @@ Defaceit.extend = function(mammy, o) {
 		child.prototype[i] = mammy.prototype[i];
 	}
 
-	child.prototype.parent = {};
+	child.prototype.parent = mammy.prototype.parent || {};
 	for(var i in o){
 		if (child.prototype[i]) {
                   	child.prototype.parent[i] = mammy.prototype[i];
 		}
 		child.prototype[i] = o[i];
 	}
+	return child;*/
+	var child = function(){this.initialize.apply(this, arguments);};
+	
+	child.prototype = _.extend({}, mammy.prototype, o);
+	child.prototype.parent = mammy.prototype;
 	return child;
 }
 

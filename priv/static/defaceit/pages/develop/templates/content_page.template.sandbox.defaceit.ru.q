@@ -1,23 +1,21 @@
 <!DOCTYPE html>
 <head>
-        <title>{{Title}}</title>
+        <title>{{Article.title}}</title>
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <meta name="description" content="Страница разработчиков фейверка шаров" />
-        
-        <script type="text/javascript" src="http://defaceit.ru/defaceit/tools.js"></script>
-        <script>window.DefaceitDevelopMode = true;</script>
-        
-        
 
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <script type="text/javascript" src="http://defaceit.ru/defaceit/tools.js"></script>
 
         <link href="/bootstrap/css/my.css" rel="stylesheet">
         <link href="/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
         <link href="http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300&subset=cyrillic-ext" rel="stylesheet" type="text/css">
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        
         <script src="/bootstrap/js/bootstrap.js"></script>
+        
         <script>
-            <!-- pageQueue -->
-    	    commentsQueue = "comments." + pageQueue;
+            url = "{{PageUrl}}";
+    	    commentsQueue = "comments." + url;
     	</script>
     
 </head>
@@ -36,7 +34,8 @@
 	</div>
 
         <div class="span10 defaceit-page-content">
-    		{{Article}}
+            <h1>{{Article.title}}</h1>
+    		<div>{{Article.content}}</div>
         </div>
 </div>
 
