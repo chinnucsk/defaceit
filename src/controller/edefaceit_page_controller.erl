@@ -6,7 +6,7 @@
 content(Get, [Url]) ->
     case boss_db:find(page, [url, 'equals', Url]) of
 	[] ->
-	    {redirect, "http://defaceit.ru/page/create/" ++ Url};
+	    {redirect, "/page/create/" ++ Url};
 	Messages ->
 	    {ok, [{messages, Messages}]}
 end.
