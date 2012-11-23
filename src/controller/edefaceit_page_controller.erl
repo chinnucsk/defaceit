@@ -22,7 +22,7 @@ save(Post, []) ->
 	drop(Url),
 	NewPage = page:new(id, Url, Content),
 	{ok, Saved} = NewPage:save(),
-	{redirect, "/page/content/" ++ Url}.
+	{redirect, "http://defaceit.ru/page/content/" ++ Url}.
 
 
 drop(Url) ->
