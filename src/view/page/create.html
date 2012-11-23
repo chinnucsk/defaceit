@@ -45,6 +45,7 @@
     m = document.location.toString().match(/http:\/\/([^\/]*)\//);
     Defaceit.Page.namespace = m[1] || 'defaceit.ru';   
     Defaceit.Page.name = pageName;
+    Defaceit.Page.namespace = Defaceit.Page.namespace.replace(Defaceit.Page.name + '.', '');
     run();
     }); 
     </script>
