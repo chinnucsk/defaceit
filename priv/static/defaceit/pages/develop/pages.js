@@ -1,5 +1,5 @@
-Defaceit.load.css('http://sandbox.defaceit.ru/defaceit/babycalc/css/babycalc.css');
-Defaceit.load.css('http://sandbox.defaceit.ru/defaceit/tools/css/home.css');
+Defaceit.load.css('http://defaceit.ru/defaceit/babycalc/css/babycalc.css');
+Defaceit.load.css('http://defaceit.ru/defaceit/tools/css/home.css');
 
 Defaceit.Page = {};
 namespace = function() {
@@ -263,7 +263,7 @@ Blocks.Article.EditView = Backbone.View.extend({
 		this.htmlPageBlock = htmlPageBlock;
 		this.htmlPageBlock.on('render', this.render, this);
 
-		this.template = new Defaceit.Template('article', 'template.sandbox.defaceit.ru');
+		this.template = new Defaceit.Template('article', 'template.defaceit.ru');
 		this.template.on('status:change', this.render, this);
 	},
 
@@ -413,7 +413,7 @@ Defaceit.BlockManager.EditView = Backbone.View.extend({
 	save: function() {
 		this.$el
 			.attr('method', 'POST')
-			.attr('action', 'http://sandbox.defaceit.ru/page/save')
+			.attr('action', 'http://defaceit.ru/page/save')
 			.submit();
 	},
 
@@ -452,7 +452,7 @@ Defaceit.BlockManager.EditView = Backbone.View.extend({
 
 Defaceit.Template = Backbone.Model.extend({
 	initialize: function(template, namespace) {
-		namespace = namespace || 'template.sandbox.defaceit.ru';
+		namespace = namespace || 'template.defaceit.ru';
 		this.queueStore = new Defaceit.StackQueueStore(template, namespace);
 		this.status(this.queueStore.status());
 
@@ -804,7 +804,7 @@ Defaceit.Page.BigButtonView = Backbone.View.extend({
 
 
 function run(){
-//Defaceit.Page.namespace = 'sandbox.babywonder.ru';
+//Defaceit.Page.namespace = 'babywonder.ru';
 	if (!Defaceit.Page.name) {
 		var pagename = null;
 		do{	pagename = prompt('Введите имя страницы');
@@ -816,7 +816,7 @@ function run(){
 }
 	
 
-if (/sandbox.defaceit.ru.*pages/.test(document.location)) {
+if (/defaceit.ru.*pages/.test(document.location)) {
 	run();			
 }
 

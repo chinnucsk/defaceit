@@ -1,1 +1,1 @@
-content.article.sandbox.defaceit.ru
+content.article.defaceit.ru

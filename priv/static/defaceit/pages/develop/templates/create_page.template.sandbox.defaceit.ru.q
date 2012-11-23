@@ -15,7 +15,7 @@
 }
 </style>
 
-<a href="/"><img src="http://sandbox.defaceit.ru/images/logos/logo64.png"></a>
+<a href="/"><img src="http://defaceit.ru/images/logos/logo64.png"></a>
 <div class="container">
     <div class="row">
     	<div class="span2 left menu">...</div>

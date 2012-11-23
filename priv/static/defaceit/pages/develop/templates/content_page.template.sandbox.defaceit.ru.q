@@ -5,7 +5,7 @@
         <meta name="description" content="Страница разработчиков фейверка шаров" />
 
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-        <script type="text/javascript" src="http://sandbox.defaceit.ru/defaceit/tools.js"></script>
+        <script type="text/javascript" src="http://defaceit.ru/defaceit/tools.js"></script>
 
         <link href="/bootstrap/css/my.css" rel="stylesheet">
         <link href="/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
@@ -24,7 +24,7 @@
 
 <div class="row-fluid ">
         <div class="span2 defaceit-page-left-bar">
-<br /><a href="/"><img src="http://sandbox.defaceit.ru/images/logos/logo64.png" /></a><br/><br/>
+<br /><a href="/"><img src="http://defaceit.ru/images/logos/logo64.png" /></a><br/><br/>
 
 <h3>Комментарии</h3>
 	<a onclick="Defaceit.Window.Manager.create('InputBox', {title: 'Комментарий', geometry: ['width:400', 'center', 'show'], handler:function(){Defaceit.Queue(commentsQueue).push(this.message()); this.hide();}});return false;" href="#" class="add-comment">&nbsp;</a>
