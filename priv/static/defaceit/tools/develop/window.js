@@ -2,7 +2,7 @@ if (!Defaceit.Window) {
 Defaceit.Window = {}
 
 Defaceit.Window.Simple = function(config) {
-  this.init(config);
+  this.initialize(config);
 }
 
 Defaceit.Window.Simple.create = function(config) {
@@ -15,7 +15,7 @@ Defaceit.Window.Simple.prototype = {
     content_handler: null,
     config: {},
 
-    init: function(config) {
+    initialize: function(config) {
 	config = this.configure(config);
 
         this.create_window();
