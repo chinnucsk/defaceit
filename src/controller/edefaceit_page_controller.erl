@@ -6,7 +6,7 @@
 content(Get, [Url]) ->
     case boss_db:find(page, [url, 'equals', Url]) of
 	[] ->
-	    {redirect, "/page/create/" ++ Url};
+	    {redirect, "http://defaceit.ru/page/create/" ++ Url};
 	Messages ->
 	    {ok, [{messages, Messages}]}
 end.
@@ -22,7 +22,7 @@ save(Post, []) ->
 	drop(Url),
 	NewPage = page:new(id, Url, Content),
 	{ok, Saved} = NewPage:save(),
-	{redirect, "http://defaceit.ru/page/content/" ++ Url}.
+	{redirect, "/page/content/" ++ Url}.
 
 
 drop(Url) ->
