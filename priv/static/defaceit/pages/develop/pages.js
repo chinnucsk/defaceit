@@ -141,6 +141,7 @@ Blocks.SimplePage = Defaceit.HtmlPageBlock.extend({
 			m.render();
 			m.blocks.on('save', function(block) {
 					var t = new Defaceit.BlockManager.EditView();
+					console.debug(m.blocks.toObject());
 					t.render(_.template(that.template.get('text'), m.blocks.toObject()), Defaceit.Page.name);
 
 			});
@@ -159,7 +160,9 @@ Blocks.SimplePage = Defaceit.HtmlPageBlock.extend({
 Blocks.Default = Defaceit.HtmlPageBlock.extend({
 	initialize: function(name) {
 		Defaceit.HtmlPageBlock.prototype.initialize.apply(this, [name]);
-		this.queueStore = new Defaceit.StackQueueStore(name, namespace());
+
+		this.queueNamespace = 'default.' + Defaceit.Page.namespace;
+		this.queueStore = new Defaceit.StackQueueStore(name, this.queueNamespace);
 		this.queueStore.on('status:change', this.route, this);
 		this.fetch();
 	},
@@ -206,6 +209,41 @@ Blocks.PageUrl = Blocks.Default.extend({
 	}
 });
 
+
+/**
+ * +Defaults
+ */
+
+ Blocks.Defaults = Defaceit.HtmlPageBlock.extend({
+ 	initialize: function(name) {
+ 		Defaceit.HtmlPageBlock.prototype.initialize.apply(this, [name]);
+
+ 		this.queueNamespace = 'defaults.' + Defaceit.Page.namespace;
+		this.queueStore.add(new Defaceit.StackQueueStore('logo', this.queueNamespace));
+		this.fetch();
+		
+ 	},
+
+ 	edit: function(data){
+		if (data === null) {
+			this.status('ready');
+		}else if(_.isString(data)){
+			this.status('sync', false);
+			this.fill(data);
+		}else {
+			this.edit(prompt('Logo:', this.queueStore.find('logo').data));
+		}
+
+	},
+
+	fill: function(data) {
+		this.queueStore.find('logo').set(data);
+	},
+
+	toObject: function() {
+		return {'logo': this.queueStore.find('logo').data};
+	}
+ });
 
 /**
  * +Article
@@ -817,6 +855,7 @@ function run(){
 	
 
 if (/defaceit.ru.*pages/.test(document.location)) {
+	Defaceit.Page.namespace = 'babywonder.ru';	
 	run();			
 }
 

@@ -24,7 +24,7 @@
 
 <div class="row-fluid ">
         <div class="span2 defaceit-page-left-bar">
-<br /><a href="/"><img src="http://defaceit.ru/images/logos/logo64.png" /></a><br/><br/>
+<br /><a href="/">{{Defaults.logo}}</a><br/><br/>
 
 <h3>Комментарии</h3>
 	<a onclick="Defaceit.Window.Manager.create('InputBox', {title: 'Комментарий', geometry: ['width:400', 'center', 'show'], handler:function(){Defaceit.Queue(commentsQueue).push(this.message()); this.hide();}});return false;" href="#" class="add-comment">&nbsp;</a>
@@ -41,13 +41,7 @@
 
 <hr>
 
-     <footer>
-
-        <p>&copy; <a href="http://esergeev.ru/">Evgeny Sergeev</a>    2012. Сайт заряжен через <a href="http://twitter.github.com/bootstrap/index.html">Twitter Bootstrap</a>, <a href="http://www.chicagoboss.org/">ChicagoBoss (erlang)</a>
-        </p>
-
-
-      </footer>
+     <footer>{{Footer}}</footer>
 
 
     </div> <!-- /container -->
