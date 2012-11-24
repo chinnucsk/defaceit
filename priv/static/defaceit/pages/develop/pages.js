@@ -790,7 +790,7 @@ Defaceit.Page.ButtonView = Backbone.View.extend({
 	},
 
 	render: function(x,y){
-		this.$el.attr('src', '/images/templates/test.png').css({'width':'100px', 'position':'absolute', 'left': x, 'top': y}).appendTo('body');
+		this.$el.attr('src', 'http://defaceit.ru/images/templates/test.png').css({'width':'100px', 'position':'absolute', 'left': x, 'top': y}).appendTo('body');
 		return this;
 	}
 });
@@ -838,7 +838,7 @@ Defaceit.Page.BigButtonView = Backbone.View.extend({
 		
 	},
 	render: function() {
-		this.$el.html('<img id="big-button" src="/images/buttons/create.png" />').appendTo('body');
+		this.$el.html('<img id="big-button" src="http://defaceit.ru/images/buttons/create.png" />').appendTo('body');
 	}
 });
 
