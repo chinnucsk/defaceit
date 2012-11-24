@@ -141,8 +141,9 @@ Blocks.SimplePage = Defaceit.HtmlPageBlock.extend({
 			m.render();
 			m.blocks.on('save', function(block) {
 					var t = new Defaceit.BlockManager.EditView(),
-						content = _.template(that.template.get('text').replace(new RegExp("\n",'g'), "<br />\n"), m.blocks.toObject());
-					 
+						content = _.template(that.template.get('text'), m.blocks.toObject());
+				
+					content = content.replace(new RegExp("\n", 'g'), "<br />\n");
 					t.render(content, Defaceit.Page.name);
 
 			});
