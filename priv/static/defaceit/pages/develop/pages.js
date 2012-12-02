@@ -37,14 +37,17 @@ Defaceit.HtmlPageBlock = Backbone.Model.extend({
 
 	route: function() {
 		var r = 'BLOCK:'+this.status() + ', STORE:' + (this.queueStore && this.queueStore.status());
-//		console.debug(this.name() + '  ' + r);
+		console.debug(this.name() + '  ' + r);
 
 
 		switch(r) {
+			case 'BLOCK:ready, STORE:empty':
+			case 'BLOCK:ready, STORE:ready': this.trigger('load'); break;
 			case 'BLOCK:start, STORE:start':
 			case 'BLOCK:start, STORE:ready': this.status('ready'); break;
 			case 'BLOCK:save, STORE:ready': this.trigger("save", this);this.status('ready'); break;
 
+			case 'BLOCK:edit, STORE:empty':
 			case 'BLOCK:edit, STORE:start':
 			case 'BLOCK:edit, STORE:ready': this.edit(); break;
 	
@@ -65,7 +68,7 @@ Defaceit.HtmlPageBlock = Backbone.Model.extend({
 	},
 
 	status: function(status, propagate) {
-		propagate = propagate == undefined ? true : propagate;
+		propagate = propagate === undefined ? true : propagate;
 
 		if (status) {
 			this.myStatus = status;
@@ -130,7 +133,7 @@ Blocks.SimplePage = Defaceit.HtmlPageBlock.extend({
 	},
 
 	edit: function() {
-		this.template = new Defaceit.Template('content_page');
+		this.template = new Defaceit.Template('thumbnails_page');
 		this.template.on('status:change', this.run, this);
 	},
 
@@ -247,6 +250,209 @@ Blocks.PageUrl = Blocks.Default.extend({
 	}
  });
 
+
+
+/**
+ * +Thumbnail
+ */
+
+ Blocks.Thumbnail = Defaceit.HtmlPageBlock.extend({
+ 	initialize: function(name) {
+ 		Defaceit.HtmlPageBlock.prototype.initialize.apply(this, [name]);
+
+ 		this.queueNamespace = name+'.'+namespace();
+ 		this.queueStore.add(new Defaceit.StackQueueStore('title', this.queueNamespace));
+ 		this.queueStore.add(new Defaceit.StackQueueStore('content', this.queueNamespace));
+ 		this.queueStore.add(new Defaceit.StackQueueStore('url', this.queueNamespace));
+ 		this.fetch();
+ 	},
+
+	fill: function(title, content, url) {
+		this.queueStore.find('title').set(title);
+		this.queueStore.find('content').set(content);
+		this.queueStore.find('url').set(url);
+	},
+
+	edit: function(data) {
+
+		if (data) {
+			this.status('sync', false);
+			this.fill.apply(this, data);	
+			
+			return;
+		}
+
+	},
+
+	toObject: function() {
+		return {
+			'title': this.queueStore.find('title').data,
+			'content': this.queueStore.find('content').data,
+			'url': this.queueStore.find('url').data
+		};
+	}
+
+ });
+
+
+Blocks.Thumbnail.EditView = Backbone.View.extend({
+	el: '.page',
+
+	
+	initialize: function(index) {
+		this.thumbnail = new Blocks.Thumbnail('Thumbnail'+index);
+		this.thumbnail.on('load', this.render, this);
+	},
+
+
+	select: function() {
+		this.trigger('select', this);
+	},
+
+	done: function() {
+		this.thumbnail.edit([
+				this.$el.find('#title').val(),
+				this.$el.find('#content').val(),
+				this.$el.find('#url').val()
+		]);
+	},
+	render: function() {
+		//var template = _.template('title:<input id="title" value="{{title}}"/>content:<input id="content" value="{{content}}"/>url:<input id="url" value="{{url}}"/>', this.thumbnail.toObject());
+		var template = _.template(this.thumbnail.name()+': {{title}}', this.thumbnail.toObject());
+		if (this.$el.find('#'+this.thumbnail.name()).length) {
+			this.$el.find('#'+this.thumbnail.name()).html(template);
+		}else{
+			this.$el.append($('<div id="'+this.thumbnail.name()+'">').html(template));
+			var that=this;
+			this.$el.append($('<a>').html('edit').click(function(){that.select.call(that)}));
+		}
+	}
+});
+
+/**
+ * +Thumbnails
+ */
+
+ Blocks.Thumbnails = Defaceit.HtmlPageBlock.extend({
+ 	initialize: function(name) {
+ 		Defaceit.HtmlPageBlock.prototype.initialize.apply(this, [name]);
+
+ 		this.thumbnails = [];
+
+ 		this.queueNamespace = 'thumbnails.' + namespace;
+ 		this.queueStore.add(new Defaceit.StackQueueStore('list', this.queueNamespace));
+ 		//this.fetch();
+
+
+ 	},
+
+ 	fill: function() {
+ 		
+ 	},
+
+ 	edit: function(data) {
+ 		if (data) {
+ 			this.status('ready');
+ 			alert('Save data');
+ 			return;
+ 		}
+
+		var e = new Blocks.Thumbnails.EditView(this);
+		e.on('block:edit_done', this.edit, this); 		
+ 	},
+
+ 	compile: function() {
+ 		var wrap = '<ul class="thumbnails"><li class="span4">{{content1}}</li><li class="span4">{{content2}}</li><li class="span4">{{content3}}</li></ul>';
+ 			t = '<h4>{{title}}</h4><div>{{content}}</div><p style="text-align:right;margin-top:20px;"><a class="btn" href="{{url}}">Подробнее</a></p>', 
+ 			content1 = content2 = content3 ='';
+
+ 		var i = 1;
+
+		_.each(this.thumbnails, function(item){
+			if (item.queueStore.status() != 'empty') {
+				if(i%3 == 0) {
+					content3 += _.template(t, item.toObject());
+				}else if(i%2 == 0) {
+					content2 += _.template(t, item.toObject());
+				}else{
+					content1 += _.template(t, item.toObject());
+				}
+				i++;
+				
+			}
+		});
+		this.set('result', _.template(wrap, {content1: content1,content2: content2,content3: content3}));
+		alert(this.get('result'));		
+ 	},
+
+ 	toObject: function() {
+ 		return this.get('result');
+ 	}
+
+ });
+
+Blocks.Thumbnails.EditView = Backbone.View.extend({
+	el: '.center',
+	className: 'panel',
+
+	initialize: function(htmlPageBlock){
+		this.htmlPageBlock = htmlPageBlock;
+		this.currentThumbnail = null;
+		this.render();
+	},
+
+	create: function() {
+		var b = new Blocks.Thumbnail.EditView([this.htmlPageBlock.thumbnails.length+1]);
+		this.currentThumbnail = b.thumbnail;
+		this.currentThumbnail.on('load', this.next, this);
+		this.htmlPageBlock.thumbnails.push(this.currentThumbnail);
+		b.render();
+		b.on('select', this.change_current, this);
+	},
+
+	next: function() {
+		console.debug('next');
+		if (this.htmlPageBlock.thumbnails[this.htmlPageBlock.thumbnails.length-1].queueStore.status() == 'empty') {
+			this.change_current({thumbnail:this.htmlPageBlock.thumbnails[this.htmlPageBlock.thumbnails.length-1]});
+			return;
+		}
+		this.create();
+	},
+	change_current: function(el) {
+		this.currentThumbnail = el.thumbnail;
+		this.$el.find('#title').val(this.currentThumbnail.queueStore.find('title').data);
+		this.$el.find('#content').val(this.currentThumbnail.queueStore.find('content').data);
+		this.$el.find('#url').val(this.currentThumbnail.queueStore.find('url').data);
+	},
+
+	done: function() {
+		this.currentThumbnail.edit([
+				this.$el.find('#title').val(),
+				this.$el.find('#content').val(),
+				this.$el.find('#url').val()
+		]);
+
+
+	},
+
+	cancel: function() {
+		this.htmlPageBlock.compile();
+		this.htmlPageBlock.trigger('save');
+	},
+
+	render: function() {
+		var template = '<p class="calc_label">title:<input style="width:99%" id="title"/></p><p class="calc_label">content:<textarea style="width:99%; height: 200px;" id="content" /></textarea></p>url:<input style="width:99%" id="url" />';
+		this.$el.html('<div class="page">'+template+'</div>');
+		var b = new Blocks.Article.PanelButtonsView().render();
+		b.on('done', this.done, this);
+		b.on('cancel', this.cancel, this);
+		this.create();
+
+		
+	}
+});
+
+
 /**
  * +Article
  */
@@ -277,7 +483,6 @@ Blocks.Article = Defaceit.HtmlPageBlock.extend({
 			
 			return;
 		}
-
 		var e = new Blocks.Article.EditView(this);
 		e.on('block:edit_done', this.edit, this);
 	},
@@ -326,16 +531,17 @@ Blocks.Article.EditView = Backbone.View.extend({
 
 
 	render: function() {
-		if (this.template.status() != 'ready' || this.htmlPageBlock.queueStore.status() != 'ready') {return;}
+		if (this.template.status() == 'ready' && (this.htmlPageBlock.queueStore.status() == 'ready' || this.htmlPageBlock.queueStore.status() == 'empty')) {
 
-		this.$el.html(_.template(this.template.get('text'), this.htmlPageBlock));
+			this.$el.html(_.template(this.template.get('text'), this.htmlPageBlock));
 
-		this.$el.find('#defaceit-article-title').val(this.htmlPageBlock.queueStore.find('title').data);
-		this.$el.find('#defaceit-article-content').val(this.htmlPageBlock.queueStore.find('content').data);
+			this.$el.find('#defaceit-article-title').val(this.htmlPageBlock.queueStore.find('title').data);
+			this.$el.find('#defaceit-article-content').val(this.htmlPageBlock.queueStore.find('content').data);
 
-		var b = new Blocks.Article.PanelButtonsView().render();
-		b.on('done', this.save, this);
-		b.on('cancel', this.cancel, this);
+			var b = new Blocks.Article.PanelButtonsView().render();
+			b.on('done', this.save, this);
+			b.on('cancel', this.cancel, this);
+		}
 	}
 
 });
@@ -702,7 +908,7 @@ _.extend(Defaceit.QueueStore.prototype, {
 
 	queue_status: function(m){
 		if (m.result == 'empty') {
-			this.set('', 'ready');
+			this.set('', 'empty');
 			return;
 		}
 		this.status('ready');
