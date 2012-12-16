@@ -5,7 +5,7 @@
         <meta name="description" content="Страница разработчиков фейверка шаров" />
 
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-        <script type="text/javascript" src="http://defaceit.ru/defaceit/tools.js"></script>
+        <script type="text/javascript" src="http://sandbox.defaceit.ru/defaceit/tools.js"></script>
 
         <link href="/bootstrap/css/my.css" rel="stylesheet">
         <link href="/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
