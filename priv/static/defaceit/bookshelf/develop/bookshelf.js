@@ -73,7 +73,7 @@ bookshelf = function(queue, cb, scope) {
     }
     
 
-    Defaceit.Queue(templateQueue).list();
+    Defaceit.Queue(templateQueue).last();
 }
 
 
@@ -93,7 +93,7 @@ function start(){
    bookshelf('bookshelf.defaceit.ru', cb);
 }
 
-if (/http:\/\/.defaceit\.ru\/defaceit\/bookshelf\/develop/.test(document.location)) {
+if (/defaceit\.ru\/defaceit\/bookshelf\/develop/.test(document.location)) {
     Defaceit.wait("jQuery", start, this, ["jQuery"]);
 }
 

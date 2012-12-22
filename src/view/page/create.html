@@ -41,7 +41,7 @@
 <body>
     <script>
     jQuery(function(){
-	pageName = "{{ url }}";
+	pageName = "{{ title }}";
     m = document.location.toString().match(/http:\/\/([^\/]*)\//);
     Defaceit.Page.namespace = m[1] || 'defaceit.ru';   
     Defaceit.Page.name = pageName;
