@@ -42,7 +42,7 @@ a.add-comment:hover{
 
 
 .defaceit-page {
-    background: url("http://sandbox.defaceit.ru/images/bg.png") repeat scroll 0 0 #FFFFFF !important;
+    background: url("http://defaceit.ru/images/bg.png") repeat scroll 0 0 #FFFFFF !important;
     border: 1px solid #FFFFFF !important;
     border: 1px solid brown;
     border-radius: 6px 6px 6px 6px;
@@ -206,7 +206,7 @@ body {
   line-height: 20px;
   color: #7c5326;
   padding-top:60px;
-  background: url(http://sandbox.defaceit.ru/images/bg2.png) repeat scroll 0 0 #F1DBAA;
+  background: url(http://defaceit.ru/images/bg2.png) repeat scroll 0 0 #F1DBAA;
 }
 a {
   color: #6e6352;
@@ -3430,7 +3430,7 @@ input[type="submit"].btn.btn-mini {
   padding-left: 20px;
   padding-right: 20px;
   background-color: #744e24;
-  background-image: url("http://sandbox.defaceit.ru/images/lever.png");
+  background-image: url("http://defaceit.ru/images/lever.png");
   background-repeat: repeat-x;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff7c5326', endColorstr='#ff684620', GradientType=0);
   border: 1px solid #3a2712;
@@ -3765,7 +3765,7 @@ input[type="submit"].btn.btn-mini {
 }
 .navbar-inverse .navbar-inner {
   background-color: #1b1b1b;
-  background-image: url("http://sandbox.defaceit.ru/images/lever.png");
+  background-image: url("http://defaceit.ru/images/lever.png");
   background-repeat: repeat-x;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff222222', endColorstr='#ff111111', GradientType=0);
   border-color: #252525;
@@ -4772,7 +4772,7 @@ a.badge:hover {
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
   border-radius: 6px;
-  background: url(http://sandbox.defaceit.ru/images/bg.png) repeat scroll 0 0 #FFFFFF !important; border: 1px solid #FFFFFF; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  background: url(http://defaceit.ru/images/bg.png) repeat scroll 0 0 #FFFFFF !important; border: 1px solid #FFFFFF; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 .hero-unit h1 {
   margin-bottom: 0;

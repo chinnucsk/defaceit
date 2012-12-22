@@ -38,18 +38,36 @@ Defaceit.Queue.prototype = {
 	},
 	
 	last: function() {
-	    return this.request('last');
+		Defaceit.Queue.Pack.push(['last', this.queue, this.next_call_id()]);
+		
+		setTimeout(function(){
+			var r = Defaceit.Queue.Pack,
+				request = [];
+			Defaceit.Queue.Pack = [];
+			_.each(r, function(item,index){
+				
+				request.push('a['+index+']='+item[1]);
+				request.push('i['+index+']='+item[2]);
+			});
+			
+			if (request.length > 0) {
+				cors_post('http://eservices.defaceit.ru/queue/last_a', request.join('&'));
+			}
+		}, 300);
+
+	    //return this.request('last');
+	    return 1;
 	},
 	
 	
 	request: function(action, message) {
 		message = message || '';
 		var cid = this.next_call_id();
-		
-		if (message.length > 1024) {
-		    cors_post('http://eservices.sandbox.defaceit.ru/queue/'+action+'/'+this.queue+'/'+cid, 'message_text='+encodeURIComponent(message));
+
+		if (message.length > 512) {
+		    cors_post('http://eservices.defaceit.ru/queue/'+action+'/'+this.queue+'/'+cid, 'message_text='+encodeURIComponent(message));
 		}else{
-		    Defaceit.request('http://eservices.sandbox.defaceit.ru/queue/'+action+'/' + this.queue + '/'  + cid + '/' + message);
+		    Defaceit.request('http://eservices.defaceit.ru/queue/'+action+'/' + this.queue + '/'  + cid + '/' + message);
 		}
 		
 		return cid;
@@ -95,12 +113,22 @@ Defaceit.Queue.prototype = {
 	}
 }
 
+Defaceit.Queue.Pack = [];
 
 Defaceit.Queue.list = Defaceit.Queue.list || {};
 
 Defaceit.Queue.callbacks = Defaceit.Queue.callbacks || [];
 
-Defaceit.Queue.response =  function(data) { Defaceit.Queue.list[data.queue_name].client_callback(data); }
+Defaceit.Queue.response =  function(data) { 
+	console.debug(data.pack);
+	if (data.pack) {
+		for (var i = 0; i < data.pack.length; i++) {
+			Defaceit.Queue.list[data.pack[i].queue_name].client_callback(data.pack[i]); 
+		}
+		return;
+ 	}
+	Defaceit.Queue.list[data.queue_name].client_callback(data); 
+}
 }
 
 

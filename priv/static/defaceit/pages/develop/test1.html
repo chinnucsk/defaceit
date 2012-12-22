@@ -51,6 +51,7 @@
 
 		.blockMenuItem {
 			cursor: pointer;
+			display: block;
 			/*float: left;*/
 		}
 	</style>
@@ -65,8 +66,26 @@
 <body>
 <script>
 Defaceit.Page.namespace = 'babywonder.ru';
-run();
+Defaceit.Page.name = 'test';
+window.thumbnails = new Defaceit.BlockManager('thumbnails_page');
+
+    /*w = Defaceit.Window.Manager.create('Simple', {
+    content: '<div class="center"></div>',
+    buttons: [{text: "Расчитать", handler: function(){}}],
+    geometry:['width:750', 'center', 'top', 'show']
+    });*/
+
+window.thumbnails.on('status:change', function(){
+	window.thumbnails.blockList.Thumbnails.interactive_edit();
+	window.thumbnails.blockList.Article.interactive_edit();
+});
 </script>
+<div class="article_container"></div>
+<div class="thumbnails_container">
+	<div class="editable_thumbnail" id="Thumbnail1"><h1>AAAAA</h1><div>bbbbbbb</div></div>
+	<div class="editable_thumbnail" id="Thumbnail2"><h1>AAAAA</h1><div>bbbbbbb</div></div>
+</div>
+
 
 <script id="articleTemplate" type="text/x-jquery-tmpl">
 <div>
