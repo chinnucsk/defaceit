@@ -13,7 +13,7 @@ end.
 
 
 create(Get, [Title]) ->
-    {ok, [{url, Title}]}.
+    {ok, [{title, Title}]}.
 
 
 save(Post, []) ->
