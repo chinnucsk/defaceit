@@ -17,7 +17,7 @@ jQuery(function(){Defaceit.Queue(commentsQueue ).client({
     });
     
     
-    window.thumbnails = new Defaceit.BlockManager('thumbnails_page');
+    window.thumbnails = new Defaceit.BlockManager(Defaceit.Page.type);
     
     jQuery('.edit').hide().click(function(e){
 

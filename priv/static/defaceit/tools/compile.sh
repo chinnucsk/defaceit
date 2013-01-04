@@ -14,6 +14,7 @@ $JS_DEF_PROJECT_DIR/develop/session.js \
 $JS_DEF_PROJECT_DIR/develop/display.js \
 $JS_DEF_PROJECT_DIR/develop/window.js \
 $JS_DEF_PROJECT_DIR/develop/queue.js \
+$JS_DEF_PROJECT_DIR/develop/variable.js \
 $JS_DEF_PROJECT_DIR/develop/load.js \
 --js_output_file $JS_DEF_PROJECT_DIR/../tools.js
 
