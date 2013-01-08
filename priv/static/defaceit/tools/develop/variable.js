@@ -176,7 +176,7 @@ _.extend(Defaceit.Variable.prototype, {
 
 	load_from_web: function() {
 			this.status('loading', false);
-			Defaceit.request('http://eservices.sandbox.defaceit.ru/variable/get/'+this.full_name());
+			Defaceit.request('http://eservices.defaceit.ru/variable/get/'+this.full_name());
 	},
 
 	/** Сохраняем данные в хранилище */
@@ -188,7 +188,7 @@ _.extend(Defaceit.Variable.prototype, {
 		if (this.is_in_cache()) {
 			this.clear_cache();
 		}
-		cors_post('http://eservices.sandbox.defaceit.ru/variable/set/'+this.full_name(), 'message_text='+encodeURIComponent(this.get()));
+		cors_post('http://eservices.defaceit.ru/variable/set/'+this.full_name(), 'message_text='+encodeURIComponent(encodeURIComponent(this.get())));
 	},
 
 	clear_cache: function() {
@@ -237,7 +237,7 @@ Defaceit.Variable.response = function(data){
 }
 
 Defaceit.Variable.preload = function(namespace) {
-	Defaceit.request('http://eservices.sandbox.defaceit.ru/variable/get_pack/' + namespace);
+	Defaceit.request('http://eservices.defaceit.ru/variable/get_pack/' + namespace);
 }
 
 

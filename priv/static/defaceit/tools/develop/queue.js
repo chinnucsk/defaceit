@@ -59,7 +59,7 @@ Defaceit.Queue.prototype = {
 			});
 			
 			if (request.length > 0) {
-				cors_post('http://eservices.sandbox.defaceit.ru/queue/last_a', request.join('&'));
+				cors_post('http://eservices.defaceit.ru/queue/last_a', request.join('&'));
 			}
 		}, 300);
 
@@ -73,9 +73,9 @@ Defaceit.Queue.prototype = {
 		var cid = this.next_call_id();
 
 		if (message.length > 512) {
-		    cors_post('http://eservices.sandbox.defaceit.ru/queue/'+action+'/'+this.queue+'/'+cid, 'message_text='+encodeURIComponent(message));
+		    cors_post('http://eservices.defaceit.ru/queue/'+action+'/'+this.queue+'/'+cid, 'message_text='+encodeURIComponent(message));
 		}else{
-		    Defaceit.request('http://eservices.sandbox.defaceit.ru/queue/'+action+'/' + this.queue + '/'  + cid + '/' + message);
+		    Defaceit.request('http://eservices.defaceit.ru/queue/'+action+'/' + this.queue + '/'  + cid + '/' + message);
 		}
 		
 		return cid;
@@ -147,7 +147,7 @@ Defaceit.Queue.response =  function(data) {
 }
 
 Defaceit.Queue.preload = function(queue) {
-	Defaceit.request('http://eservices.sandbox.defaceit.ru/queue/last_n/' + queue);
+	Defaceit.request('http://eservices.defaceit.ru/queue/last_n/' + queue);
 }
 
 }
@@ -215,8 +215,8 @@ function cors_post(url, params) {
 	}
 
 	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xhr.setRequestHeader("Content-length", params.length);
-	xhr.setRequestHeader("Connection", "close");
+	//xhr.setRequestHeader("Content-length", params.length);
+	//xhr.setRequestHeader("Connection", "close");
                                                       
 	xhr.onload = function() {
         	var responseText = xhr.responseText;

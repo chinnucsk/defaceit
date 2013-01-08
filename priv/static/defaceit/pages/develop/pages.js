@@ -1,5 +1,5 @@
-Defaceit.load.css('http://sandbox.defaceit.ru/defaceit/babycalc/css/babycalc.css');
-Defaceit.load.css('http://sandbox.defaceit.ru/defaceit/tools/css/home.css');
+Defaceit.load.css('http://defaceit.ru/defaceit/babycalc/css/babycalc.css');
+Defaceit.load.css('http://defaceit.ru/defaceit/tools/css/home.css');
 
 Defaceit.Page = {};
 namespace = function() {
@@ -576,7 +576,7 @@ Blocks.Article.EditView = Backbone.View.extend({
 		this.htmlPageBlock = htmlPageBlock;
 		this.htmlPageBlock.on('render', this.render, this);
 
-		this.template = new Defaceit.Template('article', 'template.sandbox.defaceit.ru');
+		this.template = new Defaceit.Template('article', 'template.defaceit.ru');
 		this.template.on('status:change', this.render, this);
 	},
 
@@ -600,16 +600,7 @@ Blocks.Article.EditView = Backbone.View.extend({
 
 	render: function() {
 		if (this.template.status() == 'ready' && (this.htmlPageBlock.queueStore.status() == 'ready' || this.htmlPageBlock.queueStore.status() == 'empty')) {
-
-			this.$el.html(_.template(this.template.get('text'), this.htmlPageBlock));
-
-			this.$el.find('#defaceit-article-title').val(this.htmlPageBlock.queueStore.find('title').data);
-			this.$el.find('#defaceit-article-content').val(this.htmlPageBlock.queueStore.find('content').data);
-
-			var b = new Blocks.Article.PanelButtonsView().render();
-			b.on('done', this.save, this);
-			b.on('cancel', this.cancel, this);
-			this.htmlPageBlock.w.center();
+		 f
 		}
 	}
 
@@ -643,6 +634,155 @@ Blocks.Article.PanelButtonsView = Backbone.View.extend({
 
 
 
+Defaceit.Page.View = {
+
+	'ArticleEdit': Backbone.View.extend({
+		el: '.article_container',
+
+		interactive_edit: function() {
+				var item = this.attributes.data,
+					height = this.$el.height(),
+					that = this;
+
+				this.$el.html(jQuery('<a class="blockMenuItem" href="#">'+item.get('title')+'</a>').click(function(){
+					new Defaceit.Page.View.ArticleEditPanel({'attributes':{data:item}});
+    				
+    			}));
+
+    			this.$el.height(height).css({border: '1px dotted black', padding: "50px", "margin": "10px"});
+		}
+	}),
+
+	'ArticleEditPanel': Backbone.View.extend({
+		el: '.container',
+
+		initialize: function(data) {
+				console.debug(data);
+				this.template = new Defaceit.Template('article', 'template.defaceit.ru');
+				this.template.on('status:change',  this.render, this);
+		},
+
+		save: function() {
+			this.attributes.data.set('title', jQuery('#defaceit-article-title').val());
+	    	this.attributes.data.set('content', jQuery('#defaceit-article-content').val());
+	    	this.attributes.data.save();
+		},
+
+		cancel: function() {
+			alert('cancel');
+		},
+		render: function() {
+
+			this.$el.html(this.template.get('text'));
+
+			this.$el.find('#defaceit-article-title').val(this.attributes.data.get('title'));
+			this.$el.find('#defaceit-article-content').val(this.attributes.data.get('content'));
+
+			var b = new Blocks.Article.PanelButtonsView().render();
+			b.on('done', this.save, this);
+			b.on('cancel', this.cancel, this);
+		}
+	}),
+
+	'Thumbnails': Backbone.View.extend({
+		compile: function() {
+			var wrap = '<ul class="thumbnails"><li class="span4">{{content1}}</li><li class="span4">{{content2}}</li><li class="span4">{{content3}}</li></ul>';
+ 			t = '<div id="{{id}}"><h4>{{title}}</h4><div>{{content}}</div><p style="text-align:right;margin-top:20px;"><a class="btn" href="{{url}}">Подробнее</a></p></div>', 
+ 			content1 = content2 = content3 ='';
+
+ 			var i = 1;
+
+			this.attributes.data.each(function(item){
+				if (item.is_not_empty()) {
+					if(i%3 == 0) {
+						content3 += _.template(t, item.toObject());
+					}else if(i%2 == 0) {
+						content2 += _.template(t, item.toObject());
+					}else{
+						content1 += _.template(t, item.toObject());
+					}
+					i++;
+				}
+			});
+			return _.template(wrap, {content1: content1,content2: content2,content3: content3});
+		}
+
+	}),
+
+	'ThumbnailsEdit': Backbone.View.extend({
+		interactive_edit: function() {
+			this.attributes.data.each(function(item) {
+				if (item.is_empty()) {
+					jQuery('.thumbnails_container').prepend(jQuery('<a class="blockMenuItem" href="#">Добавить</a>').click(function(){
+    				var itemEditView = new Defaceit.Page.View.ThumbnailEditPanel({attributes:{'data':item}});
+					itemEditView.render();
+    			})).css({border: '1px dotted black', padding: "10px", "margin": "10px"});;
+				}
+
+				jQuery('#'+item.structName).html('<a class="blockMenuItem" href="#">' + item.get('title') + '</a><br />').click(function(){
+					var itemEditView = new Defaceit.Page.View.ThumbnailEditPanel({attributes:{'data':item}});
+					itemEditView.render();
+				});
+			});
+		}
+	}),
+
+	'ThumbnailEditPanel': Backbone.View.extend({
+		el: '.container',
+
+		done: function() {
+			this.attributes.data.set('title',	this.$el.find('#title').val());
+			this.attributes.data.set('content', this.$el.find('#content').val());
+			this.attributes.data.set('url', this.$el.find('#url').val());
+			this.attributes.data.save();
+		},
+
+		cancel: function() {
+			this.$el.html('');
+		},
+		render: function() {
+			var template = '<div class="page"><p class="calc_label">title:<input style="width:99%" id="title"/></p><p class="calc_label">content:<textarea style="width:99%; height: 100px;" id="content" /></textarea></p>url:<input style="width:99%" id="url" /></page>';
+			this.$el.html(template);
+			this.$el.find('#title').val(this.attributes.data.get('title'));
+			this.$el.find('#content').val(this.attributes.data.get('content'));
+			this.$el.find('#url').val(this.attributes.data.get('url'));
+
+			var b = new Blocks.Article.PanelButtonsView().render();
+			b.on('done', this.done, this);
+			b.on('cancel', this.cancel, this);
+		}
+	}),
+
+	'Default': Backbone.View.extend({
+		compile: function() {
+			return this.attributes.data.toObject();
+		}
+	}),
+
+	'DefaultEdit': Backbone.View.extend({
+		interactive_edit: function() {
+				var item = this,
+				
+				el = jQuery('.'+this.attributes.data.varName.toLowerCase()+'_container');
+
+				if (el.length) {
+					var height = el.height();
+
+					el.html(jQuery('<a class="blockMenuItem" href="#">изменить</a>').click(function(){
+    					item.attributes.data.set(prompt(item.attributes.data.varName + ':', item.attributes.data.get()));
+    					item.attributes.data.save();
+    				
+    				}));
+
+    				el.height(height);
+    			}
+    			
+
+		}
+	})
+}
+
+
 /**
  * +BlockManager
  */ 
@@ -650,6 +790,7 @@ Defaceit.BlockManager = Defaceit.Model.extend({
 	initialize: function(pageName) {
 
 		this.items = {};
+		this.pageType = pageName;
 		
 
 		/*this.blockList = {};
@@ -692,18 +833,22 @@ Defaceit.BlockManager = Defaceit.Model.extend({
 
 	add: function(block) {
 		this.items[block] = this.create_block_from_name(block);;
-		
+		this.items[block].on('saved', this.done, this);
 	},
 
 
 	done: function() {
-		if(this.is_evrybody_status('loaded')) {
+		if(this.is_evrybody_status(['loaded', 'saved']) && this.template.status() == 'ready') {
+			
 			var t = new Defaceit.BlockManager.EditView(),
 					content = this.template.render(this.toObject());
 				
 			content = content.replace(new RegExp("\n", 'g'), "<br />\n");
-			t.render(content, Defaceit.Page.name);
+			t.render(content, Defaceit.Page.name, this.pageType);
 			t.save();
+		}else{
+			var that = this;
+			setTimeout(function(){that.done();}, 100);
 		}
 
 	},
@@ -711,10 +856,7 @@ Defaceit.BlockManager = Defaceit.Model.extend({
 	create_block_from_name: function(blockName) {
 		var b = {
 			'Article': ['Structure', 'article', ['title', 'content'], namespace()],
-			'Thumbnails': ['List', 'Thumbnail', ['title', 'content', 'url'], namespace()],
-			'Namespace': ['Constant', 'Namespace', 'Namespace_const'],
-			'PageName': ['Constant', 'PageName', 'PageName_const'],
-			'PageUrl': ['Constant', 'PageUrl', 'PageUrl_const']
+			'Thumbnails': ['List', 'Thumbnail', ['title', 'content', 'url'], namespace()]
 		}
 
 		
@@ -730,8 +872,10 @@ Defaceit.BlockManager = Defaceit.Model.extend({
 		var r = {};
 
 		this.each(function(item, key) {
-		
-			r[key] = this.compile(key, item);
+
+			r[key] = Defaceit.Page.View[key] ?	
+						new Defaceit.Page.View[key]({attributes:{data:item}}).compile() : 
+						new Defaceit.Page.View.Default({attributes:{data:item}}).compile();
 		});
 
 		return r;
@@ -741,48 +885,18 @@ Defaceit.BlockManager = Defaceit.Model.extend({
 	},
 
 	is_evrybody_status: function(status){
+		status = _.isString(status) ? [status] : status;
 		var s = [];
 		this.each(function(item){s.push(item.status());});
-		s = _.uniq(s);
-		return s.length == 1 && s[0] == status;
+		s = _.difference(_.uniq(s), status);
+		return s.length == 0;
 	},
 
 	is_anybody_status: function(status) {
 		var count = 0;
 		this.each(function(item){item.status() == status && count++;});
 		return count > 0;
-	},
-
-	compile: function(what, o) {
-		if (what == 'Thumbnails'){
- 		var wrap = '<ul class="thumbnails"><li class="span4">{{content1}}</li><li class="span4">{{content2}}</li><li class="span4">{{content3}}</li></ul>';
- 			t = '<div id="{{id}}"><h4>{{title}}</h4><div>{{content}}</div><p style="text-align:right;margin-top:20px;"><a class="btn" href="{{url}}">Подробнее</a></p></div>', 
- 			content1 = content2 = content3 ='';
-
- 		var i = 1;
-
-		o.each(function(item){
-			if (item.is_not_empty()) {
-				if(i%3 == 0) {
-					content3 += _.template(t, item.toObject());
-				}else if(i%2 == 0) {
-					content2 += _.template(t, item.toObject());
-				}else{
-					content1 += _.template(t, item.toObject());
-				}
-				i++;
-				
-			}
-		});
-		return _.template(wrap, {content1: content1,content2: content2,content3: content3});
-		}else{
-			return o.toObject();
-		}
-			
- 	},
-
-
-
+	}
 });
 
 
@@ -794,7 +908,7 @@ Defaceit.BlockManager.EditView = Backbone.View.extend({
 	save: function() {
 		this.$el
 			.attr('method', 'POST')
-			.attr('action', 'http://sandbox.defaceit.ru/page/save')
+			.attr('action', 'http://defaceit.ru/page/save')
 			.submit();
 	},
 
@@ -803,10 +917,13 @@ Defaceit.BlockManager.EditView = Backbone.View.extend({
 	},
 
 	
-	render: function(text, url) {
+	render: function(text, pageName, pageType) {
 		//this.$el.append('<p>Страница изменена, сохранить?</p>');
+
+
 		this.$el.append(jQuery('<textarea>').attr('name', 'content').css('display','none').val(text));
-		this.$el.append(jQuery('<input>').attr('name', 'url').attr('type', 'hidden').val(url));
+		this.$el.append(jQuery('<input>').attr('name', 'type').attr('type', 'hidden').val(pageType));
+		this.$el.append(jQuery('<input>').attr('name', 'url').attr('type', 'hidden').val(_.template(Defaceit.Page.urlTemplate,{'pageName':pageName})));
 		this.$el.append(jQuery('<input>').attr('name', 'title').attr('type', 'hidden').val(Defaceit.Page.name));
 		this.$el.append(jQuery('<input>').attr('name', 'site').attr('type', 'hidden').val(Defaceit.Page.namespace));
 		jQuery('.center').html('').append(this.$el);
@@ -835,7 +952,7 @@ Defaceit.BlockManager.EditView = Backbone.View.extend({
 
 Defaceit.Template = Backbone.Model.extend({
 	initialize: function(template, namespace) {
-		namespace = namespace || 'template.sandbox.defaceit.ru';
+		namespace = namespace || 'template.defaceit.ru';
 		this.queueStore = new Defaceit.StackQueueStore(template, namespace);
 		this.status(this.queueStore.status());
 
@@ -885,15 +1002,17 @@ Defaceit.MainPageView = Backbone.View.extend({
 		this.template = new Defaceit.Template('create_page');
 		this.template.on('status:change', this.render, this);
 		Defaceit.Variable.preload(namespace());
-		this.pages = {
-			'thumbnails_page': new Defaceit.BlockManager('thumbnails_page'),
+		/*this.pages = {
+			'thumbnails_page': new Defaceit.BlockManager('thumbnails_page')
 			//'content_page': new Defaceit.BlockManager('content_page')
-		}
+		}*/
 	},
 
 	done: function(pageName) {
-		alert(pageName);
-		this.pages[pageName].done();
+		//alert(pageName);
+		var a = new Defaceit.BlockManager(pageName);
+		a.done();
+		//this.pages[pageName].done();
 	},
   	render: function() {
   		if(this.template.status() == 'ready'){
@@ -1192,7 +1311,7 @@ Defaceit.Page.ButtonView = Backbone.View.extend({
 	},
 
 	render: function(x,y){
-		this.$el.attr('src', 'http://sandbox.defaceit.ru/images/templates/'+this.attributes.page+'.png').css({'width':'100px', 'position':'absolute', 'left': x, 'top': y}).appendTo('body');
+		this.$el.attr('src', 'http://defaceit.ru/images/templates/'+this.attributes.page+'.png').css({'width':'100px', 'position':'absolute', 'left': x, 'top': y}).appendTo('body');
 		return this;
 	}
 });
@@ -1241,7 +1360,7 @@ Defaceit.Page.BigButtonView = Backbone.View.extend({
 		
 	},
 	render: function() {
-		this.$el.html('<img id="big-button" src="http://sandbox.defaceit.ru/images/buttons/create.png" />').appendTo('body');
+		this.$el.html('<img id="big-button" src="http://defaceit.ru/images/buttons/create.png" />').appendTo('body');
 	}
 });
 
@@ -1252,6 +1371,7 @@ function run(){
 		do{	pagename = prompt('Введите имя страницы');
 		}while(pagename === null);
 		Defaceit.Page.name = pagename.toLowerCase().translit();
+		Defaceit.Page.urlTemplate = 'http://defaceit.ru/page/content/{{pageName}}';
 	}
 	mainPage = new Defaceit.MainPageView();
 }
