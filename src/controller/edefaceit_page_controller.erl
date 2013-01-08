@@ -13,7 +13,7 @@ end.
 
 
 create(Get, [Title]) ->
-    {ok, [{title, Title}]}.
+    {ok, [{title, Title}, {'pageName', "{{pageName}}"}]}.
 
 
 save(Post, []) ->
