@@ -73,7 +73,7 @@ bookshelf = function(queue, cb, scope) {
     }
     
 
-    Defaceit.Queue(templateQueue).last();
+    Defaceit.Queue(templateQueue).last	();
 }
 
 

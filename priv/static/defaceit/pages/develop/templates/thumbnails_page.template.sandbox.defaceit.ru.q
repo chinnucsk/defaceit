@@ -4,24 +4,19 @@
         <meta http-equiv="content-type" content="text/html; charset=utf-8" />
         <meta name="description" content="Страница разработчиков фейверка шаров" />
 
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-        <script type="text/javascript" src="http://defaceit.ru/defaceit/tools.js"></script>
+
 
         <link href="/bootstrap/css/my.css" rel="stylesheet">
         <link href="/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
         <link href="http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300&subset=cyrillic-ext" rel="stylesheet" type="text/css">
         
-        <script src="/bootstrap/js/bootstrap.js"></script>
         <script src="http://defaceit.ru/defaceit/pages/pages.js"></script>
+        <script src="/bootstrap/js/bootstrap.js"></script>
 
         <script src="http://defaceit.ru/comments.js"></script>
-        
-        <script>
-    	    Defaceit.Page.namespace = "{{Namespace}}";
-    	    Defaceit.Page.name = "{{PageName}}";
-            url = "{{PageUrl}}";
-    	    commentsQueue = "comments." + url;
-    	</script>
+
+
+        <!--DefaultValues-->
 
         <style type="text/css">
        
@@ -54,14 +49,12 @@
 
 <div class="row-fluid ">
         <div class="span2 defaceit-page-left-bar">
-<br /><div class="logo_container">{{Logo}}</div><br/><br/>
+            <br /><div class="logo_container">{{Logo}}</div><br/><br/>
+            <h3>Комментарии</h3>
+                <a href="#" class="add-comment">&nbsp;</a>
 
-<h3>Комментарии</h3>
-	<a onclick="Defaceit.Window.Manager.create('InputBox', {title: 'Комментарий', geometry: ['width:400', 'center', 'show'], handler:function(){Defaceit.Queue(commentsQueue).push(this.message()); this.hide();}});return false;" href="#" class="add-comment">&nbsp;</a>
-
-	<ul id="comments" class="list">
-	</ul>
-	</div>
+                <ul id="comments" class="list"></ul>
+        </div>
 
         <div class="span10 defaceit-page-content">
             <div class="article_container">
@@ -79,6 +72,5 @@
 
 
     </div> <!-- /container -->
-</script>
 </body>
 </html>

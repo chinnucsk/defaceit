@@ -1,0 +1,52 @@
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ru" xml:lang="ru">
+
+<head>
+	<title>Baloon Firework Development page</title>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<meta name="description" content="Страница разработчиков фейверка шаров" />
+	
+
+	<script type="text/javascript" src="http://defaceit.ru/defaceit/tools/lib/jquery.min.js"></script>
+	<script type="text/javascript" src="http://defaceit.ru/defaceit/tools/lib/underscore.js"></script>
+	<script type="text/javascript" src="http://defaceit.ru/defaceit/tools/lib/backbone.js"></script>
+	<script type="text/javascript" src="http://defaceit.ru/defaceit/tools/develop/defaceit.js"></script>
+	<script type="text/javascript" src="http://defaceit.ru/defaceit/tools/develop/request.js"></script>
+	<script type="text/javascript" src="http://defaceit.ru/defaceit/tools/develop/queue.js"></script>
+	<script type="text/javascript" src="http://defaceit.ru/defaceit/tools/develop/variable.js"></script>-
+
+	<!--<script type="text/javascript" src="http://defaceit.ru/defaceit/tools.js"></script>-->
+
+</head>
+<body>
+
+    <script>
+    	Defaceit.Variable.preload('test.babywonder.ru');
+    	setTimeout(function() {
+    		Defaceit.Variable('title', 'article.test.babywonder.ru').on('loaded', function(){
+					console.debug(this.is_empty());
+			});
+
+			Defaceit.Variable('title', 'article.test.babywonder.ru').fetch();
+
+
+			var s = new Defaceit.List('Thumbnail', ['title', 'content', 'url'], 'test.babywonder.ru');
+			s.fetch();
+			s.on('update', function(s){console.debug(this.structName+'::'+s+'.'+this.status());});
+			s.on('saved', function(s){console.debug(this.structName+'::'+s+'.'+this.status());});
+			s.on('loaded', function(){
+				if (confirm('Save')){
+					console.debug('________________');
+					this.get(1).set('title', 'Her');//.save();
+					this.get(1).set('content', 'Her');
+					this.save();
+
+				}
+				console.debug(this.toObject());
+			});
+		}, 1000);
+
+
+
+    </script>
+</body>
+</html>

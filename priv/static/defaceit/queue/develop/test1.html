@@ -13,11 +13,18 @@
 	var a = {queue_message: function(m){console.debug('a:'+m);}},
 	    b = {queue_message: function(m){console.debug('b:'+m);}};
 	    
+	    Defaceit.Queue.preload('test.babywonder.ru');
+
+	    setTimeout(function() {
+
 	    Defaceit.Queue('content.article.test.babywonder.ru').client(a);
 	    Defaceit.Queue('title.article.test.babywonder.ru').client(b);
+	    Defaceit.Queue('title.Thumbnail1.test.babywonder.ru').client(b);
 	    
 	    Defaceit.Queue('content.article.test.babywonder.ru').last();
 	    Defaceit.Queue('title.article.test.babywonder.ru').last();
+	    Defaceit.Queue('title.Thumbnail1.test.babywonder.ru').last();
+		}, 1000);
     </script>
 </body>
 </html>

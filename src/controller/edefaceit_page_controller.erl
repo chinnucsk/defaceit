@@ -18,14 +18,19 @@ create(Get, [Title]) ->
 
 save(Post, []) ->
 	Content = Req:post_param("content"),
+	
+
 	Url = Req:post_param("url"),
 	Site = Req:post_param("site"),
 	Title = Req:post_param("title"),
+	Type = Req:post_param("type"),
+	ContentScript = re:replace(Content, "<!--DefaultValues-->", "<script>" ++ v("Defaceit.Page.type", Type) ++ v("Defaceit.Page.name", Title) ++ v("Defaceit.Page.namespace", Site)++ v("url", Url) ++ "</script>", [global, {return, list}]),
 	drop_by(Url),
-	NewPage = page:new(id, Title, Content, Site, Url),
+	NewPage = page:new(id, Title, ContentScript, Site, Url),
 	{ok, Saved} = NewPage:save(),
-	{redirect, "/page/content/" ++ Url}.
-
+	{redirect, Url}.
+v(N,V) ->
+	N ++ " = '" ++ V ++ "';".
 
 drop_by(Url) ->
     case boss_db:find(page, [url, 'equals', Url]) of

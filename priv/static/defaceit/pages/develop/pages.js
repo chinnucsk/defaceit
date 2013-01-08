@@ -54,7 +54,7 @@ Defaceit.HtmlPageBlock = Defaceit.Model.extend({
 	},
 
 	route: function() {
-		var r = 'BLOCK:'+this.status() + ', STORE:' + (this.queueStore && this.queueStore.status());
+		var r = 'BLOCK:'+this.status() + ', STORE:' + (this.structure && this.structure.structName);
 		console.debug(this.name() + '  ' + r);
 
 
@@ -283,16 +283,17 @@ Blocks.PageName = Blocks.Default.extend({
  		Defaceit.HtmlPageBlock.prototype.initialize.apply(this, [name]);
 
  		this.queueNamespace = name+'.'+namespace();
- 		this.queueStore.add(new Defaceit.StackQueueStore('title', this.queueNamespace));
- 		this.queueStore.add(new Defaceit.StackQueueStore('content', this.queueNamespace));
- 		this.queueStore.add(new Defaceit.StackQueueStore('url', this.queueNamespace));
+ 		this.queueStore.add(Defaceit.Variable('title.'+this.queueNamespace));
+ 		this.queueStore.add(Defaceit.Variable('content.'+this.queueNamespace));
+ 		this.queueStore.add(Defaceit.Variable('url.'+this.queueNamespace));
  		//this.fetch();
  	},
 
 	fill: function(title, content, url) {
-		this.queueStore.find('title').set(title);
-		this.queueStore.find('content').set(content);
-		this.queueStore.find('url').set(url);
+		this.find('title').set(title);
+		this.find('content').set(content);
+		this.find('url').set(url);
+		this.queueStore.status('update');
 	},
 
 	edit: function(data) {
@@ -309,11 +310,19 @@ Blocks.PageName = Blocks.Default.extend({
 
 	},
 
+	find: function(key) {
+		var that = this;
+		return _.find(this.queueStore.storeList, function(item){return item.varName == key+'.'+that.queueNamespace});
+		
+	},
+
 	toObject: function() {
+		
+
 		return {
-			'title': this.queueStore.find('title').data,
-			'content': this.queueStore.find('content').data,
-			'url': this.queueStore.find('url').data,
+			'title': this.find('title').get(),
+			'content': this.find('content').get(),
+			'url': this.find('url').get(),
 			'id': this.name()
 		};
 	}
@@ -335,18 +344,18 @@ Blocks.Thumbnail.EditView = Backbone.View.extend({
 	},
 
 	done: function() {
-		this.thumbnail.edit([
-				this.$el.find('#title').val(),
-				this.$el.find('#content').val(),
-				this.$el.find('#url').val()
-		]);
+		this.thumbnail.set('title',	this.$el.find('#title').val());
+		this.thumbnail.set('content', this.$el.find('#content').val());
+		this.thumbnail.set('url', this.$el.find('#url').val());
+		this.thumbnail.save();
 	},
 	render: function() {
 		var template = '<div class="page"><p class="calc_label">title:<input style="width:99%" id="title"/></p><p class="calc_label">content:<textarea style="width:99%; height: 100px;" id="content" /></textarea></p>url:<input style="width:99%" id="url" /></page>';
 		this.$el.html(template);
-		this.$el.find('#title').val(this.thumbnail.queueStore.find('title').data);
-		this.$el.find('#content').val(this.thumbnail.queueStore.find('content').data);
-		this.$el.find('#url').val(this.thumbnail.queueStore.find('url').data);
+		this.$el.find('#title').val(this.thumbnail.get('title'));
+		this.$el.find('#content').val(this.thumbnail.get('content'));
+		this.$el.find('#url').val(this.thumbnail.get('url'));
+
 		var b = new Blocks.Article.PanelButtonsView().render();
 		b.on('done', this.done, this);
 		b.on('cancel', this.cancel, this);
@@ -361,87 +370,50 @@ Blocks.Thumbnail.EditView = Backbone.View.extend({
  	initialize: function(name) {
  		Defaceit.HtmlPageBlock.prototype.initialize.apply(this, [name]);
 
- 		this.thumbnails = [];
+ 		this.thumbnails = Defaceit.List('Thumbnail', ['title', 'content', 'url'], namespace());
+ 		this.thumbnails.on('loaded', function(){this.status('ready');}, this);
+ 		this.thumbnails.on('saved', function(){this.status('ready');}, this);
 
- 		this.queueNamespace = namespace();
- 		var that = this;
- 		this.queueStore = {status: function(){return that.status();}};
  		this.status('start');
  	},
 
  	fetch: function() {
- 		var index = this.thumbnails.length+1,
+ 		/*var index = this.thumbnails.length+1,
  			o = new Blocks.Thumbnail('Thumbnail'+index);
 
- 		o.on('load', this.load_next, this);
+ 			//o.on('status:change', function(){console.debug(this.status());}, o);
+ 		o.on('status:change', this.load_next, this);
  		o.on('save', function(){this.trigger('save');}, this);
- 		o.fetch();
  		this.thumbnails.push(o);
- 	},
-
- 	load_next: function() {
- 		
- 		var last_thumbnail = this.thumbnails[this.thumbnails.length-1];
- 		if (last_thumbnail && last_thumbnail.queueStore.status() == 'empty'){
- 			this.status('ready');
- 			return;
- 		}
-
- 		this.status('wait');
- 		this.fetch();
- 	},
-
- 	last: function() {
- 		return this.thumbnails[this.thumbnails.length-1];
- 	},
-
- 	add: function() {
-
- 	},
-
- 	fill: function() {
- 		
- 	},
-
- 	edit: function(data) {
- 		if (data) {
- 			this.status('ready');
- 			alert('Save data');
- 			return;
- 		}
-
- 		
-		
-		
-			
-		
-		var e = new Blocks.Thumbnails.EditView(this);
-		e.on('block:edit_done', this.edit, this); 		
+ 		o.fetch();*/
+ 		this.thumbnails.fetch();
+ 		console.debug(this.thumbnails);
  	},
 
 
  	interactive_edit: function() {
-				_.each(this.thumbnails, function(item) {
-				if (item.queueStore.status() == 'empty') {
+				this.thumbnails.each(function(item) {
+				if (item.is_empty()) {
 					jQuery('.thumbnails_container').prepend(jQuery('<a class="blockMenuItem" href="#">Добавить</a>').click(function(){
 					w = Defaceit.Window.Manager.create('Simple', {
     						content: '<div class="center"></div>',
     						buttons: [{text: "Расчитать", handler: function(){}}],
     						geometry:['width:750', 'center', 'show']
     				});
-    				item.edit();
+    				//item.edit();
     				w.center();
     			})).css({border: '1px dotted black', padding: "10px", "margin": "10px"});;
 				}
 
-				jQuery('#'+item.name()).html('<a class="blockMenuItem" href="#">' + item.queueStore.find('title').data + '</a><br />').click(function(){
+				jQuery('#'+item.structName).html('<a class="blockMenuItem" href="#">' + item.get('title') + '</a><br />').click(function(){
 					w = Defaceit.Window.Manager.create('Simple', {
     						content: '<div class="center"></div>',
     						buttons: [{text: "Расчитать", handler: function(){}}],
     						geometry:['width:750', 'center', 'show']
     				});
 
-					item.edit();
+					//item.edit();
+					new Blocks.Thumbnail.EditView(item).render();
 					w.center();
 				});
 			});
@@ -455,8 +427,8 @@ Blocks.Thumbnail.EditView = Backbone.View.extend({
 
  		var i = 1;
 
-		_.each(this.thumbnails, function(item){
-			if (item.queueStore.status() != 'empty') {
+		this.thumbnails.each(function(item){
+			if (item.is_not_empty()) {
 				if(i%3 == 0) {
 					content3 += _.template(t, item.toObject());
 				}else if(i%2 == 0) {
@@ -474,6 +446,7 @@ Blocks.Thumbnail.EditView = Backbone.View.extend({
 
  	toObject: function() {
  		this.compile();
+ 		alert(this.get('result'));
  		return this.get('result');
  	}
 
@@ -539,27 +512,26 @@ Blocks.Article = Defaceit.HtmlPageBlock.extend({
 	initialize: function(name) {
 		Defaceit.HtmlPageBlock.prototype.initialize.apply(this, [name]);
 
-
-		this.queueNamespace = 'article.' + namespace();
-		this.queueStore.add(new Defaceit.StackQueueStore('title', this.queueNamespace));
-		this.queueStore.add(new Defaceit.StackQueueStore('content', this.queueNamespace));
-		
+		this.structure = Defaceit.Structure('article', ['title', 'content'], namespace());
+		this.structure.on('loaded', this.status, this);
 		//this.fetch();
 	},
 
 
+	fetch: function() {
+		this.structure.fetch();
+	},
+
 
 	fill: function(title, content) {
-		this.queueStore.find('title').set(title);
-		this.queueStore.find('content').set(content);
+		this.structure.set('title', title);
+		this.structure.set('content', content);
 	},
 
 	edit: function(data) {
 
 		if (data) {
-			this.status('sync', false);
 			this.fill.apply(this, data);	
-			
 			return;
 		}
 		var e = new Blocks.Article.EditView(this);
@@ -628,16 +600,7 @@ Blocks.Article.EditView = Backbone.View.extend({
 
 	render: function() {
 		if (this.template.status() == 'ready' && (this.htmlPageBlock.queueStore.status() == 'ready' || this.htmlPageBlock.queueStore.status() == 'empty')) {
-
-			this.$el.html(_.template(this.template.get('text'), this.htmlPageBlock));
-
-			this.$el.find('#defaceit-article-title').val(this.htmlPageBlock.queueStore.find('title').data);
-			this.$el.find('#defaceit-article-content').val(this.htmlPageBlock.queueStore.find('content').data);
-
-			var b = new Blocks.Article.PanelButtonsView().render();
-			b.on('done', this.save, this);
-			b.on('cancel', this.cancel, this);
-			this.htmlPageBlock.w.center();
+		 f
 		}
 	}
 
@@ -671,15 +634,168 @@ Blocks.Article.PanelButtonsView = Backbone.View.extend({
 
 
 
+Defaceit.Page.View = {
+
+	'ArticleEdit': Backbone.View.extend({
+		el: '.article_container',
+
+		interactive_edit: function() {
+				var item = this.attributes.data,
+					height = this.$el.height(),
+					that = this;
+
+				this.$el.html(jQuery('<a class="blockMenuItem" href="#">'+item.get('title')+'</a>').click(function(){
+					new Defaceit.Page.View.ArticleEditPanel({'attributes':{data:item}});
+    				
+    			}));
+
+    			this.$el.height(height).css({border: '1px dotted black', padding: "50px", "margin": "10px"});
+		}
+	}),
+
+	'ArticleEditPanel': Backbone.View.extend({
+		el: '.container',
+
+		initialize: function(data) {
+				console.debug(data);
+				this.template = new Defaceit.Template('article', 'template.defaceit.ru');
+				this.template.on('status:change',  this.render, this);
+		},
+
+		save: function() {
+			this.attributes.data.set('title', jQuery('#defaceit-article-title').val());
+	    	this.attributes.data.set('content', jQuery('#defaceit-article-content').val());
+	    	this.attributes.data.save();
+		},
+
+		cancel: function() {
+			alert('cancel');
+		},
+		render: function() {
+
+			this.$el.html(this.template.get('text'));
+
+			this.$el.find('#defaceit-article-title').val(this.attributes.data.get('title'));
+			this.$el.find('#defaceit-article-content').val(this.attributes.data.get('content'));
+
+			var b = new Blocks.Article.PanelButtonsView().render();
+			b.on('done', this.save, this);
+			b.on('cancel', this.cancel, this);
+		}
+	}),
+
+	'Thumbnails': Backbone.View.extend({
+		compile: function() {
+			var wrap = '<ul class="thumbnails"><li class="span4">{{content1}}</li><li class="span4">{{content2}}</li><li class="span4">{{content3}}</li></ul>';
+ 			t = '<div id="{{id}}"><h4>{{title}}</h4><div>{{content}}</div><p style="text-align:right;margin-top:20px;"><a class="btn" href="{{url}}">Подробнее</a></p></div>', 
+ 			content1 = content2 = content3 ='';
+
+ 			var i = 1;
+
+			this.attributes.data.each(function(item){
+				if (item.is_not_empty()) {
+					if(i%3 == 0) {
+						content3 += _.template(t, item.toObject());
+					}else if(i%2 == 0) {
+						content2 += _.template(t, item.toObject());
+					}else{
+						content1 += _.template(t, item.toObject());
+					}
+					i++;
+				}
+			});
+			return _.template(wrap, {content1: content1,content2: content2,content3: content3});
+		}
+
+	}),
+
+	'ThumbnailsEdit': Backbone.View.extend({
+		interactive_edit: function() {
+			this.attributes.data.each(function(item) {
+				if (item.is_empty()) {
+					jQuery('.thumbnails_container').prepend(jQuery('<a class="blockMenuItem" href="#">Добавить</a>').click(function(){
+    				var itemEditView = new Defaceit.Page.View.ThumbnailEditPanel({attributes:{'data':item}});
+					itemEditView.render();
+    			})).css({border: '1px dotted black', padding: "10px", "margin": "10px"});;
+				}
+
+				jQuery('#'+item.structName).html('<a class="blockMenuItem" href="#">' + item.get('title') + '</a><br />').click(function(){
+					var itemEditView = new Defaceit.Page.View.ThumbnailEditPanel({attributes:{'data':item}});
+					itemEditView.render();
+				});
+			});
+		}
+	}),
+
+	'ThumbnailEditPanel': Backbone.View.extend({
+		el: '.container',
+
+		done: function() {
+			this.attributes.data.set('title',	this.$el.find('#title').val());
+			this.attributes.data.set('content', this.$el.find('#content').val());
+			this.attributes.data.set('url', this.$el.find('#url').val());
+			this.attributes.data.save();
+		},
+
+		cancel: function() {
+			this.$el.html('');
+		},
+		render: function() {
+			var template = '<div class="page"><p class="calc_label">title:<input style="width:99%" id="title"/></p><p class="calc_label">content:<textarea style="width:99%; height: 100px;" id="content" /></textarea></p>url:<input style="width:99%" id="url" /></page>';
+			this.$el.html(template);
+			this.$el.find('#title').val(this.attributes.data.get('title'));
+			this.$el.find('#content').val(this.attributes.data.get('content'));
+			this.$el.find('#url').val(this.attributes.data.get('url'));
+
+			var b = new Blocks.Article.PanelButtonsView().render();
+			b.on('done', this.done, this);
+			b.on('cancel', this.cancel, this);
+		}
+	}),
+
+	'Default': Backbone.View.extend({
+		compile: function() {
+			return this.attributes.data.toObject();
+		}
+	}),
+
+	'DefaultEdit': Backbone.View.extend({
+		interactive_edit: function() {
+				var item = this,
+				
+				el = jQuery('.'+this.attributes.data.varName.toLowerCase()+'_container');
+
+				if (el.length) {
+					var height = el.height();
+
+					el.html(jQuery('<a class="blockMenuItem" href="#">изменить</a>').click(function(){
+    					item.attributes.data.set(prompt(item.attributes.data.varName + ':', item.attributes.data.get()));
+    					item.attributes.data.save();
+    				
+    				}));
+
+    				el.height(height);
+    			}
+    			
+
+		}
+	})
+}
+
+
 /**
  * +BlockManager
  */ 
 Defaceit.BlockManager = Defaceit.Model.extend({
 	initialize: function(pageName) {
 
-		this.blockList = {};
+		this.items = {};
+		this.pageType = pageName;
+		
+
+		/*this.blockList = {};
 		this.status('start', false);
-		this.on('status:change', this.check_status, this);
+		this.on('status:change', this.check_status, this);*/
 
 
 		/** Загружаем шаблон страницы и находим в ней блоки */
@@ -687,9 +803,9 @@ Defaceit.BlockManager = Defaceit.Model.extend({
 		this.template.on('status:change', this.find_blocks, this);
 
 
-		this.statusCollection = new Defaceit.StatusCollection();
-		this.statusCollection.on('status:change', this.check_status, this);
-
+		/*this.statusCollection = new Defaceit.StatusCollection();
+		this.statusCollection.on('status:change', this.check_status, this);*/
+		//_.each(['Article', 'Thumbnails', 'Logo'], this.add, this);
 		
 	},
 
@@ -699,7 +815,8 @@ Defaceit.BlockManager = Defaceit.Model.extend({
 
 		newBlockList = this.normalize(newBlockList);
 		_.each(newBlockList, this.add, this);
-		this.statusCollection.fetch();
+		_.each(this.items, function(item, key){item.fetch();});
+		//this.statusCollection.fetch();
 	},
 
 	normalize: function(blockList) {
@@ -715,68 +832,71 @@ Defaceit.BlockManager = Defaceit.Model.extend({
 	},
 
 	add: function(block) {
-		var blockName = '';
-
-		if (_.isString(block)) {
-			blockName = this.name(block);
-			block = this.create_block_from_name(blockName);
-		}else{
-			blockName = block.name();
-			alert('BlockManager: Блок должен быть задан строкой а не объектом');
-		}
-
-		this.statusCollection.add(block);
-		block.on('save', this.done, this);
-		this.blockList[blockName] = this.blockList[blockName] || block;
+		this.items[block] = this.create_block_from_name(block);;
+		this.items[block].on('saved', this.done, this);
 	},
 
-	check_status: function() {
-		var r = 'BLOCK:'+this.status() + ', STORE:' + (this.statusCollection && this.statusCollection.status());
-		console.debug('BlockManager  ' + r);
-
-
-		switch(r) {
-			case 'BLOCK:start, STORE:ready': this.status('ready');break;
-			case 'BLOCK:ready, STORE:wait': this.status('wait', false);break;
-			case 'BLOCK:wait, STORE:ready': this.status('ready', false);break;
-			case 'BLOCK:should_be_saved, STORE:ready': this.done();break;
-		}
-
-	},
 
 	done: function() {
-		if (this.status() != 'ready' && this.status() != 'should_be_saved') {
-			this.status('should_be_saved');
-			return;
-		}
-
-		var t = new Defaceit.BlockManager.EditView(),
+		if(this.is_evrybody_status(['loaded', 'saved']) && this.template.status() == 'ready') {
+			
+			var t = new Defaceit.BlockManager.EditView(),
 					content = this.template.render(this.toObject());
 				
-		content = content.replace(new RegExp("\n", 'g'), "<br />\n");
-		t.render(content, Defaceit.Page.name);
-		t.save();
+			content = content.replace(new RegExp("\n", 'g'), "<br />\n");
+			t.render(content, Defaceit.Page.name, this.pageType);
+			t.save();
+		}else{
+			var that = this;
+			setTimeout(function(){that.done();}, 100);
+		}
+
 	},
 
 	create_block_from_name: function(blockName) {
-		if (Blocks[blockName]) {
-			return new Blocks[blockName](blockName);
+		var b = {
+			'Article': ['Structure', 'article', ['title', 'content'], namespace()],
+			'Thumbnails': ['List', 'Thumbnail', ['title', 'content', 'url'], namespace()]
 		}
 
-		return new Blocks['Default'](blockName);
+		
+		if (b[blockName]) {
+			var v = b[blockName];
+			return Defaceit[v[0]](v[1], v[2], v[3]);
+		}
+
+		return Defaceit.Variable(blockName, 'default.'+Defaceit.Page.namespace);
 	},
 
 	toObject: function() {
 		var r = {};
-		_.each(this.statusCollection.collection, function(item) {
-			r[item.name()] = item.toObject();
+
+		this.each(function(item, key) {
+
+			r[key] = Defaceit.Page.View[key] ?	
+						new Defaceit.Page.View[key]({attributes:{data:item}}).compile() : 
+						new Defaceit.Page.View.Default({attributes:{data:item}}).compile();
 		});
 
 		return r;
+	},
+	each: function(cb) {
+		_.each(this.items, cb, this);
+	},
+
+	is_evrybody_status: function(status){
+		status = _.isString(status) ? [status] : status;
+		var s = [];
+		this.each(function(item){s.push(item.status());});
+		s = _.difference(_.uniq(s), status);
+		return s.length == 0;
+	},
+
+	is_anybody_status: function(status) {
+		var count = 0;
+		this.each(function(item){item.status() == status && count++;});
+		return count > 0;
 	}
-
-
-
 });
 
 
@@ -797,10 +917,13 @@ Defaceit.BlockManager.EditView = Backbone.View.extend({
 	},
 
 	
-	render: function(text, url) {
+	render: function(text, pageName, pageType) {
 		//this.$el.append('<p>Страница изменена, сохранить?</p>');
+
+
 		this.$el.append(jQuery('<textarea>').attr('name', 'content').css('display','none').val(text));
-		this.$el.append(jQuery('<input>').attr('name', 'url').attr('type', 'hidden').val(url));
+		this.$el.append(jQuery('<input>').attr('name', 'type').attr('type', 'hidden').val(pageType));
+		this.$el.append(jQuery('<input>').attr('name', 'url').attr('type', 'hidden').val(_.template(Defaceit.Page.urlTemplate,{'pageName':pageName})));
 		this.$el.append(jQuery('<input>').attr('name', 'title').attr('type', 'hidden').val(Defaceit.Page.name));
 		this.$el.append(jQuery('<input>').attr('name', 'site').attr('type', 'hidden').val(Defaceit.Page.namespace));
 		jQuery('.center').html('').append(this.$el);
@@ -878,11 +1001,18 @@ Defaceit.MainPageView = Backbone.View.extend({
 	initialize: function() {
 		this.template = new Defaceit.Template('create_page');
 		this.template.on('status:change', this.render, this);
-		this.thumbnails = new Defaceit.BlockManager('thumbnails_page');
+		Defaceit.Variable.preload(namespace());
+		/*this.pages = {
+			'thumbnails_page': new Defaceit.BlockManager('thumbnails_page')
+			//'content_page': new Defaceit.BlockManager('content_page')
+		}*/
 	},
 
-	done: function() {
-		this.thumbnails.done();
+	done: function(pageName) {
+		//alert(pageName);
+		var a = new Defaceit.BlockManager(pageName);
+		a.done();
+		//this.pages[pageName].done();
 	},
   	render: function() {
   		if(this.template.status() == 'ready'){
@@ -1177,11 +1307,11 @@ Defaceit.Page.ButtonView = Backbone.View.extend({
 		this.$el.hide();
 	},
 	run: function() {
-		this.trigger('hide');
+		this.trigger('hide', this.attributes.page);
 	},
 
 	render: function(x,y){
-		this.$el.attr('src', 'http://defaceit.ru/images/templates/test.png').css({'width':'100px', 'position':'absolute', 'left': x, 'top': y}).appendTo('body');
+		this.$el.attr('src', 'http://defaceit.ru/images/templates/'+this.attributes.page+'.png').css({'width':'100px', 'position':'absolute', 'left': x, 'top': y}).appendTo('body');
 		return this;
 	}
 });
@@ -1196,20 +1326,20 @@ Defaceit.Page.BigButtonView = Backbone.View.extend({
 	},
 
 
-	hide: function() {
+	hide: function(pageName) {
 		for(var i = 0; i < this.elements.length;i++) {
 			this.elements[i].hide();
 		}
 		this.$el.css({'display': 'none'});
-		this.trigger('done');
+		this.trigger('done', pageName);
 	},
 	show: function() {
 
 		this.elements = [];
-		this.elements.push(new Defaceit.Page.ButtonView());
-		this.elements.push(new Defaceit.Page.ButtonView());
-		this.elements.push(new Defaceit.Page.ButtonView());
-		
+		this.elements.push(new Defaceit.Page.ButtonView({attributes: {page:"thumbnails_page", logo:"promo_page"}}));
+		this.elements.push(new Defaceit.Page.ButtonView({attributes: {page:"content_page", logo:"content_page"}}));
+		this.elements.push(new Defaceit.Page.ButtonView({attributes: {page:"js_page", logo:"promo_page"}}));
+
 
 		var	angel = 120,
 			angelStep = 40,//90 / (elements.length-1),
@@ -1241,6 +1371,7 @@ function run(){
 		do{	pagename = prompt('Введите имя страницы');
 		}while(pagename === null);
 		Defaceit.Page.name = pagename.toLowerCase().translit();
+		Defaceit.Page.urlTemplate = 'http://defaceit.ru/page/content/{{pageName}}';
 	}
 	mainPage = new Defaceit.MainPageView();
 }

@@ -38,6 +38,14 @@ Defaceit.Queue.prototype = {
 	},
 	
 	last: function() {
+		var data = (Defaceit.Queue.waitDelivery && Defaceit.Queue.waitDelivery[this.queue]) || undefined;
+
+		if (data) {
+			Defaceit.Queue.waitDelivery[this.queue] = undefined;
+			this.client_callback(data);
+			return 1;
+		}
+
 		Defaceit.Queue.Pack.push(['last', this.queue, this.next_call_id()]);
 		
 		setTimeout(function(){
@@ -116,19 +124,32 @@ Defaceit.Queue.prototype = {
 Defaceit.Queue.Pack = [];
 
 Defaceit.Queue.list = Defaceit.Queue.list || {};
+Defaceit.Queue.waitDelivery = Defaceit.Queue.waitDelivery || {};
 
 Defaceit.Queue.callbacks = Defaceit.Queue.callbacks || [];
 
 Defaceit.Queue.response =  function(data) { 
-	console.debug(data.pack);
+
 	if (data.pack) {
 		for (var i = 0; i < data.pack.length; i++) {
-			Defaceit.Queue.list[data.pack[i].queue_name].client_callback(data.pack[i]); 
+
+			if (Defaceit.Queue.list[data.pack[i].queue_name]){
+				Defaceit.Queue.list[data.pack[i].queue_name].client_callback(data.pack[i]); 
+			}else{
+				console.debug(Defaceit.Queue.waitDelivery);
+				Defaceit.Queue.waitDelivery[data.pack[i].queue_name] = data.pack[i];
+			}
+
 		}
 		return;
  	}
 	Defaceit.Queue.list[data.queue_name].client_callback(data); 
 }
+
+Defaceit.Queue.preload = function(queue) {
+	Defaceit.request('http://eservices.defaceit.ru/queue/last_n/' + queue);
+}
+
 }
 
 
@@ -194,8 +215,8 @@ function cors_post(url, params) {
 	}
 
 	xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	xhr.setRequestHeader("Content-length", params.length);
-	xhr.setRequestHeader("Connection", "close");
+	//xhr.setRequestHeader("Content-length", params.length);
+	//xhr.setRequestHeader("Connection", "close");
                                                       
 	xhr.onload = function() {
         	var responseText = xhr.responseText;
