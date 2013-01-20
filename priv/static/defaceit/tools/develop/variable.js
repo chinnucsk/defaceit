@@ -215,9 +215,62 @@ _.extend(Defaceit.Variable.prototype, {
 }, Defaceit.Status);
 
 
+Defaceit.Cache = function(items){
+	
+	if (items) {
+		_.each(items, Defaceit.Cache.add, Defaceit.Cache);
+	}
+
+	return this.Cache;
+}
+
+_.extend(Defaceit.Cache, 
+	{
+		items: [],
+		data: {}, 
+
+		add: function(item){
+			this.items.push(item);
+		},
+
+		set_data_pack: function(data) {
+			_.each(data.pack, this.set_data, this);
+			this.trigger('loaded', data.variable_name_space);
+		},
+
+		set_data: function(data) {
+			if (data.type == 'data') {
+				this.data[data.variable_name] = data;
+			}
+
+		},
+
+
+		preload: function(namespace) {
+			Defaceit.request('http://eservices.defaceit.ru/variable/get_pack/' + namespace);
+		},
+
+		wizard: function() {
+			_.each(this.items, this.preload, this);
+			this.on('loaded', this.check, this);
+		},
+
+		check: function(namespace) {
+			this.items = _.without(this.items, namespace);
+			if (this.items.length == 0) {
+				this.trigger('wizard:done');
+			}
+		}
+	},
+	Backbone.Events);
+
+
 Defaceit.Variable.response = function(data){
 
 	if (data.pack) {
+
+		Defaceit.Cache.set_data_pack(data);
+
 		_.each(data.pack, function(dataSet){
 			Defaceit.Variable.response(dataSet);
 		});
@@ -429,4 +482,48 @@ _.extend(Defaceit.List.prototype,{
 }, Defaceit.Status);
 
 
+/**
+  Varibale Helpers 
+  */
+Defaceit.Variable.FillIfEmpty = function(varName, namespace) {
+	
+	return _.extend({
+	item: Defaceit.Variable(varName, namespace),
+
+	wizard: function() {
+		this.item.on('loaded', this.check, this).fetch();
+	},
+
+	done: function() {
+		var o = {};
+		o[varName] = this.item;
+		this.trigger('wizard:done', o);
+	},
+
+	check: function() {
+		var o = this.item;
+		if (o.is_empty()) {
+			o.set(prompt("Введите " + o.varName)).save();
+			o.on('saved', this.done, this);
+		}else{
+			this.done();
+		}
+
+	}
+	}, Backbone.Events);
 }
+
+
+}
+
+
+Defaceit.Variable.Set = function(name, value){
+		return _.extend({
+			wizard: function(args) {
+				console.debug(value);
+				args[name] = args[name] || value;
+				this.trigger('wizard:done', args);
+			}
+		}, Backbone.Events);
+}
+

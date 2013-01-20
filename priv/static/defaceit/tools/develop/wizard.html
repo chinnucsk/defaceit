@@ -12,7 +12,8 @@
 	<script type="text/javascript" src="http://defaceit.ru/defaceit/tools/develop/defaceit.js"></script>
 	<script type="text/javascript" src="http://defaceit.ru/defaceit/tools/develop/request.js"></script>
 	<script type="text/javascript" src="http://defaceit.ru/defaceit/tools/develop/queue.js"></script>
-	<script type="text/javascript" src="http://defaceit.ru/defaceit/tools/develop/variable.js"></script>-
+	<script type="text/javascript" src="http://defaceit.ru/defaceit/tools/develop/variable.js"></script>
+	<script type="text/javascript" src="http://defaceit.ru/defaceit/tools/develop/wizard.js"></script>
 
 	<!--<script type="text/javascript" src="http://defaceit.ru/defaceit/tools.js"></script>-->
 
@@ -20,32 +21,32 @@
 <body>
 
     <script>
-    	Defaceit.Variable.preload('test.babywonder.ru');
-    	setTimeout(function() {
-    		Defaceit.Variable('title', 'article.test.babywonder.ru').on('loaded', function(){
-					console.debug(this.is_empty());
-			});
+    	var SomeModel = Backbone.Model.extend({
+    		wizard: function() {
+    			var that = this;
+    			console.debug('run wizard ' + this.get('name'));
+    			setTimeout(function(){
+    				console.debug(that.get('name') + ' wizard done');
+    				that.trigger('wizard:done');
+    			}, this.get('time'));
+    		}
+    	});
 
-			Defaceit.Variable('title', 'article.test.babywonder.ru').fetch();
+    	var a = new SomeModel();
+    	a.set('name', 'a1');
+    	a.set('time', 1000);
 
+		var b = new SomeModel();
+		b.set('name', 'b1');
+		b.set('time', 1000);
 
-			var s = new Defaceit.List('Thumbnail', ['title', 'content', 'url'], 'test.babywonder.ru');
-			s.fetch();
-			s.on('update', function(s){console.debug(this.structName+'::'+s+'.'+this.status());});
-			s.on('saved', function(s){console.debug(this.structName+'::'+s+'.'+this.status());});
-			s.on('loaded', function(){
-				if (confirm('Save')){
-					console.debug('________________');
-					this.get(1).set('title', 'Her');//.save();
-					this.get(1).set('content', 'Her');
-					this.save();
+		var c = new SomeModel();
+		c.set('name', 'c1');
+		c.set('time', 100);
 
-				}
-				console.debug(this.toObject());
-			});
-		}, 1000);
-
-
+		Defaceit.Wizard([a,[c, b]]).on('done', function() {
+			console.debug('we are ready to work');
+		});    	
 
     </script>
 </body>

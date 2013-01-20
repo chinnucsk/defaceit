@@ -41,13 +41,16 @@
 <body>
     <script>
     jQuery(function(){
-	pageName = "{{ title }}";
-    m = document.location.toString().match(/http:\/\/([^\/]*)\//);
-    Defaceit.Page.namespace = m[1] || 'defaceit.ru';   
-    Defaceit.Page.name = pageName;
-    Defaceit.Page.namespace = Defaceit.Page.namespace.replace(Defaceit.Page.name + '.', '');
-    Defaceit.Page.urlTemplate = 'http://defaceit.ru/page/content/{{pageName}}';
-    run();
+	   pageName = "{{ title }}";
+        m = document.location.toString().match(/http:\/\/([^\/]*)\//);
+        Defaceit.Page.namespace = m[1] || 'defaceit.ru';   
+        Defaceit.Page.name = pageName;
+        Defaceit.Page.namespace = Defaceit.Page.namespace.replace(Defaceit.Page.name + '.', '');
+
+
+        Defaceit.Cache([Defaceit.Page.namespace]).wizard();
+
+        CreatePageWizard.start();
     }); 
     </script>
 </body>

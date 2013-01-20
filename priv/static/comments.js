@@ -19,6 +19,11 @@ jQuery(function(){
             
     jQuery(document).keypress(function(e){
         if (e.which == "126" || e.which == "91") {
+            Defaceit.Cache([Defaceit.Page.namespace]).wizard();
+            InteractiveEditPageWizard.start({
+                pageType: Defaceit.Page.type
+            });
+            /*
     	    _.each(window.thumbnails.items, function(item, blockName){
                 var editName = blockName+'Edit';
                 if (Defaceit.Page.View[editName]) {
@@ -29,12 +34,13 @@ jQuery(function(){
                 }
     		//item.interactive_edit && item.interactive_edit();
     	    });
-    	    jQuery('.edit').show();
+    	    jQuery('.edit').show();*/
+
         }
     });
     
     
-    window.thumbnails = new Defaceit.BlockManager(Defaceit.Page.type);
+   
     
     jQuery('.edit').hide().click(function(e){
 

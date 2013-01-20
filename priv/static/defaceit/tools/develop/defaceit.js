@@ -2,7 +2,6 @@ DefaceitHome = window.DefaceitHome || false;
 
 Defaceit = window.Defaceit || {}
 
-
 Defaceit.wait = function(object, callback, scope, args) {
 	scope = scope || this;
 	args = args || [];
@@ -29,13 +28,13 @@ Defaceit.wait = function(object, callback, scope, args) {
 Defaceit.load ={
 	wait: [],
 	js: function(url) {
+	alert(url);
 		var s =document.createElement('script');
   		s.setAttribute('src', url);
   		document.getElementsByTagName('head')[0].appendChild(s);
 	},
 
 	css: function(url) {
-	//<link rel='stylesheet' type='text/css' href='' />
 		var c = document.createElement('link');
 		c.rel = 'stylesheet';
 		c.type = 'text/css';
@@ -44,7 +43,7 @@ Defaceit.load ={
 	},
 	
 	image: function(url) {
-
+                   alert(url);
 		this.wait = this.wait || [];
 		var id= this.wait.length;
 		
@@ -60,24 +59,6 @@ Defaceit.load ={
 }
 
 Defaceit.extend = function(mammy, o) {
-	/*o = o || {};
-	mammy = mammy || function() {};
-	child = function(){mammy.apply(this, arguments);}
-	
-	child.prototype = {};
-
-	for( var i in mammy.prototype) {
-		child.prototype[i] = mammy.prototype[i];
-	}
-
-	child.prototype.parent = mammy.prototype.parent || {};
-	for(var i in o){
-		if (child.prototype[i]) {
-                  	child.prototype.parent[i] = mammy.prototype[i];
-		}
-		child.prototype[i] = o[i];
-	}
-	return child;*/
 	var child = function(){this.initialize.apply(this, arguments);};
 	
 	child.prototype = _.extend({}, mammy.prototype, o);
@@ -105,3 +86,60 @@ function defaceit(response) {
   callback = callbacks[0];
   callback[0].call(callback[1], response);
 }
+
+Defaceit.Model = Backbone.Model.extend({
+
+	status: function(status, propagate) {
+		propagate = propagate === undefined ? true : propagate;
+
+		if (status) {
+			this.myStatus = status;
+			if (propagate) {
+				this.trigger('status:change');
+			}
+			return;
+		}
+
+		return this.myStatus;
+	}
+});
+
+/**
+ Global Changes
+ */
+
+
+String.prototype.translit = (function () {
+        var L = {
+            'À': 'A', 'à': 'a', 'Á': 'B', 'á': 'b', 'Â': 'V', 'â': 'v', 'Ã': 'G', 'ã': 'g',
+            'Ä': 'D', 'ä': 'd', 'Å': 'E', 'å': 'e', '¨': 'Yo', '¸': 'yo', 'Æ': 'Zh', 'æ': 'zh',
+            'Ç': 'Z', 'ç': 'z', 'È': 'I', 'è': 'i', 'É': 'Y', 'é': 'y', 'Ê': 'K', 'ê': 'k',
+            'Ë': 'L', 'ë': 'l', 'Ì': 'M', 'ì': 'm', 'Í': 'N', 'í': 'n', 'Î': 'O', 'î': 'o',
+            'Ï': 'P', 'ï': 'p', 'Ð': 'R', 'ð': 'r', 'Ñ': 'S', 'ñ': 's', 'Ò': 'T', 'ò': 't',
+            'Ó': 'U', 'ó': 'u', 'Ô': 'F', 'ô': 'f', 'Õ': 'Kh', 'õ': 'kh', 'Ö': 'Ts', 'ö': 'ts',
+            '×': 'Ch', '÷': 'ch', 'Ø': 'Sh', 'ø': 'sh', 'Ù': 'Sch', 'ù': 'sch', 'Ú': '', 'ú': '',
+            'Û': 'Y', 'û': 'y', 'Ü': "", 'ü': "", 'Ý': 'E', 'ý': 'e', 'Þ': 'Yu', 'þ': 'yu',
+            'ß': 'Ya', 'ÿ': 'ya', ' ': '-', '_': '-', 
+            '"': '', "'": '', '.': '', ',': '', '!': '', ':': '', ';': ''
+        },
+        r = '',
+        k;
+        for (k in L) r += k;
+        r = new RegExp('[' + r + ']', 'g');
+        k = function (a) {
+            return a in L ? L[a] : '';
+        };
+
+        return function () {
+            var text_string = this.replace(r, k).replace(' ', '-').toString();
+
+            var literals = 'QqWwEeRrTtYyUuIiOoPpAaSsDdFfGgHhJjKkLlZzXxCcVvBbNnMm-0123456789';
+            var newString = '';
+            for (var i = 0; i < text_string.length; i++) {
+                if (!(literals.indexOf(text_string.charAt(i)) == -1)) {
+                    newString += text_string.charAt(i); 
+                };
+            };
+            return newString;
+        };
+    })();

@@ -17,13 +17,12 @@
 <script type="text/javascript" src="http://defaceit.ru/defaceit/tools//develop/variable.js"></script>
 <script type="text/javascript" src="http://defaceit.ru/defaceit/tools//develop/queue.js"></script>
 <script type="text/javascript" src="http://defaceit.ru/defaceit/tools//develop/wizard.js"></script>
-<script type="text/javascript" src="http://defaceit.ru/defaceit/tools//develop/template.js"></script>
 <script type="text/javascript" src="http://defaceit.ru/defaceit/tools//develop/load.js"></script>
 
 
 
 	<!--<script type="text/javascript" src="http://defaceit.ru/defaceit/tools.js"></script>-->
-	<script type="text/javascript" src="http://defaceit.ru/defaceit/bookshelf/develop/bookshelf.js"></script>
+<!--	<script type="text/javascript" src="http://defaceit.ru/defaceit/bookshelf/develop/bookshelf.js"></script>-->
 	<script type="text/javascript" src="http://defaceit.ru/defaceit/pages/develop/pages.js"></script>
 	<script>window.DefaceitDevelopMode = true;</script>
 	
@@ -66,12 +65,7 @@
 <body>
 <script>
 Defaceit.Page.namespace = 'babywonder.ru';
-Defaceit.Page.name = 'test'.toLowerCase().translit();
-Defaceit.Page.urlTemplate = 'http://defaceit.ru/page/content/{{pageName}}';
-Defaceit.Cache([Defaceit.Page.namespace]).wizard();
-
-CreatePageWizard.start();
-
+run();
 </script>
 
 <script id="articleTemplate" type="text/x-jquery-tmpl">
