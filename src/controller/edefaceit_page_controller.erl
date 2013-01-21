@@ -19,6 +19,16 @@ create(Get, [Title]) ->
 save(Post, []) ->
 	Content = Req:post_param("content"),
 	
+	case re:run(Content,"<title>(.*)<\/title>", [{capture,[1], list}]) of
+	 	{match, [[]]} ->
+			Name = "";
+		{match, PageName} ->
+			Name = PageName;
+		nomatch ->
+			Name = "";
+		_ ->
+			Name = ""
+	end,
 
 	Url = Req:post_param("url"),
 	Site = Req:post_param("site"),
@@ -26,7 +36,7 @@ save(Post, []) ->
 	Type = Req:post_param("type"),
 	ContentScript = re:replace(Content, "<!--DefaultValues-->", "<script>" ++ v("Defaceit.Page.type", Type) ++ v("Defaceit.Page.name", Title) ++ v("Defaceit.Page.namespace", Site)++ v("url", Url) ++ "</script>", [global, {return, list}]),
 	drop_by(Url),
-	NewPage = page:new(id, Title, ContentScript, Site, Url),
+	NewPage = page:new(id, Title, ContentScript, Site, Url, Name),
 	{ok, Saved} = NewPage:save(),
 	{redirect, Url}.
 v(N,V) ->
