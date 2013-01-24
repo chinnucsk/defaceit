@@ -4,7 +4,7 @@
 
 index(Get, []) ->
 
-	Articles = boss_db:find(page, [site, 'equals', "sandbox.defaceit.ru"]),
+	Articles = boss_db:find(page, [site, 'equals', "defaceit.ru"]),
 
 	[Owner] = defaceit:get_owner_script_for("main"),
 	Referent = defaceit:get_referent_script_for("main"),
