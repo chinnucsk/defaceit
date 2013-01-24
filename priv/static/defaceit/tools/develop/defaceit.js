@@ -109,37 +109,26 @@ Defaceit.Model = Backbone.Model.extend({
  */
 
 
-String.prototype.translit = (function () {
-        var L = {
-            '¿': 'A', '‡': 'a', '¡': 'B', '·': 'b', '¬': 'V', '‚': 'v', '√': 'G', '„': 'g',
-            'ƒ': 'D', '‰': 'd', '≈': 'E', 'Â': 'e', '®': 'Yo', '∏': 'yo', '∆': 'Zh', 'Ê': 'zh',
-            '«': 'Z', 'Á': 'z', '»': 'I', 'Ë': 'i', '…': 'Y', 'È': 'y', ' ': 'K', 'Í': 'k',
-            'À': 'L', 'Î': 'l', 'Ã': 'M', 'Ï': 'm', 'Õ': 'N', 'Ì': 'n', 'Œ': 'O', 'Ó': 'o',
-            'œ': 'P', 'Ô': 'p', '–': 'R', '': 'r', '—': 'S', 'Ò': 's', '“': 'T', 'Ú': 't',
-            '”': 'U', 'Û': 'u', '‘': 'F', 'Ù': 'f', '’': 'Kh', 'ı': 'kh', '÷': 'Ts', 'ˆ': 'ts',
-            '◊': 'Ch', '˜': 'ch', 'ÿ': 'Sh', '¯': 'sh', 'Ÿ': 'Sch', '˘': 'sch', '⁄': '', '˙': '',
-            '€': 'Y', '˚': 'y', '‹': "", '¸': "", '›': 'E', '˝': 'e', 'ﬁ': 'Yu', '˛': 'yu',
-            'ﬂ': 'Ya', 'ˇ': 'ya', ' ': '-', '_': '-', 
-            '"': '', "'": '', '.': '', ',': '', '!': '', ':': '', ';': ''
+String.prototype.translit = (function(){
+    var L = {
+'–ê':'A','–∞':'a','–ë':'B','–±':'b','–í':'V','–≤':'v','–ì':'G','–≥':'g',
+'–î':'D','–¥':'d','–ï':'E','–µ':'e','–Å':'Yo','—ë':'yo','–ñ':'Zh','–∂':'zh',
+'–ó':'Z','–∑':'z','–ò':'I','–∏':'i','–ô':'Y','–π':'y','–ö':'K','–∫':'k',
+'–õ':'L','–ª':'l','–ú':'M','–º':'m','–ù':'N','–Ω':'n','–û':'O','–æ':'o',
+'–ü':'P','–ø':'p','–†':'R','—Ä':'r','–°':'S','—Å':'s','–¢':'T','—Ç':'t',
+'–£':'U','—É':'u','–§':'F','—Ñ':'f','–•':'Kh','—Ö':'kh','–¶':'Ts','—Ü':'ts',
+'–ß':'Ch','—á':'ch','–®':'Sh','—à':'sh','–©':'Sch','—â':'sch','–™':'"','—ä':'"',
+'–´':'Y','—ã':'y','–¨':"'",'—å':"'",'–≠':'E','—ç':'e','–Æ':'Yu','—é':'yu',
+'–Ø':'Ya','—è':'ya'
         },
         r = '',
         k;
-        for (k in L) r += k;
-        r = new RegExp('[' + r + ']', 'g');
-        k = function (a) {
-            return a in L ? L[a] : '';
-        };
-
-        return function () {
-            var text_string = this.replace(r, k).replace(' ', '-').toString();
-
-            var literals = 'QqWwEeRrTtYyUuIiOoPpAaSsDdFfGgHhJjKkLlZzXxCcVvBbNnMm-0123456789';
-            var newString = '';
-            for (var i = 0; i < text_string.length; i++) {
-                if (!(literals.indexOf(text_string.charAt(i)) == -1)) {
-                    newString += text_string.charAt(i); 
-                };
-            };
-            return newString;
-        };
-    })();
+    for (k in L) r += k;
+    r = new RegExp('[' + r + ']', 'g');
+    k = function(a){
+        return a in L ? L[a] : '';
+    };
+    return function(){
+        return this.replace(r, k);
+    };
+})();

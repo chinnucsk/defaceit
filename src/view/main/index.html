@@ -42,10 +42,22 @@
                             <li><a href="/baloon/При формаировании адреса страницы укажите текст поздравления">Страница поздравлений</a></li>
                         </ul>
                     </li>
+
                     <li class="dropdown" id="defaces-list">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#defces">Команды разработчиков<b class="caret"></b></a>
                         <ul class="dropdown-menu" id="defaces">
                             <li><a href="/app/edit/main">Добавить</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="dropdown" id="defaces-list">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#defces">Страницы<b class="caret"></b></a>
+                        <ul class="dropdown-menu" id="defaces">
+
+                            {% if articles  %}
+                            {% for article in articles %}<li><a href="{{ article.url }}">{{ article.name }}</a></li>{% endfor %}{% endif %}
+
+                            <li><a href="#" onclick="var a = prompt('Название страницы'); document.location = '/page/create/'+a.replace(/ь/g, '').replace(/ /g, '_').translit();return false;">Добавить</a></li>
                         </ul>
                     </li>
                 </ul>
